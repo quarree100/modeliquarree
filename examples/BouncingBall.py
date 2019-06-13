@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 '''
-
 **BouncingBall: OpenModelica Python Interface example**
 
 Copyright (C) 2019 Joris Nettelstroth
@@ -65,8 +64,8 @@ def run_ModelicaSystem():
     model_path = (omc.sendExpression('getInstallationDirectoryPath()')
                   + '/share/doc/omc/testmodels/')
     mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall')
-    # Increase from 1 to 2 seconds
-    mod.setSimulationOptions(stepSize=.1, stopTime=2.0)
+    # Set some simulation options
+    mod.setSimulationOptions(stepSize=.05, stopTime=2.0)
 
     # Print some useful information
     quant = pd.DataFrame(mod.getQuantities())
