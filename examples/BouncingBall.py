@@ -41,8 +41,17 @@ from OMPython import ModelicaSystem
 def main():
     '''Choose one of the example methods
     '''
-    run_ModelicaSystem()
-#    run_OpenModelica_CLI()
+    # Create and change to a subdirectory to create all simulation files there
+    sim_dir = './sim'
+    if os.path.exists(sim_dir) is False:
+        os.mkdir(sim_dir)
+    os.chdir(sim_dir)
+
+    run_ModelicaSystem()  # direct simulation with modelica model
+#    run_FMU()  # direct simulation with FMU created from modelica model
+#    run_OpenModelica_CLI()  # call to modelica command line interface
+
+    os.chdir('..')
 
 
 def run_ModelicaSystem():
@@ -52,12 +61,6 @@ def run_ModelicaSystem():
     For this example, we run the simulations for different heights 'h' from
     where the bouncing ball is dropped.
     '''
-    # Create and change into a subdirectory to create all simulation files
-    # there
-    sim_dir = './sim'
-    if os.path.exists(sim_dir) is False:
-        os.mkdir(sim_dir)
-    os.chdir(sim_dir)
 
     # Setup the Modelica session and load the module
     omc = OMCSessionZMQ()
@@ -78,6 +81,69 @@ def run_ModelicaSystem():
         time, h = mod.getSolutions('time', 'h')
 
         plt.plot(time, h, label='h_start = {0} m'.format(h_start))
+
+    plt.legend()
+    plt.xlabel(r'time $t$ in [s]')
+    plt.ylabel(r'height $h$ in [m]')
+    plt.show(block=False)
+
+
+def run_FMU():
+    '''Perform the BouncingBall simulation with an FMU by using the
+    PyFMI package. Install PyFMI with Anaconda:
+
+    .. code::
+
+        conda install pyfmi
+
+    In order to create the FMU in the first place, we can use OMPython
+    with the implementation in the local function ``make_fmu()``.
+
+
+    Please note: With the first installation of PyFMI from Anaconda,
+    the following error appeared when trying to simulate:
+
+    .. code::
+
+        pyfmi.common.algorithm_drivers.InvalidAlgorithmOptionException:
+        'Invalid algorithm options object: The solver: CVode is unknown.'
+
+    This fixed it:
+
+    .. code::
+
+        conda install -c conda-forge assimulo
+    '''
+    import pyfmi
+
+    def make_fmu():
+        '''Create an FMU from the Modelica model to use for testing
+        '''
+        # Setup the Modelica session and load the module
+        omc = OMCSessionZMQ()
+        model_path = (omc.sendExpression('getInstallationDirectoryPath()')
+                      + '/share/doc/omc/testmodels/')
+        mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall')
+        # Convert model to FMU 'BouncingBall.fmu'
+        mod.convertMo2Fmu()
+
+    make_fmu()  # Use this to create the FMU file
+
+#    pyfmi.check_packages()  # Verify installation (seems to break plt.plot())
+    mod = pyfmi.load_fmu('BouncingBall.fmu')
+    opts = mod.simulate_options()  # Get the default options
+    opts['ncp'] = 100  # Set to 100 output points
+
+    for h_start in [1, 2, 3]:
+        mod.reset()  # without this, the loop causes trouble
+        mod.set('h', h_start)  # set the start height of the ball
+
+        # With FMI, simulate() returns a result object
+        res = mod.simulate(final_time=2.0, options=opts)
+        time = res['time']
+        h = res['h']
+
+        plt.plot(time, h, '--', label='FMU h_start = {0} m'.format(h_start))
 
     plt.legend()
     plt.xlabel(r'time $t$ in [s]')
