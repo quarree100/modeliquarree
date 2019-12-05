@@ -57,7 +57,10 @@ def main():
 #    bench.test_with_FMU()
 
     # Evaluate the results
-    bench.evaluate()
+    data = bench.evaluate()
+    JAZ = data['heatPump1.CoP_out'].mean()
+
+    logger.info('The seasonal performance factor is {:.3f}'.format(JAZ))
 
 
 class testbench(object):
@@ -174,14 +177,19 @@ class testbench(object):
         self.data = run_FMU(self.fileName, self.modelName, self.solutions,
                             self.stepSize, self.stopTime, self.parameters)
 
-    def evaluate(self):
+    def evaluate(self, plot_show=True):
         data = post_processing(self.data, self.solutions, self.stepSize)
 
-        print(data)
+        logger.info('Resulting DataFrame:')
+        if logger.isEnabledFor(logging.INFO):
+            print(data)
 
-        plt.show(block=True)
+        if plot_show:
+            plt.show(block=True)
 
         os.chdir('..')
+
+        return data
 
 
 def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
@@ -222,10 +230,10 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
     '''
 
-#     If we want to simulate with some other than the default heatpump,
-#     we have to include the record database for that heatpump.
-#     For this, we need to load the *.mo file of that database into
-#     the ModelicaSystem, via the argument ``lmodel``.
+    # If we want to simulate with some other than the default heatpump,
+    # we have to include the record database for that heatpump.
+    # For this, we need to load the *.mo file of that database into
+    # the ModelicaSystem, via the argument ``lmodel``.
     if HP_dict.get('path', False):
         # Add to the list of additionally loaded modules
         list_models.append(HP_dict['path'].replace("\\", "/"))
@@ -265,13 +273,9 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
             print(quantities[mask].to_string())
 
     # Set simulation parameters
-#    text = [str(key)+"="+str(value) for (key, value) in parameters.items()]
     text = ["{}={}".format(key, value) for (key, value) in parameters.items()]
-#    print(text)
     mod.setParameters(text)  # current master branch of OMPython
 #    mod.setParameters(**parameters)  # Until v3.1.2
-
-#    mod.setContinuous(text)
 
     # Run simulations
     mod.simulate()
@@ -367,7 +371,6 @@ def run_FMU(fileName, modelName, solutions, stepSize=1, stopTime=60,
     if make_FMU:
         make_fmu()  # Use this to create the FMU file
 
-#    pyfmi.check_packages()  # Verify installation (seems to break plt.plot())
     mod = pyfmi.load_fmu(modelName+'.fmu')
     opts = mod.simulate_options()  # Get the default options
     opts['ncp'] = int(stopTime/stepSize)  # Set to n output points
