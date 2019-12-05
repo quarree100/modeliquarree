@@ -39,7 +39,8 @@ from setuptools import setup
 # The setup function
 setup(
     # Set version with setuptools_scm, depends on `git describe`
-    use_scm_version={'root': '..', 'relative_to': __file__},
+    use_scm_version={'root': '..', 'relative_to': __file__,
+                     'version_scheme': 'post-release'},
     setup_requires=['setuptools_scm'],
     name='hptestbench',
     description='OpenModelica Heatpump Testbench in Python',
@@ -50,10 +51,13 @@ setup(
     url='https://github.com/quarree100/modeliquarree',
     install_requires=[],
     python_requires='>=3.7',
-    packages=['hptestbench'],
+    packages=['hptestbench', 'modelica'],
     include_package_data=True,
     package_data={'modelica': ['HP_testbench.mo',
-                               'TRY2015_541957091051_Jahr.mos'],
+                               'TRY2015_541957091051_Jahr.mos',
+                               'sim_win32/HP_testbench.HeatPump_weather.fmu',
+                               'sim_linux/HP_testbench.HeatPump_weather.fmu',
+                               ],
                   },
     entry_points={
         'console_scripts': ['hptestbench = hptestbench.__main__:main'],

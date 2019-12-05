@@ -1,0 +1,48 @@
+# This is the definition file for the conda recipe
+# Run it with 'conda build conda.recipe'
+#
+# Apart from the requirements here, OMPython must be installed with pip:
+# https://github.com/OpenModelica/OMPython/archive/master.zip
+
+package:
+    name: hptestbench
+    version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+    path: ../../  # Root of Git repository is two folders upwards
+
+build:
+    number: {{ GIT_DESCRIBE_NUMBER }}
+
+    entry_points:
+        # Put any entry points (scripts to be generated automatically) here
+        - hptestbench = hptestbench.__main__:main
+
+requirements:
+    build:
+        - python
+        - setuptools
+        - setuptools_scm
+
+    run:
+        - python
+        - pandas
+        - matplotlib
+        - pyfmi
+        - assimulo  # for pyfmi (from channel 'conda-forge')
+
+test:
+    source_files:  # Paths relative to root of Git repository
+        - HP_testbench/modelica/HP_testbench.mo
+        - HP_testbench/modelica/TRY2015_541957091051_Jahr.mos
+        - HP_testbench/modelica/sim_win32/HP_testbench.HeatPump_weather.fmu
+        - HP_testbench/modelica/sim_linux/HP_testbench.HeatPump_weather.fmu
+
+about:
+    home: 'https://github.com/quarree100/modeliquarree'
+    summary: 'OpenModelica Heatpump Testbench in Python'
+    description: 'OpenModelica Heatpump Testbench in Python'
+    license: 'GPL3'
+    license_file: 'LICENSE.txt'
+    author: 'Joris Nettelstroth'
+    author_email: 'joris.nettelstroth@stw.de'

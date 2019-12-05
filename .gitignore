@@ -1,1 +1,7 @@
 examples/sim/
+HP_testbench/hptestbench/__pycache__/
+HP_testbench/modelica/sim*
+HP_testbench/dist
+HP_testbench/build
+HP_testbench/hptestbench.egg-info
+

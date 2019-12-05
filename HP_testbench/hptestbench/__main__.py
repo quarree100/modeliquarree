@@ -30,7 +30,6 @@ import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from OMPython import ModelicaSystem
 import logging
 
 # Define the logging function
@@ -46,14 +45,13 @@ def main():
     # Create our testbench:
     bench = testbench()
 
-    # Optinally, install a specific heat pump
-#    bench.install_HP()  # optional
+    # Optionally, install a specific heat pump
+#    bench.install_HP('Q100_air_water_001')  # optional
 
-    # Run the tests with modelica
-    bench.test_with_modelica()
-#    bench.test_with_modelica(make_FMU=True)
+    # Run the simulation with Modelica
+    bench.test_with_modelica(make_FMU=True)
 
-    # (or) Run the tests with FMU
+    # (or) Run the simulation via the functional mockup interface (FMI)
 #    bench.test_with_FMU()
 
     # Evaluate the results
@@ -81,7 +79,7 @@ class testbench(object):
         # files there
         sim_dir = os.path.join(
                 os.path.dirname(os.path.abspath(__file__)),
-                '../modelica',
+                '..', 'modelica',
                 'sim_'+sys.platform  # separate windows and linux
                 )
         if os.path.exists(sim_dir) is False:
@@ -97,6 +95,7 @@ class testbench(object):
         model_path = r'../'  # Path relative to our sim folder!
         self.fileName = os.path.join(model_path, 'HP_testbench.mo')
         self.modelName = 'HP_testbench.HeatPump_weather'
+        self.FMU_path = self.modelName+'.fmu'
 
         self.stepSize = 60*15  # seconds
         self.stopTime = 60*60*24*365  # seconds
@@ -140,27 +139,30 @@ class testbench(object):
         if HP_select == 'Q100_air_water_001':
             # This particular heatpump is based on confidential data.
             # We load it from the owncloud folder
-            quarree100_owncloud = os.path.join(
+            database_path = os.path.join(
                     os.path.expanduser("~"),
-                    'ownCloud/FhG-owncloud-Quarree-AB3',
-                    'Modelica/private_database',
-                    'HP_database.mo')
+                    'ownCloud/FhG-owncloud-Quarree-AB3/Modelica',
+                    'private_database', 'HP_database.mo')
 
-            if not os.path.exists(quarree100_owncloud):
-                logging.error('The following path does not exist, but is '
-                              'required to load the heat pump data of "{}": '
-                              '"{}". Simulating with the default heatpump '
-                              'instead'
-                              .format(HP_select, quarree100_owncloud))
-                return  # Skip the rest
+            if not os.path.exists(database_path):
+                logging.warning('The following path does not exist, but is '
+                                'required to load the heat pump data of "{}": '
+                                '"{}".'
+                                .format(HP_select, database_path))
 
-            self.HP_dict['path'] = os.path.abspath(quarree100_owncloud)
+            self.HP_dict['path'] = os.path.abspath(database_path)
 
             self.HP_dict['replace_expression'] = '''
             setComponentModifierValue(HP_testbench.HeatPump_weather,
                                      heatPump1.data_table,
                                      $Code(=HP_database.Q100_air_water_001())
                                      )'''
+
+            # Set default for FMU, depending on operating system:
+            self.FMU_path = os.path.join(
+                os.path.expanduser("~"),
+                'ownCloud/FhG-owncloud-Quarree-AB3/Modelica/private_database',
+                'Q100_air_water_001_{}.fmu'.format(sys.platform))
 
     def test_with_modelica(self, make_FMU=False):
         '''Direct simulation with modelica model
@@ -174,7 +176,7 @@ class testbench(object):
     def test_with_FMU(self):
         '''Direct simulation with FMU created from modelica model
         '''
-        self.data = run_FMU(self.fileName, self.modelName, self.solutions,
+        self.data = run_FMU(self.FMU_path, self.solutions,
                             self.stepSize, self.stopTime, self.parameters)
 
     def evaluate(self, plot_show=True):
@@ -229,6 +231,7 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
         https://github.com/OpenModelica/OMPython
 
     '''
+    from OMPython import ModelicaSystem  # import only if necessary
 
     # If we want to simulate with some other than the default heatpump,
     # we have to include the record database for that heatpump.
@@ -303,20 +306,23 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
         # Convert model to FMU 'modelName.fmu' in the current working directory
         mod.convertMo2Fmu()
 
+        # Alternative: Try to produce Windows and Linux FMU at the same time
+        # The platforms argument does not seem to have an effect
+#        platforms = '{"x86_64-linux-gnu", "x86_64-w64-mingw32"}'
+#        expr = ('buildModelFMU({}, version="2.0", fmuType="me_cs",'
+#                'platforms={})'.format(modelName, platforms))
+#        mod.getconn.sendExpression(expr)
+
     return data
 
 
-def run_FMU(fileName, modelName, solutions, stepSize=1, stopTime=60,
+def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
             parameters=dict(), make_FMU=False):
     '''Perform the simulation with an FMU by using the
     PyFMI package. This is using the "Model Exchange" method.
 
     Args:
-        fileName (str): Name (including path) of a *.mo file with the model
-        (included for consistency with ``run_ModelicaSystem()``, is only
-        used when also creating the FMU with ``make_FMU``)
-
-        modelName (str): Name of the model
+        fileName (str): Name (including path) of a *.fmu file with the model
 
         solutions (dict): Dict of all solutions (column names) to load
         from the results
@@ -326,8 +332,6 @@ def run_FMU(fileName, modelName, solutions, stepSize=1, stopTime=60,
         stopTime (int): Simulation lenth in seconds
 
         parameters (dict): Key, value pairs handed to ``setParameters()``
-
-        make_FMU (boolean): Should we create an FMU from the model?
 
     Returns:
         data (DataFrame): Pandas DataFrame with the requested ``solutions``
@@ -360,24 +364,17 @@ def run_FMU(fileName, modelName, solutions, stepSize=1, stopTime=60,
     '''
     import pyfmi
 
-    def make_fmu():
-        '''Create an FMU from the Modelica model
-        '''
-        # Setup the Modelica session and load the module
-        mod = ModelicaSystem(fileName=fileName, modelName=modelName)
-        # Convert model to FMU 'modelName.fmu'
-        mod.convertMo2Fmu()
+    try:
+        mod = pyfmi.load_fmu(fileName)
+    except pyfmi.fmi.FMUException:
+        logger.error('FMU file missing: {}'.format(fileName))
+        raise
 
-    if make_FMU:
-        make_fmu()  # Use this to create the FMU file
-
-    mod = pyfmi.load_fmu(modelName+'.fmu')
     opts = mod.simulate_options()  # Get the default options
     opts['ncp'] = int(stopTime/stepSize)  # Set to n output points
 
     # Set simulation parameters
     for key, value in parameters.items():
-        print(key, value)
         try:
             mod.set(key, value)
         except TypeError:  # "expected bytes, str found" for file path

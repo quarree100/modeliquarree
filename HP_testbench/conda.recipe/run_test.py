@@ -47,8 +47,8 @@ def check_JAZ():
     # Create our testbench:
     bench = hptestbench.testbench()
 
-    # Run the tests with modelica
-    bench.test_with_modelica()
+    # Run the tests via the functional mockup interface (FMI)
+    bench.test_with_FMU()  # Does not require OpenModelica and OMPython
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
@@ -59,7 +59,7 @@ def check_JAZ():
 
 class TestMethods(unittest.TestCase):
     def test(self):
-        self.assertAlmostEqual(check_JAZ(), 2.2596926888271396)
+        self.assertAlmostEqual(check_JAZ(), 2.25969269, places=4)
 
 
 if __name__ == '__main__':

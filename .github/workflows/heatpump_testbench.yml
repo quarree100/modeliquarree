@@ -1,4 +1,9 @@
 # GitHub actions designed for the heatpump testbench project
+# We basically walk two paths here, depending on runner.os (Windows / Linux):
+# 1. On Linux, it is easy to automatically install OpenModelica,
+#    so we can test the complete process and run a Modelica model
+# 2. On Windows, instead we run the simulation with the stored FMU
+
 name: HP Testbench
 
 on: [push, pull_request]
@@ -9,8 +14,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        #os: [windows-latest, ubuntu-latest]
-        os: [ubuntu-latest]
+        os: [windows-latest, ubuntu-latest]
         python-version: [3.7]
 
     steps:
@@ -22,9 +26,11 @@ jobs:
 
     - name: Install Python dependencies
       run: |
+        conda install numpy
         conda install pandas matplotlib conda-build # setuptools
 
     - name: Install OpenModelica
+      if: runner.os == 'Linux'  # This only works on Linux
       run: |
         # Installation instructions based on:
         # https://www.openmodelica.org/download/download-linux
@@ -42,6 +48,7 @@ jobs:
         #sudo apt install omlib-.* # Installs optional Modelica libraries (most have not been tested with OpenModelica)
 
     - name: Install AixLib
+      if: runner.os == 'Linux'  # Only required on Linux
       run: |
         cd /usr/lib/omlibrary/  # cd to Openmodelica library
         wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.7.3.tar.gz -O - | sudo tar xzf -
@@ -55,20 +62,21 @@ jobs:
         python -m pip install -U https://github.com/OpenModelica/OMPython/archive/master.zip
 
         # For python FMI interaction, install pyfmi
-        # conda install -c conda-forge pyfmi -y
-        # Maybe necessary?
-        # conda install -c conda-forge assimulo
+        conda install -c conda-forge pyfmi assimulo -y
 
-#    - name: Build & install with conda
-#      run: |
-#        conda build conda.recipe
-#        conda install hptestbench --use-local
+    - name: Build & install with conda
+      run: |
+        conda build ./HP_testbench/conda.recipe -c conda-forge
+        conda install hptestbench --use-local  # Regular installation
+        # conda develop ./HP_testbench/  # Installation in developer mode
 
-    - name: Install with conda in development mode
-      run: conda develop ./HP_testbench/
+#    - name: Run the unittest for hptestbench
+#      if: runner.os == 'Windows'
+#      run: python ./HP_testbench/conda.recipe/run_test.py
 
-    - name: Run the test module of the heatpump testbench
-      run: python ./HP_testbench/conda.recipe/run_test.py
+    - name: Run the main method of hptestbench (a simulation with OpenModelica)
+      if: runner.os == 'Linux'
+      run: python ./HP_testbench/hptestbench
 
     - name: Lint with flake8
       if: runner.os == 'Linux'  # Only needs to run once
@@ -78,5 +86,3 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-
