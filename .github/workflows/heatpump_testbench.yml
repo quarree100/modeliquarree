@@ -1,0 +1,82 @@
+# GitHub actions designed for the heatpump testbench project
+name: HP Testbench
+
+on: [push, pull_request]
+
+jobs:
+  job_1:
+    runs-on: ${{ matrix.os }}
+    name: Build
+    strategy:
+      matrix:
+        #os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest]
+        python-version: [3.7]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1  # use the latest code commit
+
+    - name: Setup conda with python ${{ matrix.python-version }}
+      uses: s-weigand/setup-conda@v1.0.1
+
+    - name: Install Python dependencies
+      run: |
+        conda install pandas matplotlib # conda-build setuptools
+
+    - name: Install OpenModelica
+      run: |
+        # Installation instructions based on:
+        # https://www.openmodelica.org/download/download-linux
+
+        # Add sources for packaged openmodelica
+        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # You will also need to import the GPG key used to sign the releases:
+        wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
+        # To verify that your key is installed correctly
+        apt-key fingerprint
+
+        # Then update and install OpenModelica
+        sudo apt update
+        sudo apt install openmodelica
+        #sudo apt install omlib-.* # Installs optional Modelica libraries (most have not been tested with OpenModelica)
+
+    - name: Install AixLib
+      run: |
+        cd /usr/lib/omlibrary/  # cd to Openmodelica library
+        wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.7.3.tar.gz -O - | sudo tar xzf -
+        sudo mv AixLib-0.7.3/AixLib/ 'AixLib 0.7.3'
+        sudo rm -r AixLib-0.7.3
+        cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
+
+    - name: Install OMPython and PyFMI
+      run: |
+        # Install OMPython
+        python -m pip install -U https://github.com/OpenModelica/OMPython/archive/master.zip
+
+        # For python FMI interaction, install pyfmi
+        # conda install -c conda-forge pyfmi -y
+        # Maybe necessary?
+        # conda install -c conda-forge assimulo
+
+#    - name: Build & install with conda
+#      run: |
+#        conda build conda.recipe
+#        conda install hptestbench --use-local
+
+    - name: Install with conda in development mode
+      run: conda develop ./HP_testbench/
+
+    - name: Run the test module of the heatpump testbench
+      run: python ./HP_testbench/conda.recipe/run_test.py
+
+    - name: Lint with flake8
+      if: runner.os == 'Linux'  # Only needs to run once
+      run: |
+        conda install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+
