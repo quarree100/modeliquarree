@@ -22,7 +22,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        conda install pandas matplotlib # conda-build setuptools
+        conda install pandas matplotlib conda-build # setuptools
 
     - name: Install OpenModelica
       run: |
