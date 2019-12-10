@@ -26,8 +26,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        conda install numpy
-        conda install pandas matplotlib conda-build # setuptools
+        conda install pandas matplotlib conda-build
 
     - name: Install OpenModelica
       if: runner.os == 'Linux'  # This only works on Linux
@@ -50,7 +49,7 @@ jobs:
     - name: Install AixLib
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
-        cd /usr/lib/omlibrary/  # cd to Openmodelica library
+        cd /usr/lib/omlibrary/  # cd to OpenModelica library
         wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.7.3.tar.gz -O - | sudo tar xzf -
         sudo mv AixLib-0.7.3/AixLib/ 'AixLib 0.7.3'
         sudo rm -r AixLib-0.7.3
