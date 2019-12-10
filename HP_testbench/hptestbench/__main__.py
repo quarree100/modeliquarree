@@ -56,9 +56,9 @@ def main():
 
     # Evaluate the results
     data = bench.evaluate()
-    JAZ = data['heatPump1.CoP_out'].mean()
+    COP_mean = data['heatPump1.CoP_out'].mean()
 
-    logger.info('The seasonal performance factor is {:.3f}'.format(JAZ))
+    logger.info('The annual mean COP is {:.3f}'.format(COP_mean))
 
 
 class testbench(object):
@@ -101,16 +101,15 @@ class testbench(object):
         self.stopTime = 60*60*24*365  # seconds
 
         # We have to create a selection of all the results we want to read
-        # from the simulation. I have chosen to group them by type, to
-        #  allow unit conversions.
+        # from the simulation. They are grouped by types of units, to
+        # allow unit conversions in post_processing()
         self.solutions = dict(
-                temperatures=['temperatureSensor.T',
+                temperatures=['temperatureSensor.T',  # Convert K to °C
                               'fluidSource1.T_fluid',
                               'weaBus.TDryBul',
                               ],
                 normalized=['heatPump1.CoP_out'],
-                power=[
-                       'heatPump1.heatFlow_dotQCo.Q_flow',
+                power=['heatPump1.heatFlow_dotQCo.Q_flow',  # Convert W to kW
                        'heatPump1.Pel_out',
                        ],
                 )

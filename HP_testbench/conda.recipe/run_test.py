@@ -35,7 +35,7 @@ import logging
 import hptestbench
 
 
-def check_JAZ():
+def check_COP():
     '''This python test determines the JAZ for the default heat pump
     '''
     # Define the logging function
@@ -52,14 +52,14 @@ def check_JAZ():
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
-    JAZ = data['heatPump1.CoP_out'].mean()
+    COP_mean = data['heatPump1.CoP_out'].mean()
 
-    return JAZ
+    return COP_mean
 
 
 class TestMethods(unittest.TestCase):
     def test(self):
-        self.assertAlmostEqual(check_JAZ(), 2.25969269, places=4)
+        self.assertAlmostEqual(check_COP(), 2.25969269, places=4)
 
 
 if __name__ == '__main__':
