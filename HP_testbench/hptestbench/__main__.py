@@ -46,13 +46,15 @@ def main():
     bench = testbench()
 
     # Optionally, install a specific heat pump
-#    bench.install_HP('Q100_air_water_001')  # optional
+    # bench.install_HP('Q100_air_water_001')  # optional (custom)
+    # bench.install_HP('AlphaInnotec_SW170I')  # optional (AixLib)
+    # bench.install_HP('Vitocal350BWH113')  # optional (AixLib)
 
     # Run the simulation with Modelica
     bench.test_with_modelica(make_FMU=True)
 
     # (or) Run the simulation via the functional mockup interface (FMI)
-#    bench.test_with_FMU()
+    # bench.test_with_FMU()
 
     # Evaluate the results
     data = bench.evaluate()
@@ -125,16 +127,25 @@ class testbench(object):
         self.HP_dict = dict()  # filled by install_HP(), if necessary
 
     def install_HP(self, HP_select='Q100_air_water_001'):
-        '''Prepare the settings for ``self.HP_dict`` for a variety of
-        heat pumps.
+        """Install a specific heat pump.
 
+        Prepare the settings for ``self.HP_dict`` for a variety of
+        heat pumps. Those stored in the AixLib can be called directly.
+        For others, special cases have to be hardcoded here.
         ``HP_dict['path']`` becomes the path to the *.mo file that
-        includes the record.
+        includes the record. ``HP_dict['replace_expression']`` stores the
+        OpenModelica CLI ``setComponentModifierValue()`` expression to
+        replace the data_table.
 
-        ``HP_dict['replace_expression']`` stores the OpenModelica CLI
-        ``setComponentModifierValue()`` expression to replace the data_table.
-        '''
+        Args:
+            HP_select (str, optional): String name of a heatpump defined
+            in the AixLib at ``AixLib.DataBase.HeatPump.EN255.*``.
+            Defaults to 'Q100_air_water_001'.
 
+        Returns:
+            None.
+
+        """
         if HP_select == 'Q100_air_water_001':
             # This particular heatpump is based on confidential data.
             # We load it from the owncloud folder
@@ -162,6 +173,16 @@ class testbench(object):
                 os.path.expanduser("~"),
                 'ownCloud/FhG-owncloud-Quarree-AB3/Modelica/private_database',
                 'Q100_air_water_001_{}.fmu'.format(sys.platform))
+
+        else:
+            # Assume the heatpump is part of the AixLib
+            self.HP_dict['replace_expression'] = '''
+            setComponentModifierValue(
+                HP_testbench.HeatPump_weather,
+                heatPump1.data_table,
+                $Code(=AixLib.DataBase.HeatPump.EN255.{}())
+                )'''.format(HP_select)
+
 
     def test_with_modelica(self, make_FMU=False):
         '''Direct simulation with modelica model
