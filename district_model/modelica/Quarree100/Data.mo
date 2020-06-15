@@ -4,7 +4,7 @@ package Data
 
     record inputData
       extends Modelica.Icons.Record;
-      parameter String Pfad = "C:/Users/Nettelstroth/code_projects/quarree100/modeliquarree/district_model/modelica/Quarree100/input/";
+      parameter String Pfad = "./";
       parameter String inputFileNameWeatherData = Pfad + "TRY2015_541957091051_Jahr.mos";
       parameter String inputFileNameCHP_P = Pfad + "Fahrplan_optCHP_P.txt";
       parameter String inputFileNameCHP_OP = Pfad + "Fahrplan_optCHP_OP.txt";
@@ -20,6 +20,16 @@ package Data
       parameter String inputFileNameH2Mob = Pfad + "H2Mobilitaet_normiert.txt";
       parameter String inputFileNameSpot = Pfad + "SpotPreis.txt";
     end inputData;
+
+    record inputData_jzimmer
+      extends Quarree100.Data.inputData(
+        Pfad = "C:/Users/Nettelstroth/code_projects/quarree100/modeliquarree/district_model/modelica/Quarree100/input/");
+    end inputData_jzimmer;
+
+    record inputData_jwalbrunn
+      extends Quarree100.Data.inputData(
+        Pfad = "Z:/owncloud/Consolinno/Projekte/Quarree100_Consolinno/Simulation_Modelica/input/");
+    end inputData_jwalbrunn;
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     Documentation(info = "<html>
