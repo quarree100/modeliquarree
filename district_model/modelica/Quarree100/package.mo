@@ -6,7 +6,7 @@ package Quarree100
 
     model SIM_RI_Schema
       extends Modelica.Icons.Example;
-      parameter String Pfad = "Z:/owncloud/Consolinno/Projekte/Quarree100_Consolinno/Simulation_Modelica/";
+      parameter String Pfad = "C:/Users/Nettelstroth/code_projects/quarree100/modeliquarree/district_model/modelica/Quarree100/input/";
       parameter String inputFileNameWeatherData = Pfad + "TRY2015_541957091051_Jahr.mos";
       parameter String inputFileNameCHP_P = Pfad + "Fahrplan_optCHP_P.txt";
       parameter String inputFileNameCHP_OP = Pfad + "Fahrplan_optCHP_OP.txt";
@@ -836,12 +836,12 @@ package Quarree100
       annotation(
         Documentation(info = "<html>
 <p>
-This component simiulate a basboiler with a simple control system. 
+This component simiulate a basboiler with a simple control system.
 
 <p>
-Parameter:  
-<p> 
-<strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+Parameter:
+<p>
+<strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump
 
 
 </html>"),
@@ -941,14 +941,14 @@ Parameter:
       annotation(
         Documentation(info = "<html>
     <p>
-    This component simiulate a basboiler with a simple control system. 
-    
+    This component simiulate a basboiler with a simple control system.
+
     <p>
-    Parameter:  
-    <p> 
-    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
-    
-    
+    Parameter:
+    <p>
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump
+
+
     </html>"),
         Diagram,
         Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
@@ -1058,14 +1058,14 @@ Parameter:
       annotation(
         Documentation(info = "<html>
     <p>
-    This component simiulate a basboiler with a simple control system. 
-    
+    This component simiulate a basboiler with a simple control system.
+
     <p>
-    Parameter:  
-    <p> 
-    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
-    
-    
+    Parameter:
+    <p>
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump
+
+
     </html>"),
         Diagram(coordinateSystem(extent = {{-140, -140}, {140, 140}})),
         Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
@@ -1111,12 +1111,12 @@ Parameter:
       annotation(
         Documentation(info = "<html>
     <p>
-    This component represents the control unit for optimized control. 
-    
+    This component represents the control unit for optimized control.
+
     <p>
-    
-    
-    
+
+
+
     </html>"),
         Diagram,
         Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {2, -246}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
@@ -1139,14 +1139,14 @@ Parameter:
       annotation(
         Documentation(info = "<html>
     <p>
-    This cmoponent simiulate a basboiler with a simple control system. 
-    
+    This cmoponent simiulate a basboiler with a simple control system.
+
     <p>
-    Parameter:  
-    <p> 
-    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
-    
-    
+    Parameter:
+    <p>
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump
+
+
     </html>"),
         Diagram,
         Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
