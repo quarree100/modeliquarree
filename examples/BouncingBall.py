@@ -27,7 +27,7 @@ https://github.com/OpenModelica/OMPython
 For further information, see the full documentation:
 https://openmodelica.org/doc/OpenModelicaUsersGuide/latest/ompython.html
 
-At the time of writing, the version of OMPython provided with OpenModellica
+At the time of writing, the version of OMPython provided with OpenModelica
 is v3.1.2. This script requires the latest version of OMPython
 from its master branch on GitHub, where the syntax changed significantly.
 """
@@ -65,7 +65,8 @@ def run_ModelicaSystem():
     omc = OMCSessionZMQ()
     model_path = (omc.sendExpression('getInstallationDirectoryPath()')
                   + '/share/doc/omc/testmodels/')
-    mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall')
+    mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall',
+                         commandLineOptions='-d=newInst')
 
     # Set some simulation options
     stepSize = 0.05
@@ -131,7 +132,8 @@ def run_FMU():
         omc = OMCSessionZMQ()
         model_path = (omc.sendExpression('getInstallationDirectoryPath()')
                       + '/share/doc/omc/testmodels/')
-        mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall')
+        mod = ModelicaSystem(model_path + 'BouncingBall.mo', 'BouncingBall',
+                             commandLineOptions='-d=newInst')
         # Convert model to FMU 'BouncingBall.fmu'
         mod.convertMo2Fmu()
 
