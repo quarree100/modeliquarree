@@ -50,9 +50,9 @@ jobs:
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
         cd /usr/lib/omlibrary/  # cd to OpenModelica library
-        wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.7.3.tar.gz -O - | sudo tar xzf -
-        sudo mv AixLib-0.7.3/AixLib/ 'AixLib 0.7.3'
-        sudo rm -r AixLib-0.7.3
+        wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.9.1.tar.gz -O - | sudo tar xzf -
+        sudo mv AixLib-0.9.1/AixLib/ 'AixLib 0.9.1'  # extract library from git folder
+        sudo rm -r AixLib-0.9.1  # remove git folder
         cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
 
     - name: Install OMPython and PyFMI
