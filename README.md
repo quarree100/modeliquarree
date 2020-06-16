@@ -2,6 +2,12 @@
 
 Repository for work with Modelica in the project Quarree100.
 
+## district_model
+
+This directory is for the main modelica package of Quarree100, the district
+model. It allows simulation of the energy system with all its major
+components in OpenModelica and Dymola.
+
 ## Examples
 
 This directory contains general examples for the work with OpenModelica and
