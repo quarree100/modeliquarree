@@ -2,7 +2,7 @@
   extends Modelica.Icons.Package;
 
   annotation (
-    uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1")),
+    uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1"), BuildingSystems),
     Documentation(info = "<html>
     <p>Die Quarree100 dient als package, in welchem alle wichtigen Komponenten und Simulationsmodelle abgelegt werden.</p>
     <p>Erstellt wurde das Modell durch die Consolinno Energy GmbH im Rahmen des Forschungsprojektes EnStadtQuarree100.</p>
