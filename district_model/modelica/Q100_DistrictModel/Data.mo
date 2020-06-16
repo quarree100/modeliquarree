@@ -1,4 +1,4 @@
-﻿within Quarree100;
+﻿within Q100_DistrictModel;
 package Data
     extends Modelica.Icons.RecordsPackage;
 
@@ -22,12 +22,12 @@ package Data
     end inputData;
 
     record inputData_jzimmer
-      extends Quarree100.Data.inputData(
-        Pfad = "C:/Users/Nettelstroth/code_projects/quarree100/modeliquarree/district_model/modelica/Quarree100/input/");
+      extends Q100_DistrictModel.Data.inputData(
+        Pfad = "C:/Users/Nettelstroth/code_projects/quarree100/modeliquarree/district_model/modelica/Q100_DistrictModel/input/");
     end inputData_jzimmer;
 
     record inputData_jwalbrunn
-      extends Quarree100.Data.inputData(
+      extends Q100_DistrictModel.Data.inputData(
         Pfad = "Z:/owncloud/Consolinno/Projekte/Quarree100_Consolinno/Simulation_Modelica/input/");
     end inputData_jwalbrunn;
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(

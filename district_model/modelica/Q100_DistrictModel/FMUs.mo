@@ -1,4 +1,4 @@
-﻿within Quarree100;
+﻿within Q100_DistrictModel;
 package FMUs
     extends Modelica.Icons.ExamplesPackage;
     annotation (

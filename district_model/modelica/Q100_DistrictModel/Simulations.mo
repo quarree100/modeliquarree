@@ -1,4 +1,4 @@
-﻿within Quarree100;
+﻿within Q100_DistrictModel;
 package Simulations
     extends Modelica.Icons.ExamplesPackage;
 
@@ -16,7 +16,7 @@ package Simulations
         Placement(visible = true, transformation(origin = {-970, 720}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       AixLib.BoundaryConditions.WeatherData.Bus controlBus_CHP annotation (
         Placement(visible = true, transformation(origin = {-820, 712}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-394, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.bus2SOBoolean_SO bus2SOBoolean_SO2 annotation (
+      Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO2 annotation (
         Placement(visible = true, transformation(origin = {-570, 684}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
       AixLib.BoundaryConditions.WeatherData.Bus controlBus_Electrolyzer annotation (
         Placement(visible = true, transformation(origin = {-820, 892}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-384, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -26,9 +26,9 @@ package Simulations
         Placement(visible = true, transformation(origin = {-970, 900}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Sources.Pulse pulseHeatPumpAir(amplitude = 0, period = 7200, width = 30) annotation (
         Placement(visible = true, transformation(origin = {-970, 840}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.Producer_CHP_opt Electrolyzer(T0 = 368.15, T_Out = 368.15, capP_el = 300000, eta_el = 1.67, eta_th = 0.28) annotation (
+      Q100_DistrictModel.Components.Producer_CHP_opt Electrolyzer(T0 = 368.15, T_Out = 368.15, capP_el = 300000, eta_el = 1.67, eta_th = 0.28) annotation (
         Placement(visible = true, transformation(origin = {-530, 810}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      Quarree100.Components.bus2SOBoolean_SO bus2SOBoolean_SO1 annotation (
+      Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO1 annotation (
         Placement(visible = true, transformation(origin = {-570, 864}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
       AixLib.FastHVAC.Components.Valves.Manifold manifold(n = 2) annotation (
         Placement(visible = true, transformation(origin = {650, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -50,7 +50,7 @@ package Simulations
         Placement(visible = true, transformation(origin = {690, 730}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       AixLib.FastHVAC.Components.Pumps.Pump pump_Demand annotation (
         Placement(visible = true, transformation(origin = {700, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.Consumer_simple consumer_simple(T0 = 318.15) annotation (
+      Q100_DistrictModel.Components.Consumer_simple consumer_simple(T0 = 318.15) annotation (
         Placement(visible = true, transformation(origin = {770, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatStorage_unload_FF(T_0 = 343.15) annotation (
         Placement(visible = true, transformation(origin = {170, 340}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -84,9 +84,9 @@ package Simulations
           rotation=0)));
       Modelica.Blocks.Math.Gain gain2(k = 1000) annotation (
         Placement(visible = true, transformation(origin = {762, 730}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-      Quarree100.Components.bus2SOBoolean_SO bus2SOBoolean_SO annotation (
+      Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO annotation (
         Placement(visible = true, transformation(origin = {-489, 243}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Quarree100.Components.Producer_CHP_opt CHP(capP_el = 400000, eta_el = 0.38095, eta_th = 0.55238, uHigh = 1, uLow = -6) annotation (
+      Q100_DistrictModel.Components.Producer_CHP_opt CHP(capP_el = 400000, eta_el = 0.38095, eta_th = 0.55238, uHigh = 1, uLow = -6) annotation (
         Placement(visible = true, transformation(origin = {-450, 190}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       Modelica.Blocks.Sources.Constant const(k = 73 + 273.15) annotation (
         Placement(visible = true, transformation(origin = {-510, 174}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -94,15 +94,15 @@ package Simulations
         Placement(visible = true, transformation(origin = {310, 340}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
       Modelica.Blocks.Sources.Constant const2(k = 71 + 273.15) annotation (
         Placement(visible = true, transformation(origin = {-510, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.Producer_Boiler_opt Boiler(Q_nom = 2000000, uHigh = 343.15, uLow = 338.15) annotation (
+      Q100_DistrictModel.Components.Producer_Boiler_opt Boiler(Q_nom = 2000000, uHigh = 343.15, uLow = 338.15) annotation (
         Placement(visible = true, transformation(origin = {-450, 30}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      Quarree100.Components.bus2SOBoolean_SO bus2SOBoolean_SO3 annotation (
+      Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO3 annotation (
         Placement(visible = true, transformation(origin = {-489, 83}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
       Modelica.Blocks.Sources.Pulse pulseBoiler(amplitude = 1, period = 7200, width = 30) annotation (
         Placement(visible = true, transformation(origin = {-970, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       AixLib.BoundaryConditions.WeatherData.Bus controlBus_Boiler annotation (
         Placement(visible = true, transformation(origin = {-820, 652}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-384, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.Producer_HePu_opt HePu_Air(Scale_Factor = 100, T_Out = 368.15) annotation (
+      Q100_DistrictModel.Components.Producer_HePu_opt HePu_Air(Scale_Factor = 100, T_Out = 368.15) annotation (
         Placement(visible = true, transformation(origin = {-530, 630}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       Modelica.Blocks.Sources.Constant constHeatPumpAir_T_setpoint_specification(k = 77 + 273.15) annotation (
         Placement(visible = true, transformation(origin = {-590, 610}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -117,7 +117,7 @@ package Simulations
         Placement(visible = true, transformation(origin = {-720, 210}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
       Modelica.Blocks.Math.Gain gainPV_500kW(k = 50) annotation (
         Placement(visible = true, transformation(origin = {-608, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.busbar_4consumer busbar_4consumer annotation (
+      Q100_DistrictModel.Components.busbar_4consumer busbar_4consumer annotation (
         Placement(visible = true, transformation(origin = {-126, -148}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
     Modelica.Blocks.Sources.CombiTimeTable combiTimeTable_DemandPower(
       fileName=inputData.inputFileNameDemandPower,
@@ -297,13 +297,13 @@ package Simulations
         Placement(visible = true, transformation(origin = {-888, 652}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation (
         Placement(visible = true, transformation(origin = {-850, 680}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.Producer_HePu_opt HePu_Geo(Scale_Factor = 50, T_Out = 368.15) annotation (
+      Q100_DistrictModel.Components.Producer_HePu_opt HePu_Geo(Scale_Factor = 50, T_Out = 368.15) annotation (
         Placement(visible = true, transformation(origin = {-530, 450}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       Modelica.Blocks.Sources.Constant constHeatPumpGeo_mdot_amb(k = 100) annotation (
         Placement(visible = true, transformation(origin = {-650, 456}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Sources.Constant constHeatPumpGeo_T_setpoint_specification(k = 77 + 273.15) annotation (
         Placement(visible = true, transformation(origin = {-590, 430}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.bus2SOBoolean_SO bus2SOBoolean_SO4 annotation (
+      Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO4 annotation (
         Placement(visible = true, transformation(origin = {-570, 504}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
       Modelica.Blocks.Sources.Sine sineGeo_T_amb(amplitude = 15, freqHz = 1 / (3600 * 24 * 365 * 2), offset = 3 + 273.15) annotation (
         Placement(visible = true, transformation(origin = {-970, 160}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -333,7 +333,7 @@ package Simulations
         Placement(visible = true, transformation(origin = {762, 770}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
       AixLib.BoundaryConditions.WeatherData.Bus WetterBus annotation (
         Placement(visible = true, transformation(extent = {{-740, 118}, {-700, 158}}, rotation = 0), iconTransformation(extent = {{-1008, 160}, {-988, 180}}, rotation = 0)));
-    replaceable Quarree100.Data.inputData inputData constrainedby Data.inputData
+    replaceable Q100_DistrictModel.Data.inputData inputData constrainedby Data.inputData
       annotation (Placement(transformation(extent={{-980,58},{-960,78}})),
         __Dymola_choicesAllMatching=true);
     equation

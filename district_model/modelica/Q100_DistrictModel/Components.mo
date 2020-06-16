@@ -1,4 +1,4 @@
-﻿within Quarree100;
+﻿within Q100_DistrictModel;
 package Components
     extends Modelica.Icons.Package;
 
@@ -30,7 +30,7 @@ package Components
         Placement(visible = true, transformation(origin = {22, 0}, extent = {{-20, -22}, {20, 22}}, rotation = 0)));
       AixLib.FastHVAC.Interfaces.EnthalpyPort_b enthalpyPort_b annotation (
         Placement(visible = true, transformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
         Placement(visible = true, transformation(origin = {-10, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
@@ -149,7 +149,7 @@ Parameter:
         Placement(visible = true, transformation(origin = {-70, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = false, uHigh = uHigh, uLow = uLow) annotation (
         Placement(visible = true, transformation(origin = {-40, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
         Placement(visible = true, transformation(origin = {-14, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
@@ -248,7 +248,7 @@ Parameter:
         Placement(visible = true, transformation(origin = {-110, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = false, uHigh = uHigh, uLow = uLow) annotation (
         Placement(visible = true, transformation(origin = {-80, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
         Placement(visible = true, transformation(origin = {-46, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 160}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-78, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
@@ -485,9 +485,9 @@ Parameter:
         Placement(visible = true, transformation(origin = {210, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealOutput y_PVProductionToBattery annotation (
         Placement(visible = true, transformation(origin = {210, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Quarree100.Components.busbar_1consumer Busbar_CHP annotation (
+      Q100_DistrictModel.Components.busbar_1consumer Busbar_CHP annotation (
         Placement(visible = true, transformation(origin = {-71, 153}, extent = {{-9, -9}, {9, 9}}, rotation = -90)));
-      Quarree100.Components.busbar_1consumer Busbar_PV annotation (
+      Q100_DistrictModel.Components.busbar_1consumer Busbar_PV annotation (
         Placement(visible = true, transformation(origin = {-27, 91}, extent = {{-9, -9}, {9, 9}}, rotation = -90)));
       Modelica.Blocks.Interfaces.RealInput u_EMob annotation (
         Placement(visible = true, transformation(origin = {-220, -40}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -80}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
