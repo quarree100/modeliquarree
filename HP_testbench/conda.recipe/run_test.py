@@ -44,7 +44,10 @@ def check_SPF():
     bench = hptestbench.testbench()
 
     # Run the tests via the functional mockup interface (FMI)
-    bench.test_with_FMU()  # Does not require OpenModelica and OMPython
+    try:
+        bench.test_with_FMU()  # Does not require OpenModelica and OMPython
+    except Exception:
+        bench.test_with_modelica()  # Try to run with Modelica as backup
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
@@ -55,7 +58,10 @@ def check_SPF():
 
 
 class TestMethods(unittest.TestCase):
+    """Definition of test functions."""
+
     def test(self):
+        """Compare the resulting SPF to a given value."""
         self.assertAlmostEqual(check_SPF(), 1.811879950, places=4)
 
 
