@@ -333,7 +333,7 @@ package Simulations
         Placement(visible = true, transformation(origin = {762, 770}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
       AixLib.BoundaryConditions.WeatherData.Bus WetterBus annotation (
         Placement(visible = true, transformation(extent = {{-740, 118}, {-700, 158}}, rotation = 0), iconTransformation(extent = {{-1008, 160}, {-988, 180}}, rotation = 0)));
-    replaceable Data.inputData inputData constrainedby Data.inputData
+    replaceable Quarree100.Data.inputData inputData constrainedby Data.inputData
       annotation (Placement(transformation(extent={{-980,58},{-960,78}})),
         __Dymola_choicesAllMatching=true);
     equation
