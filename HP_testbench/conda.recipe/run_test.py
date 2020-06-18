@@ -44,10 +44,7 @@ def check_SPF():
     bench = hptestbench.testbench()
 
     # Run the tests via the functional mockup interface (FMI)
-    try:
-        bench.test_with_FMU()  # Does not require OpenModelica and OMPython
-    except Exception:
-        bench.test_with_modelica()  # Try to run with Modelica as backup
+    bench.test_with_FMU()  # Does not require OpenModelica and OMPython
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
