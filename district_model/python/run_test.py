@@ -24,53 +24,11 @@ import os
 import sys
 import unittest
 import logging
-import pprint
 import pandas as pd
-from OMPython import OMCSessionZMQ
 from OMPython import ModelicaSystem
 
 # Define the logging function
 logger = logging.getLogger(__name__)
-
-
-def run_OpenModelica_CLI():
-    """Run simulations with calls to the OpenModelica command line."""
-    # Create a subdirectory for the simulation
-    sim_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           'sim_'+sys.platform)  # separate windows and linux
-
-    if os.path.exists(sim_dir) is False:
-        os.mkdir(sim_dir)
-
-    # Define some paths
-    file = os.path.abspath(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                     '../modelica/Q100_DistrictModel/package.mo'))
-    model = 'Q100_DistrictModel.Simulations.SIM_RI_Schema'
-    input_path = os.path.join(os.path.dirname(os.path.abspath(file)),
-                              'input/')
-
-    omc = OMCSessionZMQ()
-    cmds = [
-        'setCommandLineOptions("-d=newInst")',  # Use new frontend
-        'loadFile("{}")'.format(file.replace("\\", "/")),
-        'cd("{}")'.format(sim_dir),
-        '''setComponentModifierValue(
-            Q100_DistrictModel.Simulations.SIM_RI_Schema,
-            inputData.Pfad,
-            $Code(="{}"))'''.format(input_path.replace("\\", "/")),
-        'buildModel({})'.format(model),
-        # 'getErrorString()',
-        'simulate({}, startTime=0, stopTime=100)'.format(model),
-        # 'getErrorString()',
-        ]
-    for cmd in cmds:
-        print(cmd)
-        answer = omc.sendExpression(cmd)
-        pprint.pprint(answer)
-        print()
-
-    return True
 
 
 def run_ModelicaSystem():
@@ -84,8 +42,7 @@ def run_ModelicaSystem():
         os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      '../modelica/Q100_DistrictModel/package.mo'))
     model = 'Q100_DistrictModel.Simulations.SIM_RI_Schema'
-    input_path = os.path.join(os.path.dirname(os.path.abspath(file)),
-                              'input/')
+    input_path = os.path.join(os.path.dirname(os.path.abspath(file)), 'input/')
 
     # Change to a simulation directory
     if os.path.exists(sim_dir) is False:
@@ -97,6 +54,7 @@ def run_ModelicaSystem():
                          modelName=model,
                          commandLineOptions='-d=newInst')
 
+    # Adapt the path of all the input files
     cmd = '''setComponentModifierValue(
              Q100_DistrictModel.Simulations.SIM_RI_Schema,
              inputData.Pfad,
@@ -107,23 +65,22 @@ def run_ModelicaSystem():
     mod.buildModel()
 
     try:
-        mod.setSimulationOptions(stopTime=100)
+        mod.setSimulationOptions(["stopTime=86400", "stepSize=900"])
     except Exception:
-        mod.setSimulationOptions("stopTime=100")
+        mod.setSimulationOptions(stopTime=86400, stepSize=900)
 
     # Run simulations
     mod.simulate()
 
-    solution_list = ['time', 'WetterBus.TDryBul']
+    solution_list = ['time', 'heatStorageVariablePorts_central.Heat_loss']
     solution_data = mod.getSolutions(solution_list)
 
     # Create DataFrame from results
     data = pd.DataFrame(data=solution_data.T, columns=solution_list)
     print(data)
 
-    # evaluate some random variable just to see if the simulation acutally
-    # finished:
-    return data['WetterBus.TDryBul'].mean() > 0
+    # Evaluate some any variable just to see if the simulation  finished:
+    return data['heatStorageVariablePorts_central.Heat_loss'].mean() < 0
 
 
 def setup():
@@ -134,7 +91,7 @@ def setup():
     # Set loggers of imported modules:
     log_level = 'DEBUG'
     # log_level = 'INFO'
-#    log_level = 'WARNING'
+    # log_level = 'WARNING'
     logger.setLevel(level=log_level.upper())  # Logger for this module
     logging.getLogger('OMPython').setLevel(level=log_level.upper())
 
@@ -144,7 +101,6 @@ class TestMethods(unittest.TestCase):
 
     def test(self):
         """Run an OpenModelica simulation."""
-        # self.assertTrue(run_OpenModelica_CLI())
         self.assertTrue(run_ModelicaSystem())
 
 

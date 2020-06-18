@@ -1,0 +1,83 @@
+# GitHub action designed for the modelica district model of Quarree100
+
+name: District Model Tests
+
+on: [push, pull_request]
+
+jobs:
+  job_1:
+    runs-on: ${{ matrix.os }}
+    name: Build
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.7]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2  # use the latest code commit
+
+    - name: Setup conda with python ${{ matrix.python-version }}
+      uses: s-weigand/setup-conda@v1.0.3
+
+    - name: Install Python dependencies
+      run: |
+        conda install pandas matplotlib conda-build
+
+    - name: Install OpenModelica
+      if: runner.os == 'Linux'  # This only works on Linux
+      run: |
+        # Installation instructions based on:
+        # https://www.openmodelica.org/download/download-linux
+
+        # Add sources for packaged openmodelica
+        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # You will also need to import the GPG key used to sign the releases:
+        wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
+        # To verify that your key is installed correctly
+        apt-key fingerprint
+
+        # Then update and install OpenModelica
+        sudo apt update
+        sudo apt install openmodelica
+        # Install optional Modelica libraries (most have not been tested with OpenModelica)
+        # for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
+        sudo apt install omlib-modelica-synchronous-0.92.1
+        sudo apt install omlib-ncdatareader2-2.4.0
+        sudo apt install omlib-modelica-devicedrivers-1.5.0
+
+    - name: Install latest AixLib
+      if: runner.os == 'Linux'  # Only required on Linux
+      run: |
+        cd /usr/lib/omlibrary/  # cd to OpenModelica library
+        wget -q https://github.com/RWTH-EBC/AixLib/archive/master.tar.gz -O - | sudo tar xzf -
+        sudo mv AixLib-master/AixLib/ 'AixLib'
+        sudo rm -r AixLib-master
+        cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
+
+    - name: Install latest BuildingSystems
+      if: runner.os == 'Linux'  # Only required on Linux
+      run: |
+        cd /usr/lib/omlibrary/  # cd to OpenModelica library
+        wget -q https://github.com/UdK-VPT/BuildingSystems/archive/master.tar.gz -O - | sudo tar xzf -
+        sudo mv BuildingSystems-master/BuildingSystems/ 'BuildingSystems'
+        sudo rm -r BuildingSystems-master
+        cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
+
+    - name: Install OMPython
+      run: |
+        python -m pip install -U https://github.com/OpenModelica/OMPython/archive/master.zip
+
+    - name: Run the simulation test script
+      run: |
+        # Perform the actual simulation via Python
+        python ./district_model/python/run_test.py
+
+    - name: Lint with flake8
+      if: runner.os == 'Linux'  # Only needs to run once
+      run: |
+        conda install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
