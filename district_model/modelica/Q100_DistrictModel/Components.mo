@@ -30,8 +30,11 @@ package Components
         Placement(visible = true, transformation(origin = {22, 0}, extent = {{-20, -22}, {20, 22}}, rotation = 0)));
       AixLib.FastHVAC.Interfaces.EnthalpyPort_b enthalpyPort_b annotation (
         Placement(visible = true, transformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
-        Placement(visible = true, transformation(origin = {-10, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI_
+      annotation (Placement(visible=true, transformation(
+          origin={-10,20},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
       Modelica.Blocks.Interfaces.BooleanInput u_control_boolean annotation (
@@ -56,43 +59,48 @@ package Components
         Placement(visible = true, transformation(origin = {70, -90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     equation
       connect(Boiler.enthalpyPort_b1, TemperatureOutput.enthalpyPort_a) annotation (
-        Line(points = {{32, 0}, {40, 0}, {40, 42}}, color = {176, 0, 0}));
+        Line(points={{32,0},{39.9,0},{39.9,41.2}},  color = {176, 0, 0}));
       connect(TemperatureInput.enthalpyPort_b, Boiler.enthalpyPort_a1) annotation (
-        Line(points = {{-60, -20}, {-60, 0}, {12, 0}}, color = {176, 0, 0}));
+        Line(points={{-60.1,-21},{-60.1,-0.44},{12,-0.44}},
+                                                       color = {176, 0, 0}));
       connect(TemperatureOutput.enthalpyPort_b, enthalpyPort_b) annotation (
-        Line(points = {{40, 60}, {40, 80}, {0, 80}, {0, 110}}, color = {176, 0, 0}));
-      connect(control_opt_SI_BooleanSI.y_control_boolean, Boiler.onOff_boiler) annotation (
-        Line(points = {{1, 26}, {28, 26}, {28, 15}}, color = {255, 0, 255}));
-      connect(control_opt_SI_BooleanSI.y_control, Boiler.dotQ_rel) annotation (
-        Line(points = {{1, 20}, {18, 20}, {18, 15}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.u_control_value, u_control_value) annotation (
-        Line(points = {{-10, 32}, {-10, 80}, {-80, 80}, {-80, 120}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.u_control_boolean, u_control_boolean) annotation (
-        Line(points = {{-4, 32}, {-4, 84}, {-40, 84}, {-40, 120}}, color = {255, 0, 255}));
+        Line(points={{39.9,59},{39.9,80},{0,80},{0,110}},      color = {176, 0, 0}));
+    connect(control_opt_SI_BooleanSI_.y_control_boolean, Boiler.onOff_boiler)
+      annotation (Line(points={{1,26},{28,26},{28,15.4}}, color={255,0,255}));
+    connect(control_opt_SI_BooleanSI_.y_control, Boiler.dotQ_rel) annotation (
+        Line(points={{1,20},{17.975,20},{17.975,15.4275}}, color={0,0,127}));
+    connect(control_opt_SI_BooleanSI_.u_control_value, u_control_value)
+      annotation (Line(points={{-10,32},{-10,80},{-80,80},{-80,120}}, color={0,
+            0,127}));
+    connect(control_opt_SI_BooleanSI_.u_control_boolean, u_control_boolean)
+      annotation (Line(points={{-4,32},{-4,84},{-40,84},{-40,120}}, color={255,
+            0,255}));
       connect(pid.u_s, u_T_setpoint_specification) annotation (
         Line(points = {{-92, 12}, {-92, -60}, {-120, -60}}, color = {0, 0, 127}));
       connect(pid.u_m, u_T_setpoint) annotation (
         Line(points = {{-80, 24}, {-80, 70}, {80, 70}, {80, -60}, {120, -60}}, color = {0, 0, 127}));
       connect(const.y, switch1.u3) annotation (
-        Line(points = {{-90, 44}, {-60, 44}, {-60, 28}, {-52, 28}, {-52, 28}}, color = {0, 0, 127}));
+        Line(points={{-89.5,43},{-60,43},{-60,28},{-52,28},{-52,28}},          color = {0, 0, 127}));
       connect(hysteresis.y, switch1.u2) annotation (
-        Line(points = {{-52, 50}, {-66, 50}, {-66, 20}, {-52, 20}, {-52, 20}}, color = {255, 0, 255}));
+        Line(points={{-51,50},{-66,50},{-66,20},{-52,20},{-52,20}},            color = {255, 0, 255}));
       connect(u_T_setpoint, hysteresis.u) annotation (
         Line(points = {{120, -60}, {80, -60}, {80, 70}, {-20, 70}, {-20, 50}, {-28, 50}, {-28, 50}}, color = {0, 0, 127}));
       connect(pump.enthalpyPort_a, enthalpyPort_a) annotation (
-        Line(points = {{0, -80}, {0, -80}, {0, -110}, {0, -110}}, color = {176, 0, 0}));
+        Line(points={{0,-79.6},{0,-79.6},{0,-110},{0,-110}},      color = {176, 0, 0}));
       connect(pump.dotm_setValue, PID_Pump.y) annotation (
         Line(points = {{8, -70}, {19, -70}}, color = {0, 0, 127}));
       connect(TemperatureInput.enthalpyPort_a, pump.enthalpyPort_b) annotation (
-        Line(points = {{-60, -38}, {-60, -38}, {-60, -50}, {0, -50}, {0, -60}, {0, -60}}, color = {176, 0, 0}));
+        Line(points={{-60.1,-38.8},{-60.1,-38.8},{-60.1,-50},{0,-50},{0,-60.4},
+            {0,-60.4}},                                                                   color = {176, 0, 0}));
       connect(const1.y, PID_Pump.u_m) annotation (
-        Line(points = {{60, -90}, {30, -90}, {30, -82}, {30, -82}}, color = {0, 0, 127}));
+        Line(points={{59,-90},{30,-90},{30,-82},{30,-82}},          color = {0, 0, 127}));
       connect(TemperatureOutput.T, PID_Pump.u_s) annotation (
-        Line(points = {{52, 52}, {60, 52}, {60, -70}, {42, -70}, {42, -70}}, color = {0, 0, 127}));
-      connect(pid.y, control_opt_SI_BooleanSI.u_control_standard) annotation (
-        Line(points = {{-68, 12}, {-60, 12}, {-60, 4}, {-22, 4}, {-22, 20}, {-22, 20}}, color = {0, 0, 127}));
+        Line(points={{51,51},{60,51},{60,-70},{42,-70},{42,-70}},            color = {0, 0, 127}));
+    connect(pid.y, control_opt_SI_BooleanSI_.u_control_standard) annotation (
+        Line(points={{-69,12},{-60,12},{-60,4},{-22,4},{-22,20},{-22,20}},
+          color={0,0,127}));
       connect(switch1.u1, pid.y) annotation (
-        Line(points = {{-52, 12}, {-68, 12}, {-68, 12}, {-68, 12}}, color = {0, 0, 127}));
+        Line(points={{-52,12},{-68,12},{-68,12},{-69,12}},          color = {0, 0, 127}));
       annotation (
         Documentation(info = "<html>
 <p>
@@ -149,8 +157,11 @@ Parameter:
         Placement(visible = true, transformation(origin = {-70, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = false, uHigh = uHigh, uLow = uLow) annotation (
         Placement(visible = true, transformation(origin = {-40, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
-        Placement(visible = true, transformation(origin = {-14, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI_
+      annotation (Placement(visible=true, transformation(
+          origin={-14,20},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
       Modelica.Blocks.Interfaces.BooleanInput u_control_boolean annotation (
@@ -165,39 +176,42 @@ Parameter:
         Placement(visible = true, transformation(origin = {40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
     equation
       connect(const_T_Out.y, PID_pump.u_m) annotation (
-        Line(points = {{60, -80}, {20, -80}, {20, -72}, {20, -72}}, color = {0, 0, 127}));
+        Line(points={{59,-80},{20,-80},{20,-72},{20,-72}},          color = {0, 0, 127}));
       connect(PID_pump.y, pump.dotm_setValue) annotation (
-        Line(points = {{10, -60}, {-50, -60}, {-50, -60}, {-52, -60}}, color = {0, 0, 127}));
+        Line(points={{9,-60},{-50,-60},{-50,-60},{-52,-60}},           color = {0, 0, 127}));
       connect(pump.enthalpyPort_a, enthalpyPort_a) annotation (
-        Line(points = {{-60, -70}, {-60, -70}, {-60, -80}, {0, -80}, {0, -110}, {0, -110}}, color = {176, 0, 0}));
+        Line(points={{-60,-69.6},{-60,-69.6},{-60,-80},{0,-80},{0,-110},{0,-110}},          color = {176, 0, 0}));
       connect(TemperatureInput.enthalpyPort_a, pump.enthalpyPort_b) annotation (
-        Line(points = {{-60, -38}, {-60, -38}, {-60, -50}, {-60, -50}}, color = {176, 0, 0}));
+        Line(points={{-60.1,-38.8},{-60.1,-38.8},{-60.1,-50.4},{-60,-50.4}},
+                                                                        color = {176, 0, 0}));
       connect(TemperatureOutput.T, PID_pump.u_s) annotation (
-        Line(points = {{52, 52}, {60, 52}, {60, -60}, {32, -60}, {32, -60}}, color = {0, 0, 127}));
+        Line(points={{51,51},{60,51},{60,-60},{32,-60},{32,-60}},            color = {0, 0, 127}));
       connect(TemperatureOutput.enthalpyPort_b, enthalpyPort_b) annotation (
-        Line(points = {{40, 60}, {40, 80}, {0, 80}, {0, 110}}, color = {176, 0, 0}));
+        Line(points={{39.9,59},{39.9,80},{0,80},{0,110}},      color = {176, 0, 0}));
       connect(u_T_setpoint_specification, add.u2) annotation (
         Line(points = {{-120, -60}, {-90, -60}, {-90, 54}, {-82, 54}}, color = {0, 0, 127}));
       connect(add.y, hysteresis.u) annotation (
         Line(points = {{-59, 60}, {-52, 60}}, color = {0, 0, 127}));
       connect(add.u1, u_T_setpoint) annotation (
         Line(points = {{-82, 66}, {-90, 66}, {-90, 90}, {90, 90}, {90, -60}, {120, -60}}, color = {0, 0, 127}));
-      connect(booleanToReal.y, control_opt_SI_BooleanSI.u_control_standard) annotation (
-        Line(points = {{-48, 20}, {-26, 20}}, color = {0, 0, 127}));
+    connect(booleanToReal.y, control_opt_SI_BooleanSI_.u_control_standard)
+      annotation (Line(points={{-49,20},{-26,20}}, color={0,0,127}));
       connect(booleanToReal.u, hysteresis.y) annotation (
         Line(points = {{-72, 20}, {-80, 20}, {-80, 40}, {-20, 40}, {-20, 60}, {-29, 60}}, color = {255, 0, 255}));
-      connect(control_opt_SI_BooleanSI.u_control_value, u_control_value) annotation (
-        Line(points = {{-14, 32}, {-14, 80}, {-80, 80}, {-80, 120}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.u_control_boolean, u_control_boolean) annotation (
-        Line(points = {{-8, 32}, {-8, 84}, {-40, 84}, {-40, 120}}, color = {255, 0, 255}));
-      connect(control_opt_SI_BooleanSI.y_control, chp.P_elRel) annotation (
-        Line(points = {{-2, 20}, {16, 20}, {16, 0}, {16, 0}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.y_control_boolean, chp.onOff) annotation (
-        Line(points = {{-2, 26}, {6, 26}, {6, 0}, {6, 0}}, color = {255, 0, 255}));
+    connect(control_opt_SI_BooleanSI_.u_control_value, u_control_value)
+      annotation (Line(points={{-14,32},{-14,80},{-80,80},{-80,120}}, color={0,
+            0,127}));
+    connect(control_opt_SI_BooleanSI_.u_control_boolean, u_control_boolean)
+      annotation (Line(points={{-8,32},{-8,84},{-40,84},{-40,120}}, color={255,
+            0,255}));
+    connect(control_opt_SI_BooleanSI_.y_control, chp.P_elRel) annotation (Line(
+          points={{-3,20},{16,20},{16,-0.8},{15,-0.8}}, color={0,0,127}));
+    connect(control_opt_SI_BooleanSI_.y_control_boolean, chp.onOff) annotation
+      (Line(points={{-3,26},{6,26},{6,-0.8},{6,-0.8}}, color={255,0,255}));
       connect(chp.enthalpyPort_a, TemperatureInput.enthalpyPort_b) annotation (
-        Line(points = {{0, -10}, {-60, -10}, {-60, -20}, {-60, -20}}, color = {176, 0, 0}));
+        Line(points={{0,-10},{-60,-10},{-60,-21},{-60.1,-21}},        color = {176, 0, 0}));
       connect(chp.enthalpyPort_b, TemperatureOutput.enthalpyPort_a) annotation (
-        Line(points = {{20, -10}, {40, -10}, {40, 42}, {40, 42}}, color = {176, 0, 0}));
+        Line(points={{20,-10},{40,-10},{40,41.2},{39.9,41.2}},    color = {176, 0, 0}));
       annotation (
         Documentation(info = "<html>
     <p>
@@ -248,8 +262,11 @@ Parameter:
         Placement(visible = true, transformation(origin = {-110, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Blocks.Logical.Hysteresis hysteresis(pre_y_start = false, uHigh = uHigh, uLow = uLow) annotation (
         Placement(visible = true, transformation(origin = {-80, -54}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI annotation (
-        Placement(visible = true, transformation(origin = {-46, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Q100_DistrictModel.Components.control_opt_SI_BooleanSI control_opt_SI_BooleanSI_
+      annotation (Placement(visible=true, transformation(
+          origin={-46,-20},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
       Modelica.Blocks.Interfaces.RealInput u_control_value annotation (
         Placement(visible = true, transformation(origin = {-80, 160}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-78, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
       Modelica.Blocks.Interfaces.BooleanInput u_control_boolean annotation (
@@ -295,28 +312,31 @@ Parameter:
         Line(points = {{-99, -54}, {-92, -54}}, color = {0, 0, 127}));
       connect(add.u1, u_T_setpoint) annotation (
         Line(points = {{-122, -48}, {-122, -47}, {-130, -47}, {-130, 120}, {90, 120}, {90, -60}, {160, -60}}, color = {0, 0, 127}));
-      connect(booleanToReal.y, control_opt_SI_BooleanSI.u_control_standard) annotation (
-        Line(points = {{-81, -20}, {-58, -20}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.u_control_value, u_control_value) annotation (
-        Line(points = {{-46, -8}, {-46, 110}, {-80, 110}, {-80, 160}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.u_control_boolean, u_control_boolean) annotation (
-        Line(points = {{-40, -8}, {-40, 160}}, color = {255, 0, 255}));
+    connect(booleanToReal.y, control_opt_SI_BooleanSI_.u_control_standard)
+      annotation (Line(points={{-81,-20},{-58,-20}}, color={0,0,127}));
+    connect(control_opt_SI_BooleanSI_.u_control_value, u_control_value)
+      annotation (Line(points={{-46,-8},{-46,110},{-80,110},{-80,160}}, color={
+            0,0,127}));
+    connect(control_opt_SI_BooleanSI_.u_control_boolean, u_control_boolean)
+      annotation (Line(points={{-40,-8},{-40,160}}, color={255,0,255}));
       connect(heatPump.enthalpyPort_a, TemperatureInput.enthalpyPort_b) annotation (
         Line(points = {{0, 15.3334}, {0, 15.3334}, {0, -49}, {-0.1, -49}}, color = {176, 0, 0}));
       connect(TemperatureOutput.enthalpyPort_a, heatPump.enthalpyPort_b) annotation (
         Line(points = {{-0.1, 89.2}, {-0.1, 89.2}, {-0.1, 42}, {0, 42}}, color = {176, 0, 0}));
       connect(hysteresis.y, booleanToReal.u) annotation (
         Line(points = {{-69, -54}, {-60, -54}, {-60, -36}, {-120, -36}, {-120, -20}, {-104, -20}, {-104, -20}}, color = {255, 0, 255}));
-      connect(control_opt_SI_BooleanSI.y_control, heatPump.nSet) annotation (
-        Line(points = {{-35, -20}, {-6, -20}, {-6, 13.2001}, {-5.33333, 13.2001}}, color = {0, 0, 127}));
-      connect(control_opt_SI_BooleanSI.y_control_boolean, heatPump.modeSet) annotation (
-        Line(points = {{-35, -14}, {-10, -14}, {-10, 13.2001}, {-10.4, 13.2001}}, color = {255, 0, 255}));
+    connect(control_opt_SI_BooleanSI_.y_control, heatPump.nSet) annotation (
+        Line(points={{-35,-20},{-6,-20},{-6,13.2001},{-5.33333,13.2001}}, color
+          ={0,0,127}));
+    connect(control_opt_SI_BooleanSI_.y_control_boolean, heatPump.modeSet)
+      annotation (Line(points={{-35,-14},{-10,-14},{-10,13.2001},{-10.4,13.2001}},
+          color={255,0,255}));
       connect(vessel.enthalpyPort_a, heatPump.enthalpyPort_b1) annotation (
         Line(points = {{-59, 6}, {-16, 6}, {-16, 15.3334}, {-16, 15.3334}}, color = {176, 0, 0}));
       connect(fluidSource.enthalpyPort_b, heatPump.enthalpyPort_a1) annotation (
         Line(points = {{-62, 63}, {-16, 63}, {-16, 42}}, color = {176, 0, 0}));
       connect(const.y, heatPump.iceFac_in) annotation (
-        Line(points = {{-79, 20}, {-26, 20}, {-26, 18.5334}, {-26.1333, 18.5334}}, color = {0, 0, 127}));
+        Line(points={{-79,20},{-26,20},{-26,18.5334},{-26.1333,18.5334}},          color = {0, 0, 127}));
       connect(u_T_fluid_source, fluidSource.T_fluid) annotation (
         Line(points = {{-160, 100}, {-100, 100}, {-100, 66.2}, {-80, 66.2}}, color = {0, 0, 127}));
       connect(u_dotm_source, fluidSource.dotm) annotation (
