@@ -44,7 +44,8 @@ jobs:
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
-        #sudo apt install omlib-.* # Installs optional Modelica libraries (most have not been tested with OpenModelica)
+        # Installs optional Modelica libraries (most have not been tested with OpenModelica)
+        #for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
 
     - name: Install AixLib
       if: runner.os == 'Linux'  # Only required on Linux
