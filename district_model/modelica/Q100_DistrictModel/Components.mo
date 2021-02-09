@@ -206,8 +206,8 @@ Parameter:
             0,255}));
     connect(control_opt_SI_BooleanSI_.y_control, chp.P_elRel) annotation (Line(
           points={{-3,20},{16,20},{16,-0.8},{15,-0.8}}, color={0,0,127}));
-    connect(control_opt_SI_BooleanSI_.y_control_boolean, chp.onOff) annotation
-      (Line(points={{-3,26},{6,26},{6,-0.8},{6,-0.8}}, color={255,0,255}));
+    connect(control_opt_SI_BooleanSI_.y_control_boolean, chp.onOff) annotation (
+       Line(points={{-3,26},{6,26},{6,-0.8},{6,-0.8}}, color={255,0,255}));
       connect(chp.enthalpyPort_a, TemperatureInput.enthalpyPort_b) annotation (
         Line(points={{0,-10},{-60,-10},{-60,-21},{-60.1,-21}},        color = {176, 0, 0}));
       connect(chp.enthalpyPort_b, TemperatureOutput.enthalpyPort_a) annotation (
@@ -275,14 +275,70 @@ Parameter:
         Placement(visible = true, transformation(origin = {-40, -150}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
       Modelica.Blocks.Interfaces.RealOutput y_P = heatPump.innerCycle.PerformanceDataHPHeating.Pel annotation (
         Placement(visible = true, transformation(origin = {40, -150}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-      AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump(redeclare
-        model                                                                              PerDataHea =
-          AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
-          (                                                                                                                                                                    dataTable = AixLib.DataBase.ThermalMachines.HeatPump.HeatPumpBaseDataDefinition(tableQdot_con = [0, -15, -7, 2, 7, 10, 20, 30; 35, 3020 * Scale_Factor, 3810 * Scale_Factor, 2610 * Scale_Factor, 3960 * Scale_Factor, 4340 * Scale_Factor, 5350 * Scale_Factor, 6610 * Scale_Factor; 45, 3020 * Scale_Factor, 3780 * Scale_Factor, 2220 * Scale_Factor, 3870 * Scale_Factor, 4120 * Scale_Factor, 5110 * Scale_Factor, 6310 * Scale_Factor; 55, 3120 * Scale_Factor, 3790 * Scale_Factor, 2430 * Scale_Factor, 3610 * Scale_Factor, 3910 * Scale_Factor, 4850 * Scale_Factor, 6000 * Scale_Factor], tableP_ele = [0, -15, -7, 2, 7, 10, 20, 30; 35, 1290 * Scale_Factor, 1310 * Scale_Factor, 730 * Scale_Factor, 870 * Scale_Factor, 850 * Scale_Factor, 830 * Scale_Factor, 780 * Scale_Factor; 45, 1550 * Scale_Factor, 1600 * Scale_Factor, 870 * Scale_Factor, 1110 * Scale_Factor, 1090 * Scale_Factor, 1080 * Scale_Factor, 1040 * Scale_Factor; 55, 1870 * Scale_Factor, 1940 * Scale_Factor, 1170 * Scale_Factor, 1370 * Scale_Factor, 1370 * Scale_Factor, 1370 * Scale_Factor, 1350 * Scale_Factor], mFlow_conNom = 3960 / 4180 / 5 * Scale_Factor, mFlow_evaNom = 2250 * 1.2 / 3600 * Scale_Factor, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55], tableLowBou = [-20, 25; 25, 25; 35, 35])), redeclare
-        model                                                                                                                                                                                                         PerDataChi =
-          AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
-          (                                                                                                                                                                                                        dataTable = AixLib.DataBase.ThermalMachines.HeatPump.HeatPumpBaseDataDefinition(tableQdot_con = [0, 20, 25, 27, 30, 35; 7, 2540 * Scale_Factor, 2440 * Scale_Factor, 2370 * Scale_Factor, 2230 * Scale_Factor, 2170 * Scale_Factor; 18, 5270 * Scale_Factor, 5060 * Scale_Factor, 4920 * Scale_Factor, 4610 * Scale_Factor, 4500 * Scale_Factor], tableP_ele = [0, 20, 25, 27, 30, 35; 7, 1380 * Scale_Factor, 1590 * Scale_Factor, 1680 * Scale_Factor, 1800 * Scale_Factor, 1970 * Scale_Factor; 18, 950 * Scale_Factor, 1060 * Scale_Factor, 1130 * Scale_Factor, 1200 * Scale_Factor, 1350 * Scale_Factor], mFlow_conNom = 3960 / 4180 / 5 * Scale_Factor, mFlow_evaNom = 2250 * 1.2 / 3600 * Scale_Factor, tableUppBou = [20, 20; 35, 20], tableLowBou = [20, 5; 35, 5])), CCon = 100, CEva = 100, GCon = 5, GEva = 5, Q_useNominal = 0, TAmbCon_nominal = 288.15, TCon_start(displayUnit = "K"), TEva_start(displayUnit = "K"), VCon = 0.4, VEva = 0.04, allowFlowReversalEva = true, deltaM_con = 0.1, deltaM_eva = 0.1, mFlow_conNominal = 0.5, mFlow_evaNominal = 0.5, refIneFre_constant = 1, transferHeat = true, use_ConCap = false, use_EvaCap = false, use_autoCalc = false, use_refIne = true, use_revHP = true) annotation (
-        Placement(visible = true, transformation(origin = {-8, 28.6667}, extent = {{-13.3333, 16}, {13.3333, -16}}, rotation = 90)));
+    AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump(
+      redeclare model PerDataHea =
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (dataTable=
+              AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(
+                  tableQdot_con=[0,-15,-7,2,7,10,20,30; 35,3020*Scale_Factor,
+                3810*Scale_Factor,2610*Scale_Factor,3960*Scale_Factor,4340*
+                Scale_Factor,5350*Scale_Factor,6610*Scale_Factor; 45,3020*
+                Scale_Factor,3780*Scale_Factor,2220*Scale_Factor,3870*
+                Scale_Factor,4120*Scale_Factor,5110*Scale_Factor,6310*
+                Scale_Factor; 55,3120*Scale_Factor,3790*Scale_Factor,2430*
+                Scale_Factor,3610*Scale_Factor,3910*Scale_Factor,4850*
+                Scale_Factor,6000*Scale_Factor],
+                  tableP_ele=[0,-15,-7,2,7,10,20,30; 35,1290*Scale_Factor,1310*
+                Scale_Factor,730*Scale_Factor,870*Scale_Factor,850*Scale_Factor,
+                830*Scale_Factor,780*Scale_Factor; 45,1550*Scale_Factor,1600*
+                Scale_Factor,870*Scale_Factor,1110*Scale_Factor,1090*
+                Scale_Factor,1080*Scale_Factor,1040*Scale_Factor; 55,1870*
+                Scale_Factor,1940*Scale_Factor,1170*Scale_Factor,1370*
+                Scale_Factor,1370*Scale_Factor,1370*Scale_Factor,1350*
+                Scale_Factor],
+                  mFlow_conNom=3960/4180/5*Scale_Factor,
+                  mFlow_evaNom=2250*1.2/3600*Scale_Factor,
+                  tableUppBou=[-20,50; -10,60; 30,60; 35,55],
+                  tableLowBou=[-20,25; 25,25; 35,35])),
+      redeclare model PerDataChi =
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (dataTable=
+              AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(
+                  tableQdot_con=[0,20,25,27,30,35; 7,2540*Scale_Factor,2440*
+                Scale_Factor,2370*Scale_Factor,2230*Scale_Factor,2170*
+                Scale_Factor; 18,5270*Scale_Factor,5060*Scale_Factor,4920*
+                Scale_Factor,4610*Scale_Factor,4500*Scale_Factor],
+                  tableP_ele=[0,20,25,27,30,35; 7,1380*Scale_Factor,1590*
+                Scale_Factor,1680*Scale_Factor,1800*Scale_Factor,1970*
+                Scale_Factor; 18,950*Scale_Factor,1060*Scale_Factor,1130*
+                Scale_Factor,1200*Scale_Factor,1350*Scale_Factor],
+                  mFlow_conNom=3960/4180/5*Scale_Factor,
+                  mFlow_evaNom=2250*1.2/3600*Scale_Factor,
+                  tableUppBou=[20,20; 35,20],
+                  tableLowBou=[20,5; 35,5])),
+      CCon=100,
+      CEva=100,
+      GCon=5,
+      GEva=5,
+      Q_useNominal=0,
+      TAmbCon_nominal=288.15,
+      TCon_start(displayUnit="K"),
+      TEva_start(displayUnit="K"),
+      VCon=0.4,
+      VEva=0.04,
+      allowFlowReversalEva=true,
+      deltaM_con=0.1,
+      deltaM_eva=0.1,
+      mFlow_conNominal=0.5,
+      mFlow_evaNominal=0.5,
+      refIneFre_constant=1,
+      transferHeat=true,
+      use_ConCap=false,
+      use_EvaCap=false,
+      use_autoCalc=false,
+      use_refIne=true,
+      use_revHP=true) annotation (Placement(visible=true, transformation(
+          origin={-8,28.6667},
+          extent={{-13.3333,16},{13.3333,-16}},
+          rotation=90)));
       AixLib.FastHVAC.Components.Pumps.FluidSource fluidSource annotation (
         Placement(visible = true, transformation(origin = {-72, 62}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       AixLib.FastHVAC.Components.Sinks.Vessel vessel annotation (
@@ -319,28 +375,30 @@ Parameter:
             0,0,127}));
     connect(control_opt_SI_BooleanSI_.u_control_boolean, u_control_boolean)
       annotation (Line(points={{-40,-8},{-40,160}}, color={255,0,255}));
-      connect(heatPump.enthalpyPort_a, TemperatureInput.enthalpyPort_b) annotation (
-        Line(points = {{0, 15.3334}, {0, 15.3334}, {0, -49}, {-0.1, -49}}, color = {176, 0, 0}));
-      connect(TemperatureOutput.enthalpyPort_a, heatPump.enthalpyPort_b) annotation (
-        Line(points = {{-0.1, 89.2}, {-0.1, 89.2}, {-0.1, 42}, {0, 42}}, color = {176, 0, 0}));
       connect(hysteresis.y, booleanToReal.u) annotation (
         Line(points = {{-69, -54}, {-60, -54}, {-60, -36}, {-120, -36}, {-120, -20}, {-104, -20}, {-104, -20}}, color = {255, 0, 255}));
     connect(control_opt_SI_BooleanSI_.y_control, heatPump.nSet) annotation (
-        Line(points={{-35,-20},{-6,-20},{-6,13.2001},{-5.33333,13.2001}}, color
-          ={0,0,127}));
+        Line(points={{-35,-20},{-6,-20},{-6,13.2001},{-5.33333,13.2001}}, color=
+           {0,0,127}));
     connect(control_opt_SI_BooleanSI_.y_control_boolean, heatPump.modeSet)
       annotation (Line(points={{-35,-14},{-10,-14},{-10,13.2001},{-10.4,13.2001}},
           color={255,0,255}));
-      connect(vessel.enthalpyPort_a, heatPump.enthalpyPort_b1) annotation (
-        Line(points = {{-59, 6}, {-16, 6}, {-16, 15.3334}, {-16, 15.3334}}, color = {176, 0, 0}));
-      connect(fluidSource.enthalpyPort_b, heatPump.enthalpyPort_a1) annotation (
-        Line(points = {{-62, 63}, {-16, 63}, {-16, 42}}, color = {176, 0, 0}));
       connect(const.y, heatPump.iceFac_in) annotation (
         Line(points={{-79,20},{-26,20},{-26,18.5334},{-26.1333,18.5334}},          color = {0, 0, 127}));
       connect(u_T_fluid_source, fluidSource.T_fluid) annotation (
         Line(points = {{-160, 100}, {-100, 100}, {-100, 66.2}, {-80, 66.2}}, color = {0, 0, 127}));
       connect(u_dotm_source, fluidSource.dotm) annotation (
         Line(points = {{-160, 60}, {-82, 60}, {-82, 59.4}, {-80, 59.4}}, color = {0, 0, 127}));
+    connect(fluidSource.enthalpyPort_b, heatPump.enthalpyPort_a1) annotation (
+        Line(points={{-62,63},{-44,63},{-44,64},{-16,64},{-16,42}}, color={176,
+            0,0}));
+    connect(vessel.enthalpyPort_a, heatPump.enthalpyPort_b1) annotation (Line(
+          points={{-59,6},{-16,6},{-16,15.3334}}, color={176,0,0}));
+    connect(TemperatureOutput.enthalpyPort_a, heatPump.enthalpyPort_b)
+      annotation (Line(points={{-0.1,89.2},{-0.1,65.6},{0,65.6},{0,42}}, color=
+            {176,0,0}));
+    connect(heatPump.enthalpyPort_a, TemperatureInput.enthalpyPort_b)
+      annotation (Line(points={{0,15.3334},{0,-49},{-0.1,-49}}, color={176,0,0}));
       annotation (
         Documentation(info = "<html>
     <p>
@@ -463,23 +521,26 @@ Parameter:
         Placement(visible = true, transformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(u_sink, sink.Load) annotation (
-        Line(points = {{-80, 120}, {-80, 80}, {0, 80}, {0, 11}}, color = {0, 0, 127}));
+        Line(points={{-80,120},{-80,80},{-0.12,80},{-0.12,10.68}},
+                                                                 color = {0, 0, 127}));
       connect(add1.y, y_deltaT) annotation (
         Line(points = {{44, 71}, {44, 80}, {108, 80}}, color = {0, 0, 127}));
       connect(TemperatureOutput.T, add1.u1) annotation (
-        Line(points = {{52, 12}, {50, 12}, {50, 48}}, color = {0, 0, 127}));
+        Line(points={{51,11},{50,11},{50,48}},        color = {0, 0, 127}));
       connect(enthalpyPort_a, TemperatureInput.enthalpyPort_a) annotation (
-        Line(points = {{-110, 0}, {-59, 0}}, color = {176, 0, 0}));
+        Line(points={{-110,0},{-84,0},{-84,-0.1},{-58.8,-0.1}},
+                                             color = {176, 0, 0}));
       connect(TemperatureInput.enthalpyPort_b, sink.enthalpyPort_a1) annotation (
-        Line(points = {{-41, 0}, {-11, 0}}, color = {176, 0, 0}));
+        Line(points={{-41,-0.1},{-25.8,-0.1},{-25.8,0},{-10.8,0}},
+                                            color = {176, 0, 0}));
       connect(sink.enthalpyPort_b1, TemperatureOutput.enthalpyPort_a) annotation (
-        Line(points = {{11, 0}, {42, 0}}));
+        Line(points={{10.8,0},{26,0},{26,-0.1},{41.2,-0.1}}));
       connect(TemperatureOutput.enthalpyPort_b, enthalpyPort_b) annotation (
-        Line(points = {{60, 0}, {104, 0}, {104, 0}, {110, 0}}, color = {176, 0, 0}));
+        Line(points={{59,-0.1},{104,-0.1},{104,0},{110,0}},    color = {176, 0, 0}));
       connect(y_Tin, TemperatureInput.T) annotation (
-        Line(points = {{110, 40}, {-50, 40}, {-50, 12}, {-48, 12}}, color = {0, 0, 127}));
+        Line(points={{110,40},{-50,40},{-50,11},{-49,11}},          color = {0, 0, 127}));
       connect(add1.u2, TemperatureInput.T) annotation (
-        Line(points = {{38, 48}, {38, 48}, {38, 40}, {-50, 40}, {-50, 12}, {-48, 12}}, color = {0, 0, 127}));
+        Line(points={{38,48},{38,48},{38,40},{-50,40},{-50,11},{-49,11}},              color = {0, 0, 127}));
       annotation (
         Diagram,
         Icon(graphics={  Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
@@ -618,6 +679,339 @@ Parameter:
         Icon(coordinateSystem(extent = {{-80, -80}, {80, 80}}, initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
         __OpenModelica_commandLineOptions = "");
     end busbar_1consumer;
+
+    model calc_Qdot "Callculation of massflow according to power and temperature"
+      extends Modelica.Icons.Package;
+      Modelica.Blocks.Interfaces.RealInput u_T_setpoint annotation (
+        Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput u_T_measurement annotation (
+        Placement(visible = true, transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput y_Qdot annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Modelica.Blocks.Math.Add add(k1 = -1) annotation (
+        Placement(visible = true, transformation(extent = {{-80, 44}, {-60, 64}}, rotation = 0)));
+      Modelica.Blocks.Math.Division division annotation (
+        Placement(visible = true, transformation(extent = {{-20, 0}, {0, 20}}, rotation = 0)));
+      Modelica.Blocks.Math.Min min annotation (
+        Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const2(k = 1) annotation (
+        Placement(visible = true, transformation(extent = {{20, -40}, {40, -20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput u_deltaT_setpoint annotation (
+        Placement(visible = true, transformation(origin = {-28, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 270), iconTransformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 270)));
+      Modelica.Blocks.Math.Max max1 annotation (
+        Placement(visible = true, transformation(extent = {{-60, 6}, {-40, 26}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const3(k = 0) annotation (
+        Placement(visible = true, transformation(extent = {{-40, -30}, {-60, -10}}, rotation = 0)));
+    equation
+      connect(u_T_measurement, add.u1) annotation (
+        Line(points = {{-120, 60}, {-82, 60}}, color = {0, 0, 127}));
+      connect(add.u2, u_T_setpoint) annotation (
+        Line(points = {{-82, 48}, {-90, 48}, {-90, -60}, {-120, -60}}, color = {0, 0, 127}));
+      connect(max1.y, division.u1) annotation (
+        Line(points = {{-39, 16}, {-22, 16}}, color = {0, 0, 127}));
+      connect(add.y, max1.u1) annotation (
+        Line(points = {{-59, 54}, {-50, 54}, {-50, 36}, {-70, 36}, {-70, 22}, {-62, 22}}, color = {0, 0, 127}));
+      connect(const3.y, max1.u2) annotation (
+        Line(points = {{-61, -20}, {-70, -20}, {-70, 10}, {-62, 10}}, color = {0, 0, 127}));
+      connect(min.y, y_Qdot) annotation (
+        Line(points = {{81, 0}, {110, 0}}, color = {0, 0, 127}));
+      connect(division.y, min.u1) annotation (
+        Line(points = {{1, 10}, {28, 10}, {28, 6}, {58, 6}}, color = {0, 0, 127}));
+      connect(const2.y, min.u2) annotation (
+        Line(points = {{41, -30}, {50, -30}, {50, -6}, {58, -6}}, color = {0, 0, 127}));
+      connect(division.u2, u_deltaT_setpoint) annotation (
+        Line(points = {{-22, 4}, {-28, 4}, {-28, 120}}, color = {0, 0, 127}));
+      annotation (
+        Documentation(info = "<html>
+    <p>
+    This component simiulate a basboiler with a simple control system. 
+    
+    <p>
+    Parameter:  
+    <p> 
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+    
+    
+    </html>"),
+        Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+        experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
+    end calc_Qdot;
+
+    model calc_mdot_production "Callculation of massflow according to power and temperature"
+      extends Modelica.Icons.Package;
+      Modelica.Blocks.Interfaces.RealInput u_TemperatureInput annotation (
+        Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput u_dotQ annotation (
+        Placement(visible = true, transformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
+      Modelica.Blocks.Interfaces.RealInput u_TemperatureOutput annotation (
+        Placement(visible = true, transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput y_mdot annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Modelica.Blocks.Math.Gain gain(k = 4187) annotation (
+        Placement(transformation(extent = {{-50, -4}, {-30, 16}})));
+      Modelica.Blocks.Math.Add add(k2 = -1) annotation (
+        Placement(transformation(extent = {{-80, -4}, {-60, 16}})));
+      Modelica.Blocks.Math.Division division annotation (
+        Placement(transformation(extent = {{20, -4}, {40, 16}})));
+      Modelica.Blocks.Math.Max max annotation (
+        Placement(transformation(extent = {{60, -10}, {80, 10}})));
+      Modelica.Blocks.Sources.Constant const(k = 0.00001) annotation (
+        Placement(transformation(extent = {{-60, -60}, {-40, -40}})));
+      Modelica.Blocks.Math.Max max1 annotation (
+        Placement(transformation(extent = {{-20, -10}, {0, 10}})));
+      Modelica.Blocks.Sources.Constant const1(k=0)        annotation (
+        Placement(transformation(extent={{20,-60},{40,-40}})));
+    equation
+      connect(division.u1, u_dotQ) annotation (
+        Line(points = {{18, 12}, {10, 12}, {10, 66}, {0, 66}, {0, 120}}, color = {0, 0, 127}));
+      connect(add.y, gain.u) annotation (
+        Line(points = {{-59, 6}, {-52, 6}}, color = {0, 0, 127}));
+      connect(add.u2, u_TemperatureInput) annotation (
+        Line(points = {{-82, 0}, {-92, 0}, {-92, -60}, {-120, -60}}, color = {0, 0, 127}));
+      connect(add.u1, u_TemperatureOutput) annotation (
+        Line(points = {{-82, 12}, {-92, 12}, {-92, 60}, {-120, 60}}, color = {0, 0, 127}));
+      connect(division.y, max.u1) annotation (
+        Line(points = {{41, 6}, {58, 6}}, color = {0, 0, 127}));
+      connect(max.y, y_mdot) annotation (
+        Line(points = {{81, 0}, {110, 0}}, color = {0, 0, 127}));
+      connect(max1.y, division.u2) annotation (
+        Line(points = {{1, 0}, {18, 0}}, color = {0, 0, 127}));
+      connect(gain.y, max1.u1) annotation (
+        Line(points = {{-29, 6}, {-22, 6}}, color = {0, 0, 127}));
+      connect(const.y, max1.u2) annotation (
+        Line(points = {{-39, -50}, {-30, -50}, {-30, -6}, {-22, -6}}, color = {0, 0, 127}));
+    connect(const1.y, max.u2) annotation (Line(points={{41,-50},{50,-50},{50,-6},
+            {58,-6}}, color={0,0,127}));
+      annotation (
+        Documentation(info = "<html>
+<p>
+This component simiulate a basboiler with a simple control system. 
+
+<p>
+Parameter:  
+<p> 
+<strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+
+
+</html>"),
+        Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+        experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
+    end calc_mdot_production;
+
+    model calc_mdot_consumer "Callculation of massflow according to power and temperature"
+      extends Modelica.Icons.Package;
+      Modelica.Blocks.Interfaces.RealInput u_TemperatureInput annotation (
+        Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput u_dotQ annotation (
+        Placement(visible = true, transformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
+      Modelica.Blocks.Interfaces.RealInput u_TemperatureOutput annotation (
+        Placement(visible = true, transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput y_mdot annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Modelica.Blocks.Math.Gain gain(k = 4187) annotation (
+        Placement(transformation(extent = {{-50, -4}, {-30, 16}})));
+      Modelica.Blocks.Math.Add add(k1 = -1) annotation (
+        Placement(transformation(extent = {{-80, -4}, {-60, 16}})));
+      Modelica.Blocks.Math.Division division annotation (
+        Placement(transformation(extent = {{20, -4}, {40, 16}})));
+      Modelica.Blocks.Math.Max max annotation (
+        Placement(transformation(extent = {{60, -10}, {80, 10}})));
+      Modelica.Blocks.Sources.Constant const(k = 0.00001) annotation (
+        Placement(transformation(extent = {{-60, -60}, {-40, -40}})));
+      Modelica.Blocks.Math.Max max1 annotation (
+        Placement(transformation(extent = {{-20, -10}, {0, 10}})));
+      Modelica.Blocks.Sources.Constant const1(k=0)        annotation (
+        Placement(transformation(extent={{26,-60},{46,-40}})));
+    equation
+      connect(division.u1, u_dotQ) annotation (
+        Line(points = {{18, 12}, {10, 12}, {10, 66}, {0, 66}, {0, 120}}, color = {0, 0, 127}));
+      connect(add.y, gain.u) annotation (
+        Line(points = {{-59, 6}, {-52, 6}}, color = {0, 0, 127}));
+      connect(add.u2, u_TemperatureInput) annotation (
+        Line(points = {{-82, 0}, {-92, 0}, {-92, -60}, {-120, -60}}, color = {0, 0, 127}));
+      connect(add.u1, u_TemperatureOutput) annotation (
+        Line(points = {{-82, 12}, {-92, 12}, {-92, 60}, {-120, 60}}, color = {0, 0, 127}));
+      connect(division.y, max.u1) annotation (
+        Line(points = {{41, 6}, {58, 6}}, color = {0, 0, 127}));
+      connect(max.y, y_mdot) annotation (
+        Line(points = {{81, 0}, {110, 0}}, color = {0, 0, 127}));
+      connect(max1.y, division.u2) annotation (
+        Line(points = {{1, 0}, {18, 0}}, color = {0, 0, 127}));
+      connect(gain.y, max1.u1) annotation (
+        Line(points = {{-29, 6}, {-22, 6}}, color = {0, 0, 127}));
+      connect(const.y, max1.u2) annotation (
+        Line(points = {{-39, -50}, {-30, -50}, {-30, -6}, {-22, -6}}, color = {0, 0, 127}));
+    connect(const1.y, max.u2) annotation (Line(points={{47,-50},{52,-50},{52,-6},
+            {58,-6}}, color={0,0,127}));
+      annotation (
+        Documentation(info = "<html>
+<p>
+This component simiulate a basboiler with a simple control system. 
+
+<p>
+Parameter:  
+<p> 
+<strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+
+
+</html>"),
+        Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+        experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
+    end calc_mdot_consumer;
+
+    model calc_valve_ratio
+      extends Modelica.Icons.Package;
+      Modelica.Blocks.Interfaces.RealInput u_dotm_in annotation (Placement(
+          visible=true,
+          transformation(
+            origin={-120,-60},
+            extent={{-20,-20},{20,20}},
+            rotation=0),
+          iconTransformation(
+            origin={0,-120},
+            extent={{-20,-20},{20,20}},
+            rotation=90)));
+      Modelica.Blocks.Interfaces.RealInput u_dotm_out annotation (Placement(
+          visible=true,
+          transformation(
+            origin={-120,60},
+            extent={{-20,-20},{20,20}},
+            rotation=0),
+          iconTransformation(
+            origin={0,120},
+            extent={{-20,-20},{20,20}},
+            rotation=270)));
+      Modelica.Blocks.Interfaces.RealOutput y_valve(start = 0.8) annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Modelica.Blocks.Math.Division division annotation (
+        Placement(visible = true, transformation(extent={{-20,-10},{0,10}},    rotation = 0)));
+      Modelica.Blocks.Math.Max max annotation (
+        Placement(visible = true, transformation(extent={{-60,-26},{-40,-6}},    rotation = 0)));
+      Modelica.Blocks.Sources.Constant const(k=0.0000001) annotation (
+        Placement(visible = true, transformation(extent={{-100,-20},{-80,0}},     rotation = 0)));
+      Modelica.Blocks.Math.Max max1
+                                   annotation (
+        Placement(visible = true, transformation(extent={{20,10},{40,30}},       rotation = 0)));
+    Modelica.Blocks.Math.Min min
+      annotation (Placement(transformation(extent={{62,4},{82,24}})));
+      Modelica.Blocks.Sources.Constant const1(k=0)        annotation (
+        Placement(visible = true, transformation(extent={{-20,30},{0,50}},        rotation = 0)));
+      Modelica.Blocks.Sources.Constant const2(k=1)        annotation (
+        Placement(visible = true, transformation(extent={{20,-30},{40,-10}},      rotation = 0)));
+    equation
+      connect(const.y, max.u1)
+        annotation (Line(points={{-79,-10},{-62,-10}}, color={0,0,127}));
+      connect(u_dotm_in, max.u2) annotation (Line(points={{-120,-60},{-70,-60},
+              {-70,-22},{-62,-22}}, color={0,0,127}));
+      connect(max.y, division.u2) annotation (Line(points={{-39,-16},{-30,-16},
+              {-30,-6},{-22,-6}}, color={0,0,127}));
+      connect(u_dotm_out, division.u1) annotation (Line(points={{-120,60},{-30,
+              60},{-30,6},{-22,6}}, color={0,0,127}));
+    connect(max1.u2, division.y) annotation (Line(points={{18,14},{10,14},{10,0},
+            {1,0}}, color={0,0,127}));
+    connect(max1.y, min.u1)
+      annotation (Line(points={{41,20},{60,20}}, color={0,0,127}));
+    connect(const1.y, max1.u1) annotation (Line(points={{1,40},{8,40},{8,26},{
+            18,26}}, color={0,0,127}));
+    connect(const2.y, min.u2) annotation (Line(points={{41,-20},{50,-20},{50,8},
+            {60,8}}, color={0,0,127}));
+    connect(division.y, y_valve)
+      annotation (Line(points={{1,0},{110,0}}, color={0,0,127}));
+      annotation (
+        Documentation(info = "<html>
+    <p>
+    This component simiulate a basboiler with a simple control system. 
+    
+    <p>
+    Parameter:  
+    <p> 
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+    
+    
+    </html>"),
+        Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+        experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
+    end calc_valve_ratio;
+
+    model calc_valve "Callculation of massflow according to power and temperature"
+      extends Modelica.Icons.Package;
+      Modelica.Blocks.Interfaces.RealInput u_T_consumer_output annotation (
+        Placement(visible = true, transformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput u_T_source_input annotation (
+        Placement(visible = true, transformation(origin = {-80, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
+      Modelica.Blocks.Interfaces.RealInput u_T_consumer_input annotation (
+        Placement(visible = true, transformation(origin = {-120, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput y_valve(start = 0.8) annotation (
+        Placement(transformation(extent = {{100, -10}, {120, 10}})));
+      Modelica.Blocks.Math.Add add(k2 = -1) annotation (
+        Placement(visible = true, transformation(extent = {{-72, 56}, {-52, 76}}, rotation = 0)));
+      Modelica.Blocks.Math.Division division annotation (
+        Placement(visible = true, transformation(extent = {{-20, 0}, {0, 20}}, rotation = 0)));
+      Modelica.Blocks.Math.Max max annotation (
+        Placement(visible = true, transformation(extent = {{72, -10}, {92, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const(k=0)         annotation (
+        Placement(visible = true, transformation(extent = {{20, -60}, {40, -40}}, rotation = 0)));
+      Modelica.Blocks.Math.Add add1(k2 = -1) annotation (
+        Placement(visible = true, transformation(extent = {{-72, -64}, {-52, -44}}, rotation = 0)));
+      Modelica.Blocks.Math.Add add2(k1 = -1) annotation (
+        Placement(visible = true, transformation(extent = {{10, -6}, {30, 14}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const1(k = 1) annotation (
+        Placement(visible = true, transformation(extent = {{-20, -38}, {0, -18}}, rotation = 0)));
+      Modelica.Blocks.Math.Min min annotation (
+        Placement(visible = true, transformation(origin = {50, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const2(k=1)         annotation (
+        Placement(visible = true, transformation(extent = {{0, 60}, {20, 80}}, rotation = 0)));
+      Modelica.Blocks.Math.Max max1
+                                   annotation (
+        Placement(visible = true, transformation(extent={{-60,-6},{-40,14}},     rotation = 0)));
+      Modelica.Blocks.Sources.Constant const3(k=0.00001)  annotation (
+        Placement(visible = true, transformation(extent={{-40,30},{-60,50}},      rotation = 0)));
+    equation
+      connect(const.y, max.u2) annotation (
+        Line(points = {{41, -50}, {60, -50}, {60, -6}, {70, -6}}, color = {0, 0, 127}));
+      connect(max.y, y_valve) annotation (
+        Line(points = {{93, 0}, {110, 0}}, color = {0, 0, 127}));
+      connect(add.u1, u_T_source_input) annotation (
+        Line(points = {{-74, 72}, {-80, 72}, {-80, 120}}, color = {0, 0, 127}));
+      connect(u_T_consumer_input, add.u2) annotation (
+        Line(points = {{-120, 60}, {-74, 60}}, color = {0, 0, 127}));
+      connect(u_T_consumer_output, add1.u2) annotation (
+        Line(points = {{-120, -60}, {-74, -60}}, color = {0, 0, 127}));
+      connect(add1.u1, u_T_source_input) annotation (
+        Line(points = {{-74, -48}, {-80, -48}, {-80, 120}}, color = {0, 0, 127}));
+      connect(division.y, add2.u1) annotation (
+        Line(points = {{1, 10}, {8, 10}, {8, 10}, {8, 10}}, color = {0, 0, 127}));
+      connect(const1.y, add2.u2) annotation (
+        Line(points = {{1, -28}, {4, -28}, {4, -2}, {8, -2}, {8, -2}}, color = {0, 0, 127}));
+      connect(add2.y, min.u2) annotation (
+        Line(points = {{31, 4}, {32, 4}, {32, 12}, {38, 12}, {38, 14}}, color = {0, 0, 127}));
+      connect(min.y, max.u1) annotation (
+        Line(points = {{61, 20}, {64, 20}, {64, 6}, {70, 6}, {70, 6}}, color = {0, 0, 127}));
+      connect(const2.y, min.u1) annotation (
+        Line(points = {{21, 70}, {28, 70}, {28, 26}, {38, 26}, {38, 26}}, color = {0, 0, 127}));
+      connect(add.y, division.u1) annotation (
+        Line(points = {{-51, 66}, {-36, 66}, {-36, 16}, {-22, 16}}, color = {0, 0, 127}));
+      connect(max1.y, division.u2)
+        annotation (Line(points={{-39,4},{-22,4}}, color={0,0,127}));
+      connect(add1.y, max1.u2) annotation (Line(points={{-51,-54},{-40,-54},{
+              -40,-20},{-72,-20},{-72,-2},{-62,-2}}, color={0,0,127}));
+      connect(const3.y, max1.u1) annotation (Line(points={{-61,40},{-72,40},{
+              -72,10},{-62,10}}, color={0,0,127}));
+      annotation (
+        Documentation(info = "<html>
+    <p>
+    This component simiulate a basboiler with a simple control system. 
+    
+    <p>
+    Parameter:  
+    <p> 
+    <strong>T_Out:</strong> Output temperature of the boiler. It regulates the mass flow of the pump 
+    
+    
+    </html>"),
+        Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+        experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
+    end calc_valve;
     annotation (
       uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1")),
       Documentation(info = "<html>
