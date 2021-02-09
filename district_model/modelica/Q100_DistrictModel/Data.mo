@@ -30,6 +30,26 @@ package Data
       extends Q100_DistrictModel.Data.inputData(
         Pfad = "Z:/owncloud/Consolinno/Projekte/Quarree100_Consolinno/Simulation_Modelica/input/");
     end inputData_jwalbrunn;
+
+    record WP_55kW "MAGGIE_WP"
+      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 17600, 19750, 14668, 13115, 90609, 86453; 45, 27000, 27273, 18366, 18443, 12000, 12000; 50, 28244, 25000, 17900, 16000, 12820, 10000; 55, 36152, 39009, 29800, 24980, 11842, 11000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 44000, 45250, 45180, 55480, 55000, 60000; 45, 42000, 45000, 44630, 54960, 55000, 56000; 50, 45190, 50000, 40000, 45000, 50000, 55000; 55, 45190, 43300, 45000, 50960, 45000, 55000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
+      annotation (
+        Icon(coordinateSystem(preserveAspectRatio = false)),
+        Diagram(coordinateSystem(preserveAspectRatio = false)),
+        Documentation(info = "<html><p>
+<span style=
+\"font-family: Courier New; color: #006400;\">Data&#160;record&#160;for&#160;type&#160;AWO-M/AWO-M-E-AC&#160;201.A04,
+obtained from the technical guide in the UK.</span>
+</p>
+<ul>
+<li>
+<i>November 26, 2018&#160;</i> by Fabian Wüllhorst:<br/>
+First implementation (see issue <a href=
+\"https://github.com/RWTH-EBC/AixLib/issues/577\">#577</a>)
+</li>
+</ul>
+</html>"));
+    end WP_55kW;
   annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
         coordinateSystem(preserveAspectRatio=false)),
     Documentation(info = "<html>
