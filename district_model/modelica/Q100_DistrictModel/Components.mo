@@ -759,7 +759,7 @@ Parameter:
         Placement(transformation(extent = {{-60, -60}, {-40, -40}})));
       Modelica.Blocks.Math.Max max1 annotation (
         Placement(transformation(extent = {{-20, -10}, {0, 10}})));
-      Modelica.Blocks.Sources.Constant const1(k=0)        annotation (
+      Modelica.Blocks.Sources.Constant const1(k=0.00001)  annotation (
         Placement(transformation(extent={{20,-60},{40,-40}})));
     equation
       connect(division.u1, u_dotQ) annotation (
@@ -915,8 +915,8 @@ Parameter:
             18,26}}, color={0,0,127}));
     connect(const2.y, min.u2) annotation (Line(points={{41,-20},{50,-20},{50,8},
             {60,8}}, color={0,0,127}));
-    connect(division.y, y_valve)
-      annotation (Line(points={{1,0},{110,0}}, color={0,0,127}));
+    connect(min.y, y_valve) annotation (Line(points={{83,14},{94,14},{94,0},{
+            110,0}}, color={0,0,127}));
       annotation (
         Documentation(info = "<html>
     <p>
@@ -1012,6 +1012,37 @@ Parameter:
         Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-6, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
         experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
     end calc_valve;
+
+    connector RealOutput_JW = output Real "'output Real' as connector" annotation (
+      defaultComponentName="y",
+      Icon(
+        coordinateSystem(preserveAspectRatio=true,
+          extent={{-100.0,-100.0},{100.0,100.0}}),
+          graphics={
+        Polygon(
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid,
+          points={{-100.0,100.0},{100.0,0.0},{-100.0,-100.0}})}),
+      Diagram(
+        coordinateSystem(preserveAspectRatio=true,
+          extent={{-100.0,-100.0},{100.0,100.0}}),
+          graphics={
+        Polygon(
+          lineColor={0,0,127},
+          fillColor={255,255,255},
+          fillPattern=FillPattern.Solid,
+          points={{-100.0,50.0},{0.0,0.0},{-100.0,-50.0}}),
+        Text(
+          lineColor={0,0,127},
+          extent={{30.0,60.0},{30.0,110.0}},
+            fontSize=1,
+            textString="%name")}),
+      Documentation(info="<html>
+<p>
+Connector with one output signal of type Real.
+</p>
+</html>"));
     annotation (
       uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1")),
       Documentation(info = "<html>
