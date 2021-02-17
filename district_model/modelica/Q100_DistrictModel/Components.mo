@@ -389,15 +389,15 @@ Parameter:
         Line(points = {{-160, 100}, {-100, 100}, {-100, 66.2}, {-80, 66.2}}, color = {0, 0, 127}));
       connect(u_dotm_source, fluidSource.dotm) annotation (
         Line(points = {{-160, 60}, {-82, 60}, {-82, 59.4}, {-80, 59.4}}, color = {0, 0, 127}));
-    connect(fluidSource.enthalpyPort_b, heatPump.enthalpyPort_a1) annotation (
+    connect(fluidSource.enthalpyPort_b,heatPump.enthalpyPort_a2)  annotation (
         Line(points={{-62,63},{-44,63},{-44,64},{-16,64},{-16,42}}, color={176,
             0,0}));
-    connect(vessel.enthalpyPort_a, heatPump.enthalpyPort_b1) annotation (Line(
+    connect(vessel.enthalpyPort_a,heatPump.enthalpyPort_b2)  annotation (Line(
           points={{-59,6},{-16,6},{-16,15.3334}}, color={176,0,0}));
-    connect(TemperatureOutput.enthalpyPort_a, heatPump.enthalpyPort_b)
+    connect(TemperatureOutput.enthalpyPort_a, heatPump.enthalpyPort_b1)
       annotation (Line(points={{-0.1,89.2},{-0.1,65.6},{0,65.6},{0,42}}, color=
             {176,0,0}));
-    connect(heatPump.enthalpyPort_a, TemperatureInput.enthalpyPort_b)
+    connect(heatPump.enthalpyPort_a1, TemperatureInput.enthalpyPort_b)
       annotation (Line(points={{0,15.3334},{0,-49},{-0.1,-49}}, color={176,0,0}));
       annotation (
         Documentation(info = "<html>
@@ -693,8 +693,9 @@ Parameter:
       Modelica.Blocks.Math.Division division annotation (
         Placement(visible = true, transformation(extent = {{-20, 0}, {0, 20}}, rotation = 0)));
       Modelica.Blocks.Math.Min min annotation (
-        Placement(visible = true, transformation(origin = {70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant const2(k = 1) annotation (
+        Placement(visible = true, transformation(origin={72,0},    extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant const2(k=0.99)
+                                                     annotation (
         Placement(visible = true, transformation(extent = {{20, -40}, {40, -20}}, rotation = 0)));
       Modelica.Blocks.Interfaces.RealInput u_deltaT_setpoint annotation (
         Placement(visible = true, transformation(origin = {-28, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 270), iconTransformation(origin = {0, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 270)));
@@ -714,11 +715,11 @@ Parameter:
       connect(const3.y, max1.u2) annotation (
         Line(points = {{-61, -20}, {-70, -20}, {-70, 10}, {-62, 10}}, color = {0, 0, 127}));
       connect(min.y, y_Qdot) annotation (
-        Line(points = {{81, 0}, {110, 0}}, color = {0, 0, 127}));
+        Line(points={{83,0},{110,0}},      color = {0, 0, 127}));
       connect(division.y, min.u1) annotation (
-        Line(points = {{1, 10}, {28, 10}, {28, 6}, {58, 6}}, color = {0, 0, 127}));
+        Line(points={{1,10},{28,10},{28,6},{60,6}},          color = {0, 0, 127}));
       connect(const2.y, min.u2) annotation (
-        Line(points = {{41, -30}, {50, -30}, {50, -6}, {58, -6}}, color = {0, 0, 127}));
+        Line(points={{41,-30},{50,-30},{50,-6},{60,-6}},          color = {0, 0, 127}));
       connect(division.u2, u_deltaT_setpoint) annotation (
         Line(points = {{-22, 4}, {-28, 4}, {-28, 120}}, color = {0, 0, 127}));
       annotation (

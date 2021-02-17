@@ -31,8 +31,8 @@ package Data
         Pfad = "Z:/owncloud/Consolinno/Projekte/Quarree100_Consolinno/Simulation_Modelica/input/");
     end inputData_jwalbrunn;
 
-    record WP_55kW
-      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 17600, 19750, 14668, 13115, 90609, 86453; 45, 27000, 27273, 18366, 18443, 12000, 12000; 50, 28244, 25000, 17900, 16000, 12820, 10000; 55, 36152, 39009, 29800, 24980, 11842, 11000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 44000, 45250, 45180, 55480, 55000, 60000; 45, 42000, 45000, 44630, 54960, 55000, 56000; 50, 45190, 50000, 40000, 45000, 50000, 55000; 55, 45190, 43300, 45000, 50960, 45000, 55000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
+    record WP_550kW
+      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 176000, 197500, 146680, 131150, 906090, 864530; 45, 270000, 272730, 183660, 184430, 120000, 120000; 50, 282440, 250000, 179000, 160000, 128200, 100000; 55, 361520, 390090, 298000, 249800, 118420, 110000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 440000, 452500, 451800, 554800, 550000, 600000; 45, 420000, 450000, 446300, 549600, 550000, 560000; 50, 451900, 500000, 400000, 450000, 500000, 550000; 55, 451900, 433000, 450000, 509600, 450000, 550000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -49,7 +49,7 @@ First implementation (see issue <a href=
 </li>
 </ul>
 </html>"));
-    end WP_55kW;
+    end WP_550kW;
 
     record HeatDemand
       extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 17600, 19750, 14668, 13115, 90609, 86453; 45, 27000, 27273, 18366, 18443, 12000, 12000; 50, 28244, 25000, 17900, 16000, 12820, 10000; 55, 36152, 39009, 29800, 24980, 11842, 11000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 44000, 45250, 45180, 55480, 55000, 60000; 45, 42000, 45000, 44630, 54960, 55000, 56000; 50, 45190, 50000, 40000, 45000, 50000, 55000; 55, 45190, 43300, 45000, 50960, 45000, 55000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
