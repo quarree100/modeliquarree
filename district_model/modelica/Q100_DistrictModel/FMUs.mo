@@ -240,10 +240,10 @@ package FMUs
     AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump(
       redeclare model PerDataHea =
           AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (dataTable=
-              Q100_DistrictModel.Data.WP_55kW()),
+              Q100_DistrictModel.Data.WP_550kW()),
       redeclare model PerDataChi =
           AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (dataTable=
-              Q100_DistrictModel.Data.WP_55kW()),
+              Q100_DistrictModel.Data.WP_550kW()),
       CCon=100,
       CEva=100,
       GCon=5,
@@ -271,7 +271,7 @@ package FMUs
           origin={-1468,770})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_TRC_2204
       annotation (Placement(visible=true, transformation(
-          origin={-1310,800},
+          origin={-1348,800},
           extent={{-10,-10},{10,10}},
           rotation=0)));
     Modelica.Blocks.Sources.BooleanConstant booleanConstant
@@ -289,7 +289,7 @@ package FMUs
     Modelica.Blocks.Sources.Constant const10(k=1)  annotation (
       Placement(visible = true, transformation(origin={-1510,770},   extent={{-10,-10},
               {10,10}},                                                                               rotation = 0)));
-    Modelica.Blocks.Sources.Constant const11(k=2)  annotation (
+    Modelica.Blocks.Sources.Constant const11(k=20) annotation (
       Placement(visible = true, transformation(origin={-1570,770},   extent={{-10,-10},
               {10,10}},                                                                               rotation = 0)));
     AixLib.FastHVAC.Components.Valves.ThreeWayValve threeWayValve_NS_8106
@@ -408,7 +408,7 @@ package FMUs
           transformation(
           extent={{10,10},{-10,-10}},
           rotation=180,
-          origin={-1320,760})));
+          origin={-1330,760})));
     Modelica.Blocks.Sources.Constant const19(k=70 + 273.15)
                                                    annotation (
       Placement(visible = true, transformation(origin={-1412,766},   extent={{-10,-10},
@@ -423,10 +423,6 @@ package FMUs
       Placement(visible = true, transformation(origin={880,660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Add add(k1=-1)
       annotation (Placement(transformation(extent={{760,690},{740,710}})));
-    Modelica.Blocks.Sources.Constant const5(k=15 + 273.15)
-                                                   annotation (
-      Placement(visible = true, transformation(origin={-1590,804},   extent={{-10,-10},
-              {10,10}},                                                                               rotation = 0)));
     AixLib.FastHVAC.Components.Sensors.MassFlowSensor massFlowRate4
                                                                    annotation (
         Placement(transformation(
@@ -3456,7 +3452,7 @@ package FMUs
     Components.RealOutput_JW y_TRC_2202=temperature_TRC_2202.T - 273.15
       annotation (Placement(transformation(extent={{-1374,746},{-1386,758}})));
     Components.RealOutput_JW y_TRC_2204=temperature_TRC_2204.T - 273.15
-      annotation (Placement(transformation(extent={{-1312,808},{-1324,820}})));
+      annotation (Placement(transformation(extent={{-1350,808},{-1362,820}})));
     Components.RealOutput_JW y_TRC_2213=temperature_TRC_2213.T - 273.15
       annotation (Placement(transformation(extent={{-1186,748},{-1198,760}})));
     Components.RealOutput_JW y_TRC_2216=temperature_TRC_2216.T - 273.15
@@ -3541,6 +3537,37 @@ package FMUs
           extent={{6,-6},{-6,6}},
           rotation=0,
           origin={-34,254})));
+    Modelica.Blocks.Math.Add add1(k1=-1)
+      annotation (Placement(transformation(extent={{-80,174},{-60,194}})));
+    Modelica.Blocks.Math.Gain gain(k=4187/1000)
+      annotation (Placement(transformation(extent={{0,180},{20,200}})));
+    Modelica.Blocks.Math.Product product
+      annotation (Placement(transformation(extent={{-40,180},{-20,200}})));
+    Components.RealOutput_JW y_WMZ_Heizzentrale
+      annotation (Placement(transformation(extent={{40,184},{52,196}})));
+    Components.RealOutput_JW y_WMZ_Haus = sink.Load / 1000
+      annotation (Placement(transformation(extent={{834,674},{846,686}})));
+    Modelica.Blocks.Sources.Sine sineGeo_T_amb1(
+      amplitude=15,
+      freqHz=1/(3600*24*365*2),
+      offset=3 + 273.15)                                                                                                annotation (
+      Placement(visible = true, transformation(origin={-1570,804},   extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Logical.Switch switch1 annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-1466,700})));
+    Modelica.Blocks.Sources.Constant const5(k=0)   annotation (
+      Placement(visible = true, transformation(origin={-1430,680},   extent={{10,-10},
+              {-10,10}},                                                                              rotation = 0)));
+    Modelica.Blocks.Logical.Hysteresis hysteresis(
+      uLow=-60,
+      uHigh=-55,
+      pre_y_start=true)
+      annotation (Placement(transformation(extent={{-1390,650},{-1410,670}})));
+    Modelica.Blocks.Math.Gain gain3(k=-1) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=270,
+          origin={-1382,690})));
   equation
     connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation (
       Line(points={{380.2,240},{179.8,240}},      color={0,128,255}));
@@ -3651,15 +3678,15 @@ package FMUs
     connect(const18.y, threeWayValve_NS_2211.opening) annotation (Line(points={{-1247,
             710},{-1240,710},{-1240,731}}, color={0,0,127}));
     connect(calc_mdot_production1.u_TemperatureInput, temperature_TRC_2202.T)
-      annotation (Line(points={{-1332,754},{-1368,754},{-1368,751},{-1369,751}},
+      annotation (Line(points={{-1342,754},{-1368,754},{-1368,751},{-1369,751}},
           color={0,0,127}));
-    connect(calc_mdot_production1.u_dotQ, heatpump_dotQ) annotation (Line(points={{-1320,
-            772},{-1320,780},{-1450,780}},        color={0,0,127}));
+    connect(calc_mdot_production1.u_dotQ, heatpump_dotQ) annotation (Line(points={{-1330,
+            772},{-1330,780},{-1450,780}},        color={0,0,127}));
     connect(const19.y, calc_mdot_production1.u_TemperatureOutput) annotation (
-        Line(points={{-1401,766},{-1368,766},{-1368,765.8},{-1332,765.8}}, color={
+        Line(points={{-1401,766},{-1368,766},{-1368,765.8},{-1342,765.8}}, color={
             0,0,127}));
     connect(calc_mdot_production1.y_mdot, pump_UP_2205.dotm_setValue) annotation (
-       Line(points={{-1309,760},{-1300,760},{-1300,748}}, color={0,0,127}));
+       Line(points={{-1319,760},{-1300,760},{-1300,748}}, color={0,0,127}));
     connect(TemperatureInput.enthalpyPort_b, sink.enthalpyPort_a1) annotation (
         Line(points={{729,659.9},{814.5,659.9},{814.5,660},{809.2,660}}, color={176,
             0,0}));
@@ -3681,8 +3708,6 @@ package FMUs
     connect(TemperatureOutput.enthalpyPort_b, dynamicPipe_HeatGrid_RF.enthalpyPort_a1)
       annotation (Line(points={{889,659.9},{900,659.9},{900,600},{680,600},{680,240},
             {399.8,240}}, color={0,128,255}));
-    connect(const5.y, fluidSource3.T_fluid) annotation (Line(points={{-1579,804},{
-            -1538,804},{-1538,804.2}},               color={0,0,127}));
     connect(dynamicPipe_HeatGrid_FF.enthalpyPort_b1, TemperatureInput.enthalpyPort_a)
       annotation (Line(points={{399.8,300},{620,300},{620,659.9},{711.2,659.9}},
           color={176,0,0}));
@@ -4028,30 +4053,18 @@ package FMUs
       dynamicPipe_HeatStorage_unload_FF48.enthalpyPort_a1) annotation (Line(
           points={{-1377,739.9},{-1398.6,739.9},{-1398.6,740},{-1420.2,740}},
           color={0,128,255}));
-    connect(dynamicPipe_HeatStorage_unload_FF48.enthalpyPort_b1, heatPump.enthalpyPort_a)
-      annotation (Line(points={{-1439.8,740},{-1461,740},{-1461,758}}, color={0,128,
-            255}));
     connect(vessel3.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF49.enthalpyPort_b1)
       annotation (Line(points={{-1539,740},{-1521.8,740}}, color={176,0,0}));
-    connect(dynamicPipe_HeatStorage_unload_FF49.enthalpyPort_a1, heatPump.enthalpyPort_b1)
-      annotation (Line(points={{-1502.2,740},{-1475,740},{-1475,758}}, color={176,
-            0,0}));
     connect(fluidSource3.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF50.enthalpyPort_a1)
       annotation (Line(points={{-1520,801},{-1515.9,801},{-1515.9,800},{-1503.8,800}},
           color={176,0,0}));
-    connect(dynamicPipe_HeatStorage_unload_FF50.enthalpyPort_b1, heatPump.enthalpyPort_a1)
-      annotation (Line(points={{-1484.2,800},{-1475,800},{-1475,782}}, color={176,
-            0,0}));
     connect(temperature_TRC_2204.enthalpyPort_a,
       dynamicPipe_HeatStorage_unload_FF51.enthalpyPort_b1) annotation (Line(
-          points={{-1318.8,799.9},{-1354.5,799.9},{-1354.5,800},{-1420.2,800}},
+          points={{-1356.8,799.9},{-1354.5,799.9},{-1354.5,800},{-1420.2,800}},
           color={176,0,0}));
-    connect(dynamicPipe_HeatStorage_unload_FF51.enthalpyPort_a1, heatPump.enthalpyPort_b)
-      annotation (Line(points={{-1439.8,800},{-1461,800},{-1461,782}}, color={176,
-            0,0}));
     connect(temperature_TRC_2204.enthalpyPort_b,
       dynamicPipe_HeatStorage_unload_FF52.enthalpyPort_a1) annotation (Line(
-          points={{-1301,799.9},{-1289.5,799.9},{-1289.5,800},{-1279.8,800}},
+          points={{-1339,799.9},{-1289.5,799.9},{-1289.5,800},{-1279.8,800}},
           color={176,0,0}));
     connect(dynamicPipe_HeatStorage_unload_FF52.enthalpyPort_b1, manifold_NS_2211.enthalpyPort_a[
       1]) annotation (Line(points={{-1260.2,800},{-1250,800},{-1250,800.5},{-1240,
@@ -4086,13 +4099,48 @@ package FMUs
           color={176,0,0}));
     connect(u_boiler_0_1, max.u1) annotation (Line(points={{-1620,140},{-1412,140},
             {-1412,92},{-1402,92}}, color={0,0,127}));
-    connect(heatPump.nSet, u_heatpump_0_1) annotation (Line(points={{-1465.67,
-            756.08},{-1465.67,680},{-1620,680}},
-                                         color={0,0,127}));
     connect(u_NS_7102, min1.u2) annotation (Line(points={{-1620,570},{-710,570},{-710,
             738},{-702,738},{-702,740}}, color={0,0,127}));
     connect(u_NS_7202, min.u2)
       annotation (Line(points={{-1620,520},{-702,520}}, color={0,0,127}));
+    connect(product.y, gain.u)
+      annotation (Line(points={{-19,190},{-2,190}}, color={0,0,127}));
+    connect(y_FRC_8204, product.u1) annotation (Line(points={{-34,254},{-50,254},{
+            -50,196},{-42,196}}, color={0,0,127}));
+    connect(add1.y, product.u2)
+      annotation (Line(points={{-59,184},{-42,184}}, color={0,0,127}));
+    connect(add1.u1, y_TRC_8206) annotation (Line(points={{-82,190},{-88,190},{-88,
+            264},{6,264},{6,252}}, color={0,0,127}));
+    connect(y_TRC_8205, add1.u2) annotation (Line(points={{-10,288},{-92,288},{-92,
+            178},{-82,178}}, color={0,0,127}));
+    connect(gain.y, y_WMZ_Heizzentrale)
+      annotation (Line(points={{21,190},{46,190}}, color={0,0,127}));
+    connect(dynamicPipe_HeatStorage_unload_FF48.enthalpyPort_b1, heatPump.enthalpyPort_a)
+      annotation (Line(points={{-1439.8,740},{-1461,740},{-1461,758}}, color={0,128,
+            255}));
+    connect(dynamicPipe_HeatStorage_unload_FF51.enthalpyPort_a1, heatPump.enthalpyPort_b)
+      annotation (Line(points={{-1439.8,800},{-1461,800},{-1461,782}}, color={176,
+            0,0}));
+    connect(dynamicPipe_HeatStorage_unload_FF50.enthalpyPort_b1, heatPump.enthalpyPort_a1)
+      annotation (Line(points={{-1484.2,800},{-1475,800},{-1475,782}}, color={176,
+            0,0}));
+    connect(heatPump.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF49.enthalpyPort_a1)
+      annotation (Line(points={{-1475,758},{-1476,758},{-1476,740},{-1502.2,740}},
+          color={176,0,0}));
+    connect(sineGeo_T_amb1.y, fluidSource3.T_fluid) annotation (Line(points={{
+            -1559,804},{-1560,804},{-1560,804.2},{-1538,804.2}}, color={0,0,127}));
+    connect(heatPump.nSet, switch1.y) annotation (Line(points={{-1465.67,756.08},
+            {-1465.67,728.04},{-1466,728.04},{-1466,711}}, color={0,0,127}));
+    connect(u_heatpump_0_1, switch1.u1) annotation (Line(points={{-1620,680},{
+            -1474,680},{-1474,688}}, color={0,0,127}));
+    connect(const5.y, switch1.u3) annotation (Line(points={{-1441,680},{-1458,
+            680},{-1458,688}}, color={0,0,127}));
+    connect(hysteresis.y, switch1.u2) annotation (Line(points={{-1411,660},{
+            -1466,660},{-1466,688}}, color={255,0,255}));
+    connect(y_TRC_2202, gain3.u) annotation (Line(points={{-1380,752},{-1382,
+            752},{-1382,702}}, color={0,0,127}));
+    connect(gain3.y, hysteresis.u) annotation (Line(points={{-1382,679},{-1382,
+            660},{-1388,660}}, color={0,0,127}));
     annotation (
       Diagram(coordinateSystem(extent={{-1600,-1000},{1000,1000}}),                          graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent={{-1600,-1000},{1000,1000}})),

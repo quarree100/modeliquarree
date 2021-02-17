@@ -746,23 +746,23 @@ package Simulations
     model Gesamt_Sim
       extends Modelica.Icons.Example;
 
-    Modelica.Blocks.Sources.Constant Gaskessel(k=1)
+    Modelica.Blocks.Sources.Constant Gaskessel(k=0)
       annotation (Placement(transformation(extent={{-342,140},{-322,160}})));
     Modelica.Blocks.Sources.Constant WP(k=1)
       annotation (Placement(transformation(extent={{-360,270},{-340,290}})));
     FMUs.FMU_PhyModel fMU_PhyModel
       annotation (Placement(transformation(extent={{-256,62},{4,262}})));
-    Modelica.Blocks.Sources.Constant Speicherbeladung(k=1)
+    Modelica.Blocks.Sources.Constant Speicherbeladung(k=0)
       annotation (Placement(transformation(extent={{-400,220},{-380,240}})));
-    Modelica.Blocks.Sources.Constant Speicherentladung(k=1)
+    Modelica.Blocks.Sources.Constant Speicherentladung(k=0)
       annotation (Placement(transformation(extent={{-400,180},{-380,200}})));
     equation
     connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (Line(points={{
             -321,150},{-300,150},{-300,176},{-258,176}}, color={0,0,127}));
     connect(Speicherentladung.y, fMU_PhyModel.u_NS_7202) annotation (Line(
           points={{-379,190},{-318,190},{-318,214},{-258,214}}, color={0,0,127}));
-    connect(Speicherbeladung.y, fMU_PhyModel.u_NS_7102) annotation (Line(points
-          ={{-379,230},{-320,230},{-320,219},{-258,219}}, color={0,0,127}));
+    connect(Speicherbeladung.y, fMU_PhyModel.u_NS_7102) annotation (Line(points=
+           {{-379,230},{-320,230},{-320,219},{-258,219}}, color={0,0,127}));
     connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (Line(points={{-339,
             280},{-300,280},{-300,230},{-258,230}}, color={0,0,127}));
       annotation (
