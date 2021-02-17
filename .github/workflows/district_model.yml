@@ -9,16 +9,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Build
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.7]
+        python: [3.7]
+        aixlib: [development_jnettels]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2  # use the latest code commit
 
-    - name: Setup conda with python ${{ matrix.python-version }}
-      uses: s-weigand/setup-conda@v1.0.3
+    - name: Setup conda with python ${{ matrix.python }}
+      uses: s-weigand/setup-conda@v1
+      with:
+          python-version: ${{ matrix.python }}
 
     - name: Install Python dependencies
       run: |
@@ -31,7 +35,10 @@ jobs:
         # https://www.openmodelica.org/download/download-linux
 
         # Add sources for packaged openmodelica
+        # for latest version in "release" channel do:
         for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # To install specific older versions, do:
+        # for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list   
         # You will also need to import the GPG key used to sign the releases:
         wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
         # To verify that your key is installed correctly
@@ -44,15 +51,17 @@ jobs:
         # for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
         sudo apt install omlib-modelica-synchronous-0.92.1
         sudo apt install omlib-ncdatareader2-2.4.0
-        sudo apt install omlib-modelica-devicedrivers-1.5.0
+        sudo apt install omlib-modelica-devicedrivers-1.8.2
+        #sudo apt install omlib-aixlib-0.9.1 # works, but only with some releases, not the required one
 
     - name: Install latest AixLib
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
         cd /usr/lib/omlibrary/  # cd to OpenModelica library
-        wget -q https://github.com/RWTH-EBC/AixLib/archive/master.tar.gz -O - | sudo tar xzf -
-        sudo mv AixLib-master/AixLib/ 'AixLib'
-        sudo rm -r AixLib-master
+        # wget -q https://github.com/RWTH-EBC/AixLib/archive/master.tar.gz -O - | sudo tar xzf -
+        wget -q https://github.com/jnettels/AixLib/archive/${{ matrix.aixlib }}.tar.gz -O - | sudo tar xzf -
+        sudo mv AixLib-${{ matrix.aixlib }}/AixLib/ 'AixLib'
+        sudo rm -r AixLib-${{ matrix.aixlib }}
         cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
 
     - name: Install latest BuildingSystems
