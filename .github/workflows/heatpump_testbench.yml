@@ -15,14 +15,16 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest]
-        python-version: [3.7]
+        python: [3.7]
 
     steps:
     - name: Checkout
       uses: actions/checkout@v1  # use the latest code commit
 
-    - name: Setup conda with python ${{ matrix.python-version }}
-      uses: s-weigand/setup-conda@v1.0.1
+    - name: Setup conda with python ${{ matrix.python }}
+      uses: s-weigand/setup-conda@v1
+      with:
+          python-version: ${{ matrix.python }}
 
     - name: Install Python dependencies
       run: |
@@ -35,7 +37,10 @@ jobs:
         # https://www.openmodelica.org/download/download-linux
 
         # Add sources for packaged openmodelica
-        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # for latest version in "release" channel do:
+        # for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # To install specific older versions, do:
+        for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list   
         # You will also need to import the GPG key used to sign the releases:
         wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
         # To verify that your key is installed correctly
@@ -44,12 +49,14 @@ jobs:
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
+        sudo apt install omlib-modelicareference
+        #sudo apt install omlib-aixlib-0.9.1 # works, but only with some releases
         #sudo apt install omlib-.* # Installs optional Modelica libraries (most have not been tested with OpenModelica)
 
     - name: Install AixLib
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
-        cd /usr/lib/omlibrary/  # cd to OpenModelica library
+        cd /usr/lib/omlibrary  # cd to OpenModelica library
         wget -q https://github.com/RWTH-EBC/AixLib/archive/v0.7.3.tar.gz -O - | sudo tar xzf -
         sudo mv AixLib-0.7.3/AixLib/ 'AixLib 0.7.3'
         sudo rm -r AixLib-0.7.3
