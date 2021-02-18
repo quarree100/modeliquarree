@@ -1,22 +1,19 @@
-# -*- coding: utf-8 -*-
-'''
-**hptestbench: OpenModelica Heatpump Testbench in Python**
+# Copyright (C) 2019 Joris Zimmermann
 
-Copyright (C) 2019 Joris Nettelstroth
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see https://www.gnu.org/licenses/.
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see https://www.gnu.org/licenses/.
-
+"""OpenModelica Heatpump Testbench in Python.
 
 hptestbench
 ===========
@@ -28,16 +25,15 @@ to evaluate their performance and integrate the results in other workflows.
 Module run_test
 ---------------
 Tests to run during build process.
-'''
+"""
 
 import unittest
 import logging
 import hptestbench
 
 
-def check_COP():
-    '''This python test determines the JAZ for the default heat pump
-    '''
+def check_SPF():
+    """Determine the seasonal performance factor of the default heat pump."""
     # Define the logging function
     logging.basicConfig(format='%(asctime)-15s %(levelname)-8s %(message)s')
     log_level = 'ERROR'
@@ -52,14 +48,18 @@ def check_COP():
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
-    COP_mean = data['heatPump1.CoP_out'].mean()
+    SPF = (data['heatPump_IO.P_th_cond'].sum()
+           / data['heatPump_IO.P_el'].sum())
 
-    return COP_mean
+    return SPF
 
 
 class TestMethods(unittest.TestCase):
+    """Definition of test functions."""
+
     def test(self):
-        self.assertAlmostEqual(check_COP(), 2.25969269, places=4)
+        """Compare the resulting SPF to a given value."""
+        self.assertAlmostEqual(check_SPF(), 1.8118525941677075, places=4)
 
 
 if __name__ == '__main__':
