@@ -13,6 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Build
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
         python: [3.7, 3.8]
@@ -50,7 +51,9 @@ jobs:
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
-        sudo apt install omlib-modelicareference
+        sudo apt install omlib-modelica-synchronous-0.92.1
+        sudo apt install omlib-ncdatareader2-2.4.0
+        sudo apt install omlib-modelica-devicedrivers-1.8.2
         #sudo apt install omlib-aixlib-0.9.1 # works, but only with some releases
         #sudo apt install omlib-.* # Installs optional Modelica libraries (most have not been tested with OpenModelica)
 
