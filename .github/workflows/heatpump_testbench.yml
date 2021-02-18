@@ -11,6 +11,7 @@ on: [push, pull_request]
 jobs:
   job_1:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     name: Build
     strategy:
       fail-fast: false
@@ -18,10 +19,18 @@ jobs:
         os: [windows-latest, ubuntu-latest]
         python: [3.7, 3.8]
         aixlib: [0.10.7]
+        modelica: [nightly, stable]
+        experimental: [false]
+        include:
+          - os: ubuntu-latest
+            python: 3.8
+            aixlib: 0.10.7
+            modelica: release  # Currently, "release" does not finish simulating
+            experimental: true
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1  # use the latest code commit
+      uses: actions/checkout@v2  # use the latest code commit
 
     - name: Setup conda with python ${{ matrix.python }}
       uses: s-weigand/setup-conda@v1
@@ -40,7 +49,7 @@ jobs:
 
         # Add sources for packaged openmodelica
         # for latest version in "release" channel do:
-        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` ${{ matrix.modelica }}"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
         # To install specific older versions, do:
         # for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
         # You will also need to import the GPG key used to sign the releases:
@@ -67,7 +76,7 @@ jobs:
     - name: Install OMPython and PyFMI
       run: |
         # Install OMPython
-        python -m pip install -U https://github.com/OpenModelica/OMPython/archive/master.zip
+        python -m pip install -U https://github.com/OpenModelica/OMPython/archive/v3.2.0.zip
 
         # For python FMI interaction, install pyfmi
         conda install -c conda-forge pyfmi assimulo -y
@@ -83,6 +92,7 @@ jobs:
 #      run: python ./HP_testbench/conda.recipe/run_test.py
 
     - name: Run the main method of hptestbench (a simulation with OpenModelica)
+      timeout-minutes: 5
       if: runner.os == 'Linux'
       run: python ./HP_testbench/hptestbench
 
