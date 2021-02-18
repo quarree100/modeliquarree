@@ -58,7 +58,7 @@ package HP_testbench "Evaluate heat pump performance with weather data"
       __Dymola_experimentSetupOutput,
       Documentation(revisions="<html>
 <ul>
-<li><i>May 27, 2020</i> Joris Zimmermann:<br>Update to AixLib 0.9.1</li>
+<li><i>Februar 17, 2021</i> Joris Zimmermann:<br>Update to AixLib 0.10.7</li>
 <li><i>Dezember 3, 2019</i> Joris Zimmermann:<br>Add weather data input</li>
 <li><i>November 28, 2016&nbsp;</i> Tobias Blacha:<br>Moved into AixLib </li>
 </ul>
@@ -95,13 +95,13 @@ package HP_testbench "Evaluate heat pump performance with weather data"
       Medium_con=AixLib.FastHVAC.Media.WaterSimple(),
       Medium_eva=AixLib.FastHVAC.Media.WaterSimple(),
       redeclare model PerDataChi =
-          AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
           (dataTable=
-              AixLib.DataBase.ThermalMachines.HeatPump.EN14511.Vitocal200AWO201()),
+              AixLib.DataBase.HeatPump.EN14511.Vitocal200AWO201()),
       redeclare model PerDataHea =
-          AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
           (dataTable=
-              AixLib.DataBase.ThermalMachines.HeatPump.EN14511.Vitocal200AWO201()),
+              AixLib.DataBase.HeatPump.EN14511.Vitocal200AWO201()),
       Q_useNominal=0,
       TAmbCon_nominal=288.15,
       TCon_start(displayUnit="K"),
@@ -258,9 +258,9 @@ package HP_testbench "Evaluate heat pump performance with weather data"
     annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)));
     annotation (Documentation(info="<html>
-<p>This model is just a wrapper around the AixLib 0.9.1 HeatPump (AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump), offering a simplified interface with real values for temperature and mass flow into evaporator and condensor, instead of the enthalpy ports used in AixLib.</p>
+<p>This model is just a wrapper around the AixLib 0.10.7 HeatPump (AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump), offering a simplified interface with real values for temperature and mass flow into evaporator and condensor, instead of the enthalpy ports used in AixLib.</p>
 </html>"));
   end HeatPump_IO;
-  annotation (uses(Modelica(version="3.2.3"), AixLib(version="0.9.1")), version=
+  annotation (uses(Modelica(version="3.2.3"), AixLib(version="0.10.7")), version=
      "0.2.0");
 end HP_testbench;
