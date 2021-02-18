@@ -1,25 +1,31 @@
-# Copyright (C) 2019 Joris Zimmermann
+# -*- coding: utf-8 -*-
+"""hptestbench: OpenModelica Heatpump Testbench in Python.
 
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+Copyright (C) 2019 Joris Nettelstroth
 
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-# You should have received a copy of the GNU General Public License
-# along with this program. If not, see https://www.gnu.org/licenses/.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-"""OpenModelica Heatpump Testbench in Python.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see https://www.gnu.org/licenses/.
+
 
 hptestbench
 ===========
 
 This Python package allows simulating heatpumps with OpenModelica, in order
 to evaluate their performance and integrate the results in other workflows.
+
+TODO: "Installation" of different heatpump does not actually work,
+because setElementModifierValue() is not behaving as expected. See:
+https://github.com/OpenModelica/OpenModelica/issues/7182
 """
 
 import os
@@ -37,14 +43,14 @@ pd.plotting.register_matplotlib_converters()
 
 
 def main():
-    """Run the typical workflow with the heatpump testbench."""
+    """Run the main workflow with the heatpump testbench."""
     # Create our testbench:
     bench = testbench()
 
     # Optionally, install a specific heat pump
     # bench.install_HP('Q100_air_water_001')  # optional (custom)
     # bench.install_HP('EN14511.AlphaInnotec_SW170I')  # optional (AixLib)
-    # bench.install_HP('EN14511.Vitocal200AWO201')  # optional (AixLib)
+    # bench.install_HP('EN14511.Vitocal350BWH113')  # optional (AixLib)
 
     # Run the simulation with Modelica
     bench.test_with_modelica(make_FMU=True)
@@ -54,14 +60,13 @@ def main():
 
     # Evaluate the results
     data = bench.evaluate()
-    SPF = (data['heatPump.innerCycle.QCon'].sum()
-           / data['heatPump.innerCycle.Pel'].sum())
+    COP_mean = data['heatPump_IO.COP'].mean()
 
-    logger.info('The seasonal performance factor is {:.3f}'.format(SPF))
+    logger.info('The annual mean COP is {:.3f}'.format(COP_mean))
 
 
 class testbench(object):
-    """Define the heatpump testbench class.
+    """The heatpump testbench.
 
     Prepare, (optionally) install a heatpump, test, and evaluate the results.
     """
@@ -78,10 +83,10 @@ class testbench(object):
         # Create and change to a subdirectory to create all simulation
         # files there
         sim_dir = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            '..', 'modelica',
-            'sim_'+sys.platform  # separate windows and linux
-            )
+                os.path.dirname(os.path.abspath(__file__)),
+                '..', 'modelica',
+                'sim_'+sys.platform  # separate windows and linux
+                )
         if os.path.exists(sim_dir) is False:
             os.mkdir(sim_dir)
         os.chdir(sim_dir)
@@ -104,27 +109,28 @@ class testbench(object):
         # from the simulation. They are grouped by types of units, to
         # allow unit conversions in post_processing()
         self.solutions = dict(
-            temperatures=['temperatureSensor.T',  # Convert K to °C
-                          'fluidSource1.T_fluid',
-                          'weaBus.TDryBul',
-                          ],
-            # normalized=['heatPump.CoP_out'],
-            normalized=[],
-            power=['heatPump.innerCycle.QCon',  # Convert W to kW
-                   'heatPump.innerCycle.Pel',
-                   ],
-            )
+                # Convert K to °C
+                temperatures=['heatPump_IO.T_evap_in',
+                              'heatPump_IO.T_evap_out',
+                              'heatPump_IO.T_cond_in',
+                              'heatPump_IO.T_cond_out',
+                              ],
+                normalized=['heatPump_IO.COP'],
+                # Convert W to kW
+                power=['heatPump_IO.P_th_cond',
+                       'heatPump_IO.P_el',
+                       ],
+                )
 
         # These paramters will be replaced in the selected models
         self.parameters = {
-            'T_cond_in.k': 75+273.15,
-            'dotm_co2.k': 76000/3600,
-            'weaDat.filNam': weather_file_abs,
-            }
+                'T_cond_in.k': 75+273.15,
+                'dotm_co2.k': 76000/3600,
+                'weaDat.filNam': weather_file_abs,
+                }
 
         # Other settings:
         self.HP_dict = dict()  # filled by install_HP(), if necessary
-        self.data = pd.DataFrame({'time': [0]})  # Where results are stored
 
     def install_HP(self, HP_select='Q100_air_water_001'):
         """Install a specific heat pump.
@@ -162,14 +168,16 @@ class testbench(object):
 
             self.HP_dict['path'] = os.path.abspath(database_path)
 
-            self.HP_dict['replace_expression'] = '''
-            setComponentModifierValue(
-                HP_testbench.HeatPump_weather,
+            self.HP_dict['replace_expressions'] = [
+                '''setElementModifierValue(
+                HP_testbench.HeatPump_IO,
                 heatPump.PerDataHea,
-                $Code(=
-                      AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
-                      (dataTable=HP_database.Q100_air_water_001()),)
+                $Code((
+                    redeclare model PerDataHea =
+                    AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
+                    (dataTable=HP_database.Q100_air_water_001())))
                 )'''
+                ]
 
             # Set default for FMU, depending on operating system:
             self.FMU_path = os.path.join(
@@ -179,14 +187,26 @@ class testbench(object):
 
         else:
             # Assume the heatpump is part of the AixLib
-            self.HP_dict['replace_expression'] = '''
-            setComponentModifierValue(
-              HP_testbench.HeatPump_weather,
-              heatPump.PerDataHea,
-              $Code(=
-                AixLib.DataBase.ThermalMachines.HeatPump.PerformanceData.LookUpTable2D
-                (dataTable=AixLib.DataBase.ThermalMachines.HeatPump.{}()))
-              )'''.format(HP_select)
+            self.HP_dict['replace_expressions'] = [
+                '''getElementModifierNames(HP_testbench.HeatPump_IO,
+                                           "heatPump")''',
+                '''getElementModifierValue(HP_testbench.HeatPump_IO,
+                                           heatPump.PerDataHea)''',
+                '''removeElementModifiers(HP_testbench.HeatPump_IO,
+                                          "heatPump", false)''',
+                '''setElementModifierValue(
+                HP_testbench.HeatPump_IO,
+                heatPump.PerDataHea,
+                $Code((
+                    redeclare model PerDataHea =
+                    AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
+                    (dataTable=AixLib.DataBase.HeatPump.{}())))
+                )'''.format(HP_select),
+                '''getElementModifierNames(HP_testbench.HeatPump_IO,
+                                           "heatPump")''',
+                '''getElementModifierValue(HP_testbench.HeatPump_IO,
+                                           heatPump.PerDataHea)''',
+                ]
 
     def test_with_modelica(self, make_FMU=False):
         """Run direct simulation with modelica model."""
@@ -202,7 +222,7 @@ class testbench(object):
                             self.stepSize, self.stopTime, self.parameters)
 
     def evaluate(self, plot_show=True):
-        """Evalute results."""
+        """Combine post-processing, printing and plotting."""
         data = post_processing(self.data, self.solutions, self.stepSize)
 
         logger.info('Resulting DataFrame:')
@@ -220,9 +240,10 @@ class testbench(object):
 def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
                        stopTime=60, parameters=dict(), list_models=[],
                        make_FMU=False, HP_dict=dict()):
-    """Create a ``ModelicaSystem`` object and run the simulation.
+    """Run the simulation with OpenModelica.
 
-    The object provides functions to load, configure and simulate a model.
+    Create a ``ModelicaSystem`` object which provides functions to
+    load, configure and simulate a model.
 
     Args:
         fileName (str): Name (including path) of a *.mo file with the model
@@ -267,34 +288,28 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
     # Setup the Modelica session and load the module
     mod = ModelicaSystem(fileName=fileName, modelName=modelName,
-                         lmodel=list_models,
-                         commandLineOptions='-d=newInst',  # use "new frontend"
-                         )
+                         lmodel=list_models)
 
-    if HP_dict.get('replace_expression', False):
+    if HP_dict.get('replace_expressions', False):
         # This part is tricky! If we want to change the heat pump that is
         # used in the simulation, we cannot simply use setParameters(),
         # because we are replacing the reference to a "record".
         # Instead we have to modify the component value directly...
-        try:
-            mod.sendExpression(HP_dict['replace_expression'])
-        except Exception:
-            logger.error(HP_dict['replace_expression'])
-            raise
+        for expression in HP_dict['replace_expressions']:
+            answer = mod.sendExpression(expression)
+            logger.debug(expression)
+            logger.debug(answer)
         # ... and re-build the model afterwards, for the changes to take effect
         mod.buildModel()
 
     # Set some simulation options (valid until v3.1.2)
-    # mod.setSimulationOptions(stepSize=stepSize, stopTime=stopTime)
+#    mod.setSimulationOptions(stepSize=stepSize, stopTime=stopTime)
 
     # Attention! For the current master branch of OMPython, we need the
     # following style (https://github.com/OpenModelica/OMPython)
-    text = ["stepSize={}".format(stepSize), "stopTime={}".format(stopTime)]
+    text = ["stepSize={}".format(stepSize),
+            "stopTime={}".format(stopTime)]
     mod.setSimulationOptions(text)  # current master branch of OMPython
-
-    # Save a copy of the modified model for debugging
-    # mod.sendExpression('''saveModel("./HeatPump_weather_test.mo",
-    #                       HP_testbench.HeatPump_weather)''')
 
     # Print some useful information
     quantities = pd.DataFrame(mod.getQuantities())
@@ -432,7 +447,7 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
 
 def post_processing(data, eval_values, stepSize,
                     origin=pd.Timestamp('2018-01-01')):
-    """Perform a number of post processing steps.
+    """Perform post processing steps.
 
     - Apply a time index, while removing the first and all other time
       steps that do not match the stepSize (modelica can simulate with a
@@ -440,7 +455,6 @@ def post_processing(data, eval_values, stepSize,
     - Apply unit conversions
     - Plot data
     - Return data
-
     """
     # Create a time index for our data
     data['time'] = pd.to_datetime(data['time'], unit='s', origin=origin)

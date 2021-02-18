@@ -48,8 +48,8 @@ def check_SPF():
 
     # Evaluate the results
     data = bench.evaluate(plot_show=False)
-    SPF = (data['heatPump.innerCycle.QCon'].sum()
-           / data['heatPump.innerCycle.Pel'].sum())
+    SPF = (data['heatPump_IO.P_th_cond'].sum()
+           / data['heatPump_IO.P_el'].sum())
 
     return SPF
 
@@ -59,7 +59,7 @@ class TestMethods(unittest.TestCase):
 
     def test(self):
         """Compare the resulting SPF to a given value."""
-        self.assertAlmostEqual(check_SPF(), 1.811879950, places=4)
+        self.assertAlmostEqual(check_SPF(), 1.8118525941677075, places=4)
 
 
 if __name__ == '__main__':
