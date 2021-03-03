@@ -748,30 +748,63 @@ package Simulations
 
     Modelica.Blocks.Sources.Constant Gaskessel(k=0)
       annotation (Placement(transformation(extent={{-342,140},{-322,160}})));
-    Modelica.Blocks.Sources.Constant WP(k=1)
-      annotation (Placement(transformation(extent={{-360,270},{-340,290}})));
+    Modelica.Blocks.Sources.Constant WP(k=0.2)
+      annotation (Placement(transformation(extent={{-480,220},{-460,240}})));
     FMUs.FMU_PhyModel fMU_PhyModel
       annotation (Placement(transformation(extent={{-256,62},{4,262}})));
-    Modelica.Blocks.Sources.Constant Speicherbeladung(k=0)
-      annotation (Placement(transformation(extent={{-400,220},{-380,240}})));
-    Modelica.Blocks.Sources.Constant Speicherentladung(k=0)
-      annotation (Placement(transformation(extent={{-400,180},{-380,200}})));
+    Modelica.Blocks.Sources.Constant Speicherbeladung(k=1)
+      annotation (Placement(transformation(extent={{-460,180},{-440,200}})));
+    Modelica.Blocks.Sources.Constant Speicherentladung(k=1)
+      annotation (Placement(transformation(extent={{-492,164},{-472,184}})));
+    Modelica.Blocks.Sources.Constant WP_ScaleFactor(k=1)
+      annotation (Placement(transformation(extent={{-438,240},{-418,260}})));
+    Modelica.Blocks.Sources.BooleanConstant WP_Error_Tino(k=false)
+      annotation (Placement(transformation(extent={{-420,202},{-400,222}})));
+    Modelica.Blocks.Sources.BooleanConstant Heatpump_Error_Tino(k=false)
+      annotation (Placement(transformation(extent={{-500,108},{-480,128}})));
+    Modelica.Blocks.Sources.Constant E_th_RH_Houses(k=1374690.5)
+      annotation (Placement(transformation(extent={{-380,320},{-360,340}})));
+    Modelica.Blocks.Sources.Constant E_th_TWW_Houses(k=162898.75)
+      annotation (Placement(transformation(extent={{-380,290},{-360,310}})));
+    Modelica.Blocks.Sources.Constant E_th_RH_GHD(k=2203638.5)
+      annotation (Placement(transformation(extent={{-380,380},{-360,400}})));
+    Modelica.Blocks.Sources.Constant E_th_TWW_GHD(k=12448)
+      annotation (Placement(transformation(extent={{-380,350},{-360,370}})));
     equation
-    connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (Line(points={{
-            -321,150},{-300,150},{-300,176},{-258,176}}, color={0,0,127}));
-    connect(Speicherentladung.y, fMU_PhyModel.u_NS_7202) annotation (Line(
-          points={{-379,190},{-318,190},{-318,214},{-258,214}}, color={0,0,127}));
-    connect(Speicherbeladung.y, fMU_PhyModel.u_NS_7102) annotation (Line(points=
-           {{-379,230},{-320,230},{-320,219},{-258,219}}, color={0,0,127}));
-    connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (Line(points={{-339,
-            280},{-300,280},{-300,230},{-258,230}}, color={0,0,127}));
+    connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (Line(points={{-321,
+            150},{-300,150},{-300,162},{-258,162}},      color={0,0,127}));
+    connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (Line(points={{-459,
+            230},{-366,230},{-366,212},{-258,212}}, color={0,0,127}));
+    connect(
+          Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
+      Line(points={{-471,174},{-332,174},{-332,200},{-258,200}},          color = {0, 0, 127}));
+    connect(
+          Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
+      Line(points={{-439,190},{-348,190},{-348,205},{-258,205}},          color = {0, 0, 127}));
+    connect(fMU_PhyModel.u_heatpump_scaleFactor, WP_ScaleFactor.y) annotation (
+        Line(points={{-258,235},{-356,235},{-356,250},{-417,250}}, color={0,0,
+            127}));
+    connect(Heatpump_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_boiler)
+      annotation (Line(points={{-479,118},{-368,118},{-368,166},{-258,166}},
+          color={255,0,255}));
+    connect(WP_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_heatpump) annotation (
+       Line(points={{-399,212},{-328,212},{-328,208},{-258,208}}, color={255,0,
+            255}));
+    connect(fMU_PhyModel.u_E_th_RH_Houses, E_th_RH_Houses.y) annotation (Line(
+          points={{-258,254},{-320,254},{-320,330},{-359,330}}, color={0,0,127}));
+    connect(E_th_TWW_Houses.y, fMU_PhyModel.u_E_th_TWW_Houses) annotation (Line(
+          points={{-359,300},{-324,300},{-324,251},{-258,251}}, color={0,0,127}));
+    connect(E_th_TWW_GHD.y, fMU_PhyModel.u_E_th_TWW_GHD) annotation (Line(
+          points={{-359,360},{-316,360},{-316,258},{-258,258}}, color={0,0,127}));
+    connect(E_th_RH_GHD.y, fMU_PhyModel.u_E_th_RH_GHD) annotation (Line(points=
+            {{-359,390},{-312,390},{-312,261},{-258,261}}, color={0,0,127}));
       annotation (
         Diagram(coordinateSystem(extent={{-1600,-1000},{1000,1000}}),                          graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
         Icon(coordinateSystem(extent={{-1600,-1000},{1000,1000}})),
         experiment(
-        StopTime=315360,
-        Interval=3600,
-        Tolerance=1e-06,
+        StopTime=31536000,
+        Interval=900,
+        Tolerance=0.01,
         __Dymola_Algorithm="Dassl"));
     end Gesamt_Sim;
 
