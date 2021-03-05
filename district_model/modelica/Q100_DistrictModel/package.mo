@@ -10,7 +10,5 @@
     <p>Ansprechpartner für das Projekt bei Consolinno ist Fabian Eckert. Die Arbeiten in Modelica wurde durch Johannes Walbrunn durchgeführt.</p>
     <p>Consolinno Energy GmbH, Regensburg 24. März 2020</p>
     </html>"),
-  version="2",
-  conversion(from(version="", script="ConvertFromQ100_DistrictModel_.mos"), from(
-        version="1", script="ConvertFromQ100_DistrictModel_1.mos")));
+  version="2");
 end Q100_DistrictModel;
