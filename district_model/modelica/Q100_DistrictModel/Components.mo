@@ -935,7 +935,7 @@ Connector with one output signal of type Real.
   </p>
   </html>"));
   annotation (
-    uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1")),
+    uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
       <p>Im package Components werden alle selbst erstellten Komponenten der unterschiedlichen Modelle abgelegt.</p>
       <p>Erstellt wurden die Komponenten durch die Consolinno Energy GmbH im Rahmen des Forschungsprojektes EnStadtQuarree100.</p>
