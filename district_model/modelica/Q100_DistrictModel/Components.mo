@@ -106,7 +106,7 @@ Parameter:
 
 </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_Boiler_opt;
 
   model Producer_CHP_opt "CHP with pump and simple and optimized control"
@@ -211,7 +211,7 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_CHP_opt;
 
   model Producer_HePu_opt "HeatPump with pump and simple and optimized control"
@@ -332,7 +332,7 @@ Parameter:
 
     </html>"),
       Diagram(coordinateSystem(extent = {{-140, -140}, {140, 140}})),
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_HePu_opt;
 
   model control_opt_SI_BooleanSI "Control unit for optimization"
@@ -383,7 +383,7 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {2, -246}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {2, -246}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
   end control_opt_SI_BooleanSI;
 
@@ -413,7 +413,7 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
   end bus2SOBoolean_SO;
 
@@ -460,7 +460,7 @@ Parameter:
       Line(points = {{38, 48}, {38, 48}, {38, 40}, {-50, 40}, {-50, 11}, {-49, 11}}, color = {0, 0, 127}));
     annotation (
       Diagram,
-      Icon(graphics = {Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(graphics={  Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Consumer_simple;
 
   model busbar_4consumer
@@ -528,7 +528,7 @@ Parameter:
       experiment(StartTime = 0, StopTime = 345600, Tolerance = 1e-06, Interval = 900),
       __OpenModelica_simulationFlags(lv = "LOG_STATS", outputFormat = "mat", s = "dassl"),
       Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       __OpenModelica_commandLineOptions = "");
   end busbar_4consumer;
 
@@ -593,7 +593,7 @@ Parameter:
       experiment(StartTime = 0, StopTime = 345600, Tolerance = 1e-06, Interval = 900),
       __OpenModelica_simulationFlags(lv = "LOG_STATS", outputFormat = "mat", s = "dassl"),
       Diagram(coordinateSystem(extent = {{-200, -100}, {200, 100}})),
-      Icon(coordinateSystem(extent = {{-80, -80}, {80, 80}}, initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(extent = {{-80, -80}, {80, 80}}, initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       __OpenModelica_commandLineOptions = "");
   end busbar_1consumer;
 
@@ -794,9 +794,11 @@ Parameter:
       Placement(visible = true, transformation(extent = {{20, 10}, {40, 30}}, rotation = 0)));
     Modelica.Blocks.Math.Min min annotation (
       Placement(transformation(extent = {{62, 4}, {82, 24}})));
-    Modelica.Blocks.Sources.Constant const1(k = 0) annotation (
+    Modelica.Blocks.Sources.Constant const1(k=0.00001)
+                                                   annotation (
       Placement(visible = true, transformation(extent = {{-20, 30}, {0, 50}}, rotation = 0)));
-    Modelica.Blocks.Sources.Constant const2(k = 1) annotation (
+    Modelica.Blocks.Sources.Constant const2(k=0.99999)
+                                                   annotation (
       Placement(visible = true, transformation(extent = {{20, -30}, {40, -10}}, rotation = 0)));
   equation
     connect(const.y, max.u1) annotation (
