@@ -14,8 +14,13 @@ package FMUs
       Placement(visible = true, transformation(origin = {820, 590}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_HeatGrid_FF annotation (
       Placement(visible = true, transformation(origin = {310, 160}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
-    Modelica.Blocks.Sources.Sine sineGeo_T_amb(amplitude = 15, freqHz = 1 / (3600 * 24 * 365 * 2), offset = 3 + 273.15) annotation (
-      Placement(visible = true, transformation(origin = {90, 140}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Sources.Sine sineGeo_T_amb(
+      amplitude=15,
+      f=1/(3600*24*365*2),
+      offset=3 + 273.15) annotation (Placement(visible=true, transformation(
+          origin={90,140},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
     AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatGrid_RF(selectable = true, T_0 = 323.15, nNodes = 10, diameter = 0.3, length = 5000, withConvection = true) annotation (
       Placement(visible = true, transformation(origin = {390, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatStorage_unload_RF(selectable = false, T_0 = 323.15) annotation (
@@ -100,11 +105,13 @@ package FMUs
       Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-1240, 560})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_2213_TRC annotation (
       Placement(visible = true, transformation(origin = {-1168, 560}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump(redeclare
-        model PerDataHea =
-          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                           dataTable = Q100_DistrictModel.Data.WP_550kW()), redeclare
+    AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump(
+      redeclare model PerDataHea =
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (dataTable=
+              HP_database.Q100_air_water_001()),                                                                                                                                                              redeclare
         model PerDataChi =
-          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                                                                                                                                        dataTable = Q100_DistrictModel.Data.WP_550kW()), scalingFactor = ScaleFactor, CCon = 100, CEva = 100, GCon = 5, GEva = 5, Q_useNominal = 0, TAmbCon_nominal = 288.15, TCon_start(displayUnit = "K") = 55 + 273.15, TEva_start(displayUnit = "K"), VCon = 0.04, VEva = 0.04, allowFlowReversalEva = true, deltaM_con = 0.1, deltaM_eva = 0.1, mFlow_conNominal = 0.5, mFlow_evaNominal = 0.5, refIneFre_constant = 1, transferHeat = true, use_ConCap = false, use_EvaCap = false, use_autoCalc = false, use_refIne = true, use_revHP = true) annotation (
+          AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                                                                                                                                        dataTable = Q100_DistrictModel.Data.WP_550kW()), scalingFactor = ScaleFactor, CCon = 100, CEva = 100, GCon = 5, GEva = 5, Q_useNominal = 0,
+      TAmbCon_nominal=288.15,                                                                                                                                                                                                        TCon_start(displayUnit = "K") = 55 + 273.15, TEva_start(displayUnit = "K"), VCon = 0.04, VEva = 0.04, allowFlowReversalEva = true, deltaM_con = 0.1, deltaM_eva = 0.1, mFlow_conNominal = 0.5, mFlow_evaNominal = 0.5, refIneFre_constant = 1, transferHeat = true, use_ConCap = false, use_EvaCap = false, use_autoCalc = false, use_refIne = true, use_revHP = true) annotation (
       Placement(transformation(extent = {{-11.9997, 14}, {11.9999, -14}}, rotation = 90, origin = {-1468, 630})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_2204_TRC annotation (
       Placement(visible = true, transformation(origin = {-1348, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -419,8 +426,13 @@ package FMUs
       Placement(transformation(extent = {{40, 44}, {52, 56}})));
     Components.RealOutput_JW y_WMZ_Houses = sink.Load / 1000 annotation (
       Placement(transformation(extent = {{834, 534}, {846, 546}})));
-    Modelica.Blocks.Sources.Sine sineGeo_T_amb1(amplitude = 15, freqHz = 1 / (3600 * 24 * 365 * 2), offset = 3 + 273.15) annotation (
-      Placement(visible = true, transformation(origin = {-1570, 664}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Sources.Sine sineGeo_T_amb1(
+      amplitude=15,
+      f=1/(3600*24*365*2),
+      offset=3 + 273.15) annotation (Placement(visible=true, transformation(
+          origin={-1570,664},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
     Modelica.Blocks.Logical.Switch switch_2102_ZA annotation (
       Placement(visible = true, transformation(origin = {-1466, 520}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
     Modelica.Blocks.Sources.Constant const5(k = 0) annotation (
@@ -463,8 +475,14 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1570, 990}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Add add5 annotation (
       Placement(transformation(extent = {{-1380, 590}, {-1360, 610}})));
-    Modelica.Blocks.Continuous.LimPID PID(k = 0.01, Ti = 3600, yMax = 1, yMin = 0.01, initType = Modelica.Blocks.Types.InitPID.InitialOutput, y_start = 0.5) annotation (
-      Placement(transformation(extent = {{-1180, 720}, {-1200, 740}})));
+    Modelica.Blocks.Continuous.LimPID PID(
+      k=0.01,
+      Ti=3600,
+      yMax=1,
+      yMin=0.01,
+      initType=Modelica.Blocks.Types.Init.InitialOutput,
+      y_start=0.5)
+      annotation (Placement(transformation(extent={{-1180,720},{-1200,740}})));
     Modelica.Blocks.Sources.Constant const18(k = 80 + 273.15) annotation (
       Placement(visible = true, transformation(origin = {-1170, 700}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     Components.calc_mdot_consumer calc_mdot_consumer annotation (
