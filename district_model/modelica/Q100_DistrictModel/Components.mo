@@ -4,14 +4,14 @@ package Components
 
   model Producer_Boiler_opt "Gasboiler with simple and optimized control and with pump"
     extends Modelica.Icons.Package;
-    parameter Modelica.SIunits.Temperature T_start = 353.15 "Inital temperature" annotation (
-      Dialog(tab = "General"));
-    parameter Modelica.SIunits.Temperature T_Out = 353.15 "Output temperature" annotation (
-      Dialog(tab = "General"));
-    parameter Modelica.SIunits.Temperature uLow = 341.15 "Value of deltaT for switching on" annotation (
-      Dialog(tab = "General"));
-    parameter Modelica.SIunits.Temperature uHigh = 343.15 "Value of deltaT for switching off" annotation (
-      Dialog(tab = "General"));
+    parameter Modelica.Units.SI.Temperature T_start=353.15 "Inital temperature"
+      annotation (Dialog(tab="General"));
+    parameter Modelica.Units.SI.Temperature T_Out=353.15 "Output temperature"
+      annotation (Dialog(tab="General"));
+    parameter Modelica.Units.SI.Temperature uLow=341.15
+      "Value of deltaT for switching on" annotation (Dialog(tab="General"));
+    parameter Modelica.Units.SI.Temperature uHigh=343.15
+      "Value of deltaT for switching off" annotation (Dialog(tab="General"));
     parameter Real Q_nom = 200000 "Nominal power of gasboiler" annotation (
       Dialog(tab = "General"));
     parameter Real Q_min = 200000 * 0.0 "Minimal power of gasboiler" annotation (
@@ -40,16 +40,35 @@ package Components
       Placement(visible = true, transformation(origin = {-80, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-80, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
     Modelica.Blocks.Interfaces.RealOutput y_dotQ = Boiler.heater.Q_flow annotation (
       Placement(visible = true, transformation(origin = {-40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-40, -110}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-    Modelica.Blocks.Continuous.LimPID pid(Ti = 1, controllerType = .Modelica.Blocks.Types.SimpleController.PID, initType = .Modelica.Blocks.Types.InitPID.InitialOutput, k = 0.0001, limitsAtInit = true, yMax = 1, yMin = 0, y_start = 0) annotation (
-      Placement(visible = true, transformation(origin = {-80, 12}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
+    Modelica.Blocks.Continuous.LimPID pid(
+      Ti=1,
+      controllerType=.Modelica.Blocks.Types.SimpleController.PID,
+      initType=.Modelica.Blocks.Types.Init.InitialOutput,
+      k=0.0001,
+      yMax=1,
+      yMin=0,
+      y_start=0) annotation (Placement(visible=true, transformation(
+          origin={-80,12},
+          extent={{10,-10},{-10,10}},
+          rotation=180)));
     Modelica.Blocks.Logical.Switch switch1 annotation (
       Placement(visible = true, transformation(origin = {-40, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
     Modelica.Blocks.Sources.Constant const(k = 0) annotation (
       Placement(visible = true, transformation(origin = {-95, 43}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
     Modelica.Blocks.Logical.Hysteresis hysteresis(uHigh = uHigh, uLow = uLow) annotation (
       Placement(visible = true, transformation(origin = {-40, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Modelica.Blocks.Continuous.LimPID PID_Pump(Ti = 0.01, controllerType = .Modelica.Blocks.Types.SimpleController.PI, initType = .Modelica.Blocks.Types.InitPID.InitialOutput, k = 0.01, limitsAtInit = true, yMax = 100, yMin = 0.000000000001, y_start = 0.000000000001) annotation (
-      Placement(visible = true, transformation(origin = {30, -70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Modelica.Blocks.Continuous.LimPID PID_Pump(
+      Ti=0.01,
+      controllerType=.Modelica.Blocks.Types.SimpleController.PI,
+      initType=.Modelica.Blocks.Types.Init.InitialOutput,
+      k=0.01,
+      yMax=100,
+      yMin=0.000000000001,
+      y_start=0.000000000001) annotation (Placement(visible=true,
+          transformation(
+          origin={30,-70},
+          extent={{10,-10},{-10,10}},
+          rotation=0)));
     AixLib.FastHVAC.Components.Pumps.Pump pump annotation (
       Placement(visible = true, transformation(origin = {0, -70}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
     Modelica.Blocks.Sources.Constant const1(k = T_Out) annotation (
@@ -106,15 +125,15 @@ Parameter:
 
 </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_Boiler_opt;
 
   model Producer_CHP_opt "CHP with pump and simple and optimized control"
     extends Modelica.Icons.Package;
-    parameter Modelica.SIunits.Temperature T_Out = 353.15 "Output temperature" annotation (
-      Dialog(tab = "General"));
-    parameter Modelica.SIunits.Temperature T0 = 353.15 "Initial temperature" annotation (
-      Dialog(tab = "General"));
+    parameter Modelica.Units.SI.Temperature T_Out=353.15 "Output temperature"
+      annotation (Dialog(tab="General"));
+    parameter Modelica.Units.SI.Temperature T0=353.15 "Initial temperature"
+      annotation (Dialog(tab="General"));
     parameter Real uLow = -5 "Value of deltaT for switching on" annotation (
       Dialog(tab = "General"));
     parameter Real uHigh = 5 "Value of deltaT for switching off" annotation (
@@ -133,8 +152,15 @@ Parameter:
       Placement(visible = true, transformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant const_T_Out(k = T_Out) annotation (
       Placement(visible = true, transformation(origin = {70, -80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Modelica.Blocks.Continuous.LimPID PID_pump(initType = .Modelica.Blocks.Types.InitPID.InitialOutput, limitsAtInit = true, yMax = 100, yMin = 0.000000000001, y_start = 0.000000000001) annotation (
-      Placement(visible = true, transformation(origin = {20, -60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Modelica.Blocks.Continuous.LimPID PID_pump(
+      initType=.Modelica.Blocks.Types.Init.InitialOutput,
+      yMax=100,
+      yMin=0.000000000001,
+      y_start=0.000000000001) annotation (Placement(visible=true,
+          transformation(
+          origin={20,-60},
+          extent={{10,-10},{-10,10}},
+          rotation=0)));
     AixLib.FastHVAC.Components.Pumps.Pump pump annotation (
       Placement(visible = true, transformation(origin = {-60, -60}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor TemperatureInput annotation (
@@ -211,13 +237,13 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_CHP_opt;
 
   model Producer_HePu_opt "HeatPump with pump and simple and optimized control"
     extends Modelica.Icons.Package;
-    parameter Modelica.SIunits.Temperature T_Out = 323.15 "Output temperature" annotation (
-      Dialog(tab = "General"));
+    parameter Modelica.Units.SI.Temperature T_Out=323.15 "Output temperature"
+      annotation (Dialog(tab="General"));
     parameter Real uLow = -5 "Value of deltaT for switching on" annotation (
       Dialog(tab = "General"));
     parameter Real uHigh = 5 "Value of deltaT for switching off" annotation (
@@ -232,8 +258,14 @@ Parameter:
       Placement(visible = true, transformation(origin = {0, -150}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant const_T_Out(k = T_Out) annotation (
       Placement(visible = true, transformation(origin = {110, -120}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Modelica.Blocks.Continuous.LimPID PID_pump(initType = .Modelica.Blocks.Types.InitPID.InitialOutput, limitsAtInit = true, yMax = 1000, yMin = 0, y_start = 0.1) annotation (
-      Placement(visible = true, transformation(origin = {40, -100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Modelica.Blocks.Continuous.LimPID PID_pump(
+      initType=.Modelica.Blocks.Types.Init.InitialOutput,
+      yMax=1000,
+      yMin=0,
+      y_start=0.1) annotation (Placement(visible=true, transformation(
+          origin={40,-100},
+          extent={{10,-10},{-10,10}},
+          rotation=0)));
     AixLib.FastHVAC.Components.Pumps.Pump pump annotation (
       Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor TemperatureInput annotation (
@@ -332,7 +364,7 @@ Parameter:
 
     </html>"),
       Diagram(coordinateSystem(extent = {{-140, -140}, {140, 140}})),
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Producer_HePu_opt;
 
   model control_opt_SI_BooleanSI "Control unit for optimization"
@@ -413,14 +445,14 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
   end bus2SOBoolean_SO;
 
   model Consumer_simple
     extends Modelica.Icons.Package;
-    parameter Modelica.SIunits.Temperature T0 = 343.15 "Inital temperature" annotation (
-      Dialog(tab = "General"));
+    parameter Modelica.Units.SI.Temperature T0=343.15 "Inital temperature"
+      annotation (Dialog(tab="General"));
     AixLib.FastHVAC.Components.Sinks.Sink sink(fluid(T0 = T0)) annotation (
       Placement(visible = true, transformation(origin = {0, 0}, extent = {{-12, -12}, {12, 12}}, rotation = 0)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor TemperatureInput annotation (
@@ -460,7 +492,7 @@ Parameter:
       Line(points = {{38, 48}, {38, 48}, {38, 40}, {-50, 40}, {-50, 11}, {-49, 11}}, color = {0, 0, 127}));
     annotation (
       Diagram,
-      Icon(graphics = {Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
+      Icon(graphics={  Text(lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}));
   end Consumer_simple;
 
   model busbar_4consumer
@@ -528,7 +560,7 @@ Parameter:
       experiment(StartTime = 0, StopTime = 345600, Tolerance = 1e-06, Interval = 900),
       __OpenModelica_simulationFlags(lv = "LOG_STATS", outputFormat = "mat", s = "dassl"),
       Diagram(coordinateSystem(extent = {{-200, -200}, {200, 200}})),
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       __OpenModelica_commandLineOptions = "");
   end busbar_4consumer;
 
@@ -935,7 +967,7 @@ Connector with one output signal of type Real.
   </p>
   </html>"));
   annotation (
-    uses(Modelica(version = "3.2.3"), AixLib(version = "0.9.1")),
+    uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
       <p>Im package Components werden alle selbst erstellten Komponenten der unterschiedlichen Modelle abgelegt.</p>
       <p>Erstellt wurden die Komponenten durch die Consolinno Energy GmbH im Rahmen des Forschungsprojektes EnStadtQuarree100.</p>

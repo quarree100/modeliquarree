@@ -2,7 +2,9 @@
   extends Modelica.Icons.Package;
 
   annotation (
-    uses(Modelica(version = "3.2.3"),                            BuildingSystems,
+    uses(                                                        BuildingSystems,
+    Modelica(version="4.0.0"),
+    ExternData(version="2.6.1"),
     AixLib(version="0.10.7")),
     Documentation(info = "<html>
     <p>Q100_DistrictModel dient als package, in welchem alle wichtigen Komponenten und Simulationsmodelle abgelegt werden.</p>
