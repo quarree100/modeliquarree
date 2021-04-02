@@ -32,7 +32,7 @@ package Data
     end inputData_jwalbrunn;
 
     record WP_550kW
-      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 176000, 197500, 146680, 131150, 90609, 86453; 45, 270000, 272730, 183660, 184430, 120000, 120000; 50, 282440, 250000, 179000, 160000, 128200, 100000; 55, 361520, 390090, 298000, 249800, 118420, 110000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 440000, 452500, 451800, 554800, 550000, 600000; 45, 420000, 450000, 446300, 549600, 550000, 560000; 50, 451900, 500000, 400000, 450000, 500000, 550000; 55, 451900, 433000, 450000, 509600, 450000, 550000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
+      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 176000, 197500, 146680, 131150, 906090, 864530; 45, 270000, 272730, 183660, 184430, 120000, 120000; 50, 282440, 250000, 179000, 160000, 128200, 100000; 55, 361520, 390090, 298000, 249800, 118420, 110000], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 440000, 452500, 451800, 554800, 550000, 600000; 45, 420000, 450000, 446300, 549600, 550000, 560000; 50, 451900, 500000, 400000, 450000, 500000, 550000; 55, 451900, 433000, 450000, 509600, 450000, 550000], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -51,51 +51,9 @@ First implementation (see issue <a href=
 </html>"));
     end WP_550kW;
 
-    record WP_1kW
-      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -5, 0, 5, 10, 15;
-                35, 229, 234, 242, 250, 258;
-                45, 334, 338, 342, 346, 350;
-                55, 390, 395, 399, 403, 407;
-                65, 471, 475, 479, 483, 487],
-    tableQdot_con = [0, -5, 0, 5, 10, 15;
-                35, 882, 1019, 1159, 1296, 1437;
-                45, 1075, 1180, 1288, 1397, 1502;
-                55, 1075, 1180, 1288, 1397, 1502;
-                65, 1075, 1180, 1288, 1397, 1502],
-    mFlow_conNom = 1000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 90; -10, 90; 30, 90; 35, 90]);
-
-      annotation (
-        Icon(coordinateSystem(preserveAspectRatio = false)),
-        Diagram(coordinateSystem(preserveAspectRatio = false)),
-        Documentation(info = "<html><p>
-<span style=
-\"font-family: Courier New; color: #006400;\">Data&#160;record&#160;for&#160;type&#160;AWO-M/AWO-M-E-AC&#160;201.A04,
-obtained from the technical guide in the UK.</span>
-</p>
-<ul>
-<li>
-<i>November 26, 2018&#160;</i> by Fabian Wüllhorst:<br/>
-First implementation (see issue <a href=
-\"https://github.com/RWTH-EBC/AixLib/issues/577\">#577</a>)
-</li>
-</ul>
-</html>"));
-    end WP_1kW;
-
-    record WP_1kW_ScaleFactor
+    record WP_550kW_ScaleFactor
       parameter Real SF = 1 "Scale factor";
-      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -5, 0, 5, 10, 15;
-                35, 229*SF, 234*SF, 242*SF, 250*SF, 258*SF;
-                45, 334*SF, 338*SF, 342*SF, 346*SF, 350*SF;
-                55, 390*SF, 395*SF, 399*SF, 403*SF, 407*SF;
-                65, 471*SF, 475*SF, 479*SF, 483*SF, 487*SF],
-    tableQdot_con = [0, -5, 0, 5, 10, 15;
-                35, 882*SF, 1019*SF, 1159*SF, 1296*SF, 1437*SF;
-                45, 1075*SF, 1180*SF, 1288*SF, 1397*SF, 1502*SF;
-                55, 1075*SF, 1180*SF, 1288*SF, 1397*SF, 1502*SF;
-                65, 1075*SF, 1180*SF, 1288*SF, 1397*SF, 1502*SF],
-    mFlow_conNom = SF*1000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 90; -10, 90; 30, 90; 35, 90]);
-
+      extends AixLib.DataBase.HeatPump.HeatPumpBaseDataDefinition(tableP_ele = [0, -15, -10, -7, 2, 7, 10; 35, 176000*SF, 197500*SF, 146680*SF, 131150*SF, 906090*SF, 864530*SF; 45, 270000*SF, 272730*SF, 183660*SF, 184430*SF, 120000*SF, 120000*SF; 50, 282440*SF, 250000*SF, 179000*SF, 160000*SF, 128200*SF, 100000*SF; 55, 361520*SF, 390090*SF, 298000*SF, 249800*SF, 118420*SF, 110000*SF], tableQdot_con = [0, -15, -10, -7, 2, 7, 10; 35, 440000*SF, 452500*SF, 451800*SF, 554800*SF, 550000*SF, 600000*SF; 45, 420000*SF, 450000*SF, 446300*SF, 549600*SF, 550000*SF, 560000*SF; 50, 451900*SF, 500000*SF, 400000*SF, 450000*SF, 500000*SF, 550000*SF; 55, 451900*SF, 433000*SF, 450000*SF, 509600*SF, 450000*SF, 550000*SF], mFlow_conNom = 60000 / 4180 / 5, mFlow_evaNom = 1, tableUppBou = [-20, 50; -10, 60; 30, 60; 35, 55]);
       annotation (
         Icon(coordinateSystem(preserveAspectRatio = false)),
         Diagram(coordinateSystem(preserveAspectRatio = false)),
@@ -112,7 +70,7 @@ First implementation (see issue <a href=
 </li>
 </ul>
 </html>"));
-    end WP_1kW_ScaleFactor;
+    end WP_550kW_ScaleFactor;
 
     record ProfileBaseDataDefinition "Base record for one-value time-series profiles"
       extends Modelica.Icons.Record;
