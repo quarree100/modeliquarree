@@ -996,52 +996,13 @@ package Simulations
       Placement(transformation(extent={{-502,230},{-482,250}})));
     Modelica.Blocks.Sources.BooleanConstant Heatpump_Error_Tino(k=true)    annotation (
       Placement(transformation(extent={{-340,100},{-320,120}})));
-    Modelica.Blocks.Math.Add add2 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-392,350})));
-    Modelica.Blocks.Math.Add add3 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-332,350})));
-    Modelica.Blocks.Math.Add add4 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-362,300})));
     Modelica.Blocks.Sources.BooleanConstant BHKW_Error_Tino(k=true)
       annotation (Placement(transformation(extent={{-420,160},{-400,180}})));
     Modelica.Blocks.Sources.Constant BHKW(k=0.5)
       annotation (Placement(transformation(extent={{-420,130},{-400,150}})));
-    inner parameter ExternData.XLSXFile dataSource(fileName=
-          Modelica.Utilities.Files.loadResource(
-          "C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-3.3/3.3.1 Energiebedarfsprofile/Kataster_v45/Stage_3/Quarree100_load_15_TM.xlsx"))
-                                                                                                                                                         "XLSX file" annotation(Placement(transformation(extent={{-10,-10},
-              {10,10}},
-          rotation=180,
-          origin={-346,502})));
-    Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
-          dataSource.getRealArray2D(
-            "A2",
-            "Sheet1",
-            2976,
-            9))
-               annotation (Placement(transformation(extent={{-8,-8},{8,8}},
-          rotation=-90,
-          origin={-348,460})));
-    Modelica.Blocks.Math.Gain E_th_TWE_HH(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=-90,
-          origin={-420,400})));
-    Modelica.Blocks.Math.Gain E_th_RH_GHD(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=-90,
-          origin={-376,400})));
-    Modelica.Blocks.Math.Gain E_th_TWE_GHD(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=-90,
-          origin={-330,400})));
-    Modelica.Blocks.Math.Gain E_th_RH_HH(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=-90,
-          origin={-282,400})));
+
+    Components.ExcelReader excelReader
+      annotation (Placement(transformation(extent={{-362,290},{-342,310}})));
   equation
     connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
       Line(points={{-319,80},{-300,80},{-300,162},{-256,162}},            color = {0, 0, 127}));
@@ -1055,34 +1016,13 @@ package Simulations
       Line(points={{-319,110},{-306,110},{-306,166},{-256,166}},          color = {255, 0, 255}));
     connect(WP_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_heatpump) annotation (
       Line(points={{-481,240},{-440,240},{-440,208},{-256,208}},          color = {255, 0, 255}));
-    connect(add2.y,add4. u2) annotation (
-      Line(points={{-392,339},{-368,339},{-368,312}},                 color={0,0,127}));
-    connect(add3.y,add4. u1) annotation (
-      Line(points={{-332,339},{-356,339},{-356,312}},                 color={0,0,127}));
-    connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (Line(points={{-362,
-            289},{-362,260},{-256,260},{-256,261}},
-                                              color={0,0,127}));
     connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{-399,140},
             {-360,140},{-360,191},{-256,191}}, color={0,0,127}));
     connect(fMU_PhyModel.u_Stoerung_Tino_CHP, BHKW_Error_Tino.y) annotation (
         Line(points={{-256,195},{-366,195},{-366,170},{-399,170}}, color={255,0,
             255}));
-    connect(E_th_RH_HH.u, combiTimeTable.y[1]) annotation (Line(points={{-282,
-            412},{-282,451.2},{-348,451.2}}, color={0,0,127}));
-    connect(E_th_TWE_HH.u, combiTimeTable.y[2]) annotation (Line(points={{-420,
-            412},{-420,451.2},{-348,451.2}}, color={0,0,127}));
-    connect(E_th_RH_GHD.u, combiTimeTable.y[4]) annotation (Line(points={{-376,
-            412},{-376,451.2},{-348,451.2}}, color={0,0,127}));
-    connect(E_th_TWE_GHD.u, combiTimeTable.y[5]) annotation (Line(points={{-330,
-            412},{-330,451.2},{-348,451.2}}, color={0,0,127}));
-    connect(add2.u2, E_th_TWE_HH.y) annotation (Line(points={{-398,362},{-406,
-            362},{-406,389},{-420,389}}, color={0,0,127}));
-    connect(add2.u1, E_th_RH_GHD.y) annotation (Line(points={{-386,362},{-386,
-            375.5},{-376,375.5},{-376,389}}, color={0,0,127}));
-    connect(add3.u2, E_th_TWE_GHD.y) annotation (Line(points={{-338,362},{-338,
-            375.5},{-330,375.5},{-330,389}}, color={0,0,127}));
-    connect(add3.u1, E_th_RH_HH.y) annotation (Line(points={{-326,362},{-326,
-            389},{-282,389}}, color={0,0,127}));
+    connect(excelReader.E_th_load, fMU_PhyModel.u_loadProfile_kW) annotation (
+        Line(points={{-342,300},{-256,300},{-256,261}}, color={0,0,127}));
     annotation (
       Diagram(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}}), graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}})),
