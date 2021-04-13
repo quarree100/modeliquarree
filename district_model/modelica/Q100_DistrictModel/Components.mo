@@ -415,7 +415,7 @@ Parameter:
 
     </html>"),
       Diagram,
-      Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {2, -246}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(initialScale = 0.1), graphics={  Text(origin = {2, -246}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       experiment(StartTime = 0, StopTime = 7200, Tolerance = 1e-06, Interval = 1));
   end control_opt_SI_BooleanSI;
 
@@ -625,7 +625,7 @@ Parameter:
       experiment(StartTime = 0, StopTime = 345600, Tolerance = 1e-06, Interval = 900),
       __OpenModelica_simulationFlags(lv = "LOG_STATS", outputFormat = "mat", s = "dassl"),
       Diagram(coordinateSystem(extent = {{-200, -100}, {200, 100}})),
-      Icon(coordinateSystem(extent = {{-80, -80}, {80, 80}}, initialScale = 0.1), graphics = {Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
+      Icon(coordinateSystem(extent = {{-80, -80}, {80, 80}}, initialScale = 0.1), graphics={  Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name"), Text(origin = {-2, -124}, lineColor = {0, 0, 255}, extent = {{-150, 150}, {150, 110}}, textString = "%name")}),
       __OpenModelica_commandLineOptions = "");
   end busbar_1consumer;
 
@@ -966,6 +966,81 @@ Connector with one output signal of type Real.
   Connector with one output signal of type Boolean.
   </p>
   </html>"));
+  model ExcelReader "Excel XLSX file read in"
+    extends Modelica.Icons.Example;
+    parameter String sheetName="Sheet1" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+    parameter String firstCell="A2" "First upper left cell of data set (without header)";
+    parameter Integer endRow = 35040 "Number of rows in data set (without header)";
+    parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
+
+    Modelica.Blocks.Math.Add add2 annotation (
+      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,-40})));
+    Modelica.Blocks.Math.Add add3 annotation (
+      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,40})));
+    Modelica.Blocks.Math.Add add4 annotation (
+      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={50,0})));
+    parameter ExternData.XLSXFile dataSource(fileName=
+          Modelica.Utilities.Files.loadResource(
+          "C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-3.3/3.3.1 Energiebedarfsprofile/Kataster_v45/Stage_3/Quarree100_load_15_Modelica.xlsx"))
+      "XLSX file" annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-70,68})));
+    Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
+          dataSource.getRealArray2D(
+          firstCell,
+          sheetName,
+          endRow,
+          endColumne))  annotation (Placement(transformation(extent={{-8,-8},{8,8}},
+          rotation=0,
+          origin={-70,0})));
+    Modelica.Blocks.Math.Gain E_th_TWE_HH(k=1) annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-30,20})));
+    Modelica.Blocks.Math.Gain E_th_RH_GHD(k=1) annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-30,-20})));
+    Modelica.Blocks.Math.Gain E_th_TWE_GHD(k=1) annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-30,-60})));
+    Modelica.Blocks.Math.Gain E_th_RH_HH(k=1) annotation (Placement(
+          transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-30,60})));
+    Modelica.Blocks.Interfaces.RealOutput E_th_load annotation (Placement(transformation(extent={{90,-10},{110,10}})));
+  equation
+    connect(combiTimeTable.y[1], E_th_RH_HH.u) annotation (Line(points={{-61.2,0},
+            {-50,0},{-50,60},{-42,60}}, color={0,0,127}));
+    connect(combiTimeTable.y[2], E_th_TWE_HH.u) annotation (Line(points={{-61.2,0},
+            {-50,0},{-50,20},{-42,20}}, color={0,0,127}));
+    connect(combiTimeTable.y[4], E_th_RH_GHD.u) annotation (Line(points={{-61.2,0},
+            {-50,0},{-50,-20},{-42,-20}}, color={0,0,127}));
+    connect(combiTimeTable.y[5], E_th_TWE_GHD.u) annotation (Line(points={{-61.2,0},
+            {-50,0},{-50,-60},{-42,-60}}, color={0,0,127}));
+    connect(E_th_RH_HH.y, add3.u1) annotation (Line(points={{-19,60},{-10,60},{-10,
+            46},{-2,46}}, color={0,0,127}));
+    connect(E_th_TWE_HH.y, add3.u2) annotation (Line(points={{-19,20},{-10,20},{-10,
+            34},{-2,34}}, color={0,0,127}));
+    connect(E_th_RH_GHD.y, add2.u1) annotation (Line(points={{-19,-20},{-10,-20},{
+            -10,-34},{-2,-34}}, color={0,0,127}));
+    connect(E_th_TWE_GHD.y, add2.u2) annotation (Line(points={{-19,-60},{-10,-60},
+            {-10,-46},{-2,-46}}, color={0,0,127}));
+    connect(add2.y, add4.u2) annotation (Line(points={{21,-40},{30,-40},{30,-6},{38,
+            -6}}, color={0,0,127}));
+    connect(add3.y, add4.u1)
+      annotation (Line(points={{21,40},{30,40},{30,6},{38,6}}, color={0,0,127}));
+    connect(add4.y, E_th_load)
+      annotation (Line(points={{61,0},{100,0}}, color={0,0,127}));
+    annotation(experiment(StopTime=1),
+      Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"));
+  end ExcelReader;
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
