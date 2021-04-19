@@ -541,7 +541,7 @@ package FMUs
     Modelica.Blocks.Interfaces.RealInput u_CHP_0_1 annotation(
       Placement(transformation(extent = {{-2240, 270}, {-2200, 310}})));
     Modelica.Blocks.Math.RealToBoolean realToBoolean annotation(
-      Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 270, origin = {-1560, 240})));
+      Placement(visible = true, transformation(origin = {-1558, 240}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
     Components.calc_mdot_production calc_mdot_production2 annotation(
       Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1430, 210})));
     Modelica.Blocks.Sources.Constant const15(k = 95 + 273.15) annotation(
@@ -1115,10 +1115,10 @@ package FMUs
       Line(points = {{-1511, 290}, {-1526, 290}, {-1526, 282}}, color = {0, 0, 127}));
     connect(not5.y, or2.u2) annotation(
       Line(points = {{-1559, 330}, {-1542, 330}, {-1542, 322}}, color = {255, 0, 255}));
-    connect(realToBoolean.y, CHP.onOff) annotation(
-      Line(points = {{-1560, 229}, {-1560, 226}, {-1544, 226}, {-1544, 219.2}}, color = {255, 0, 255}));
-    connect(switch_4202_ZA.y, realToBoolean.u) annotation(
-      Line(points = {{-1534, 259}, {-1534, 252}, {-1560, 252}}, color = {0, 0, 127}));
+  connect(realToBoolean.y, CHP.onOff) annotation(
+      Line(points = {{-1558, 229}, {-1558, 226}, {-1544, 226}, {-1544, 219.2}}, color = {255, 0, 255}));
+  connect(switch_4202_ZA.y, realToBoolean.u) annotation(
+      Line(points = {{-1534, 259}, {-1534, 252}, {-1558, 252}}, color = {0, 0, 127}));
     connect(calc_mdot_production2.u_TemperatureInput, temperature_4504_TRC.T) annotation(
       Line(points = {{-1442, 204}, {-1444, 204}, {-1444, 191}, {-1447, 191}}, color = {0, 0, 127}));
     connect(calc_mdot_production2.y_mdot, pump_4507_up.dotm_setValue) annotation(
