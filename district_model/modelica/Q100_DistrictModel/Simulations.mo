@@ -982,52 +982,203 @@ package Simulations
 
   model Gesamt_Sim_Excel
     extends Modelica.Icons.Example;
-    Modelica.Blocks.Sources.Constant Gaskessel(k = 0) annotation (
-      Placement(transformation(extent={{-340,70},{-320,90}})));
-    Modelica.Blocks.Sources.Constant WP(k=0.1) annotation (
-      Placement(transformation(extent={{-502,260},{-482,280}})));
     FMUs.FMU_PhyModel fMU_PhyModel annotation (
       Placement(transformation(extent={{-254,62},{6,262}})));
-    Modelica.Blocks.Sources.Constant Speicherbeladung(k = 1) annotation (
-      Placement(transformation(extent={{-534,196},{-514,216}})));
-    Modelica.Blocks.Sources.Constant Speicherentladung(k = 1) annotation (
-      Placement(transformation(extent={{-500,180},{-480,200}})));
-    Modelica.Blocks.Sources.BooleanConstant WP_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-502,230},{-482,250}})));
-    Modelica.Blocks.Sources.BooleanConstant Heatpump_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-340,100},{-320,120}})));
-    Modelica.Blocks.Sources.BooleanConstant BHKW_Error_Tino(k=true)
-      annotation (Placement(transformation(extent={{-420,160},{-400,180}})));
-    Modelica.Blocks.Sources.Constant BHKW(k=0.5)
-      annotation (Placement(transformation(extent={{-420,130},{-400,150}})));
 
-    Components.ExcelReader excelReader
-      annotation (Placement(transformation(extent={{-362,290},{-342,310}})));
+    Controller_TM controller_TM
+      annotation (Placement(transformation(extent={{-414,74},{-340,136}})));
+    Components.ExcelReader.ExcelReader_ScheudleProfiles
+      excelReader_ScheudleProfiles
+      annotation (Placement(transformation(extent={{-580,110},{-560,130}})));
+    Components.ExcelReader.ExcelReader_ErrorProfiles excelReader_ErrorScheudle
+      annotation (Placement(transformation(extent={{-582,188},{-562,210}})));
+    Components.ExcelReader.ExcelReader_LoadProfiles excelReader_LoadProfiles
+      annotation (Placement(transformation(extent={{-580,270},{-560,290}})));
   equation
-    connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
-      Line(points={{-319,80},{-300,80},{-300,162},{-256,162}},            color = {0, 0, 127}));
-    connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
-      Line(points={{-481,270},{-436,270},{-436,212},{-256,212}},          color = {0, 0, 127}));
-    connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
-      Line(points={{-479,190},{-460,190},{-460,200},{-256,200}},          color = {0, 0, 127}));
-    connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
-      Line(points={{-513,206},{-348,206},{-348,205},{-256,205}},          color = {0, 0, 127}));
-    connect(Heatpump_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_boiler) annotation (
-      Line(points={{-319,110},{-306,110},{-306,166},{-256,166}},          color = {255, 0, 255}));
-    connect(WP_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_heatpump) annotation (
-      Line(points={{-481,240},{-440,240},{-440,208},{-256,208}},          color = {255, 0, 255}));
-    connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{-399,140},
-            {-360,140},{-360,191},{-256,191}}, color={0,0,127}));
-    connect(fMU_PhyModel.u_Stoerung_Tino_CHP, BHKW_Error_Tino.y) annotation (
-        Line(points={{-256,195},{-366,195},{-366,170},{-399,170}}, color={255,0,
-            255}));
-    connect(excelReader.E_th_load, fMU_PhyModel.u_loadProfile_kW) annotation (
-        Line(points={{-342,300},{-256,300},{-256,261}}, color={0,0,127}));
+    connect(controller_TM.u_boiler_command, fMU_PhyModel.u_boiler_0_1)
+      annotation (Line(points={{-339.153,115.286},{-288,115.286},{-288,162},{
+            -256,162}}, color={0,0,127}));
+    connect(controller_TM.u_CHP_command, fMU_PhyModel.u_CHP_0_1) annotation (
+        Line(points={{-339.153,115.286},{-339.153,116},{-288,116},{-288,191},{
+            -256,191}}, color={0,0,127}));
+    connect(controller_TM.u_heatpump1_command, fMU_PhyModel.u_heatpump_0_1)
+      annotation (Line(points={{-339.153,115.286},{-339.153,116},{-288,116},{
+            -288,212},{-256,212}}, color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.u_HeatPump_scheudle, controller_TM.u_heatpump_schedule_extern)
+      annotation (Line(points={{-559,130},{-559,140},{-424,140},{-424,128.485},
+            {-414.892,128.485}}, color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.u_Electrolyzer_scheudle, controller_TM.u_electrolyzer_schedule_extern)
+      annotation (Line(points={{-559,126},{-432,126},{-432,124.727},{-414.892,
+            124.727}}, color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.u_CHP_scheudle, controller_TM.u_CHP_schedule_extern)
+      annotation (Line(points={{-559,122},{-412,122},{-412,132},{-414.892,132},
+            {-414.892,122.848}}, color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.u_boiler_scheudle, controller_TM.u_boiler_schedule_extern)
+      annotation (Line(points={{-559,118},{-432,118},{-432,120.97},{-414.892,
+            120.97}}, color={0,0,127}));
+    connect(excelReader_ErrorScheudle.u_HeatPump_Error, fMU_PhyModel.u_Stoerung_Tino_heatpump)
+      annotation (Line(points={{-561,209},{-561,216},{-276,216},{-276,208},{
+            -256,208}}, color={255,0,255}));
+    connect(excelReader_ErrorScheudle.u_CHP_Error, fMU_PhyModel.u_Stoerung_Tino_CHP)
+      annotation (Line(points={{-561,201},{-264,201},{-264,195},{-256,195}},
+          color={255,0,255}));
+    connect(excelReader_ErrorScheudle.u_Boiler_Error, fMU_PhyModel.u_Stoerung_Tino_boiler)
+      annotation (Line(points={{-561,197},{-284,197},{-284,166},{-256,166}},
+          color={255,0,255}));
+    connect(excelReader_LoadProfiles.E_th_load, fMU_PhyModel.u_loadProfile_kW)
+      annotation (Line(points={{-559,280},{-260,280},{-260,272},{-256,272},{
+            -256,261}}, color={0,0,127}));
     annotation (
-      Diagram(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}}), graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
-      Icon(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}})),
+      Diagram(coordinateSystem(extent={{-560,-60},{80,400}}),            graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
+      Icon(coordinateSystem(extent={{-560,-60},{80,400}})),
       experiment(StopTime = 31536000, Interval = 900, Tolerance = 0.01, __Dymola_Algorithm = "Dassl"));
   end Gesamt_Sim_Excel;
+
+  model Controller_TM "Coltroller for fmu"
+    Modelica.Blocks.Interfaces.RealInput u_heatpump_schedule_extern
+      "Heat pump schedule signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{-140,120},{-100,160}})));
+    Modelica.Blocks.Interfaces.RealInput u_electrolyzer_schedule_extern
+      "electrolyzer schedule signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+    Modelica.Blocks.Interfaces.RealInput u_CHP_schedule_extern
+      "CHP schedule signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+    Modelica.Blocks.Interfaces.RealInput u_boiler_schedule_extern
+      "Boiler schedule signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
+    Modelica.Blocks.Interfaces.RealInput u_TempAmp_extern
+      "Ambient temperature in °C"
+      annotation (Placement(transformation(extent={{-140,260},{-100,300}})));
+    Modelica.Blocks.Interfaces.RealInput u_co2_extern
+      "CO2 intensity of the upstream electricity grid in g/kWh"
+      annotation (Placement(transformation(extent={{-140,220},{-100,260}})));
+    Modelica.Blocks.Interfaces.RealInput u_el_costs_extern
+      "Electricity price intensity of the upstream electricity grid in €/kWh"
+      annotation (Placement(transformation(extent={{-140,180},{-100,220}})));
+    Modelica.Blocks.Interfaces.RealInput u_heatpump1_status
+      "Heat pump one status signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{1600,120},{1560,160}})));
+    Modelica.Blocks.Interfaces.RealInput u_electrolyzer_status
+      "electrolyzer status signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{1600,40},{1560,80}})));
+    Modelica.Blocks.Interfaces.RealInput u_CHP_status
+      "CHP status signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{1600,0},{1560,40}})));
+    Modelica.Blocks.Interfaces.RealInput u_boiler_status
+      "Boiler status signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{1600,-40},{1560,0}})));
+    Modelica.Blocks.Interfaces.RealInput u_Temp_HeatGrid_RF
+      "Return flow temperature of the heat grid in °C"
+      annotation (Placement(transformation(extent={{1600,260},{1560,300}})));
+    Modelica.Blocks.Interfaces.RealInput u_Temp_HeatGrid_FF
+      "Forward flow temperature of the heat grid in °C"
+      annotation (Placement(transformation(extent={{1600,180},{1560,220}})));
+    Modelica.Blocks.Interfaces.RealInput u_heatpump2_status
+      "Heat pump two status signal as 0 (not running) and 1 (running) "
+      annotation (Placement(transformation(extent={{1600,80},{1560,120}})));
+    Modelica.Blocks.Interfaces.RealInput u_mdot_HeatGrid_RF
+      "Return mass flow of the heat grid in kg/s"
+      annotation (Placement(transformation(extent={{1600,220},{1560,260}})));
+    Modelica.Blocks.Interfaces.RealOutput u_heatpump1_command
+      "Heat pump one command signal as 0 (not run) and 1 (run) " annotation (
+        Placement(transformation(extent={{1560,-160},{1598,-122}}),
+          iconTransformation(extent={{1560,-160},{1598,-122}})));
+    Modelica.Blocks.Interfaces.RealOutput u_heatpump2_command
+      "Heat pump two command signal as 0 (not run) and 1 (run) " annotation (
+        Placement(transformation(extent={{1560,-198},{1598,-160}}),
+          iconTransformation(extent={{1560,-160},{1598,-122}})));
+    Modelica.Blocks.Interfaces.RealOutput u_electrolyzer_command
+      "Electrolyzer command signal as 0 (not run) and 1 (run) " annotation (
+        Placement(transformation(extent={{1560,-238},{1598,-200}}),
+          iconTransformation(extent={{1560,-160},{1598,-122}})));
+    Modelica.Blocks.Interfaces.RealOutput u_CHP_command
+      "CHP command signal as 0 (not run) and 1 (run) " annotation (Placement(
+          transformation(extent={{1560,-280},{1598,-242}}), iconTransformation(
+            extent={{1560,-160},{1598,-122}})));
+    Modelica.Blocks.Interfaces.RealOutput u_boiler_command
+      "Boiler command signal as 0 (not run) and 1 (run) " annotation (Placement(
+          transformation(extent={{1560,-320},{1598,-282}}), iconTransformation(
+            extent={{1560,-160},{1598,-122}})));
+    Modelica.Blocks.Interfaces.RealInput u_el_pv_district
+      "photovoltaic production in the district in kW"
+      annotation (Placement(transformation(extent={{1602,-80},{1562,-40}})));
+    Modelica.Blocks.Logical.Switch switch_2102_ZA annotation (
+      Placement(visible = true, transformation(origin={70,140},       extent={{-10,-10},
+              {10,10}},                                                                                rotation=0)));
+    Modelica.Blocks.Sources.Constant const5(k=0)   annotation (
+      Placement(visible = true, transformation(origin={-30,180},      extent={{-10,-10},
+              {10,10}},                                                                                rotation = 0)));
+    Modelica.Blocks.Logical.Not not2 annotation (
+      Placement(visible = true, transformation(origin={10,220},       extent={{-10,-10},
+              {10,10}},                                                                                rotation = 0)));
+    Modelica.Blocks.Sources.BooleanConstant boolean_internalControl(k=false)
+      "True if internal contral false if extrern schedule control" annotation (
+        Placement(visible=true, transformation(
+          origin={-30,220},
+          extent={{-10,-10},{10,10}},
+          rotation=0)));
+    Modelica.Blocks.Logical.Switch switch_2102_ZA1
+                                                  annotation (
+      Placement(visible = true, transformation(origin={70,60},        extent={{-10,-10},
+              {10,10}},                                                                                rotation=0)));
+    Modelica.Blocks.Logical.Switch switch_2102_ZA2
+                                                  annotation (
+      Placement(visible = true, transformation(origin={70,20},        extent={{-10,-10},
+              {10,10}},                                                                                rotation=0)));
+    Modelica.Blocks.Logical.Switch switch_2102_ZA3
+                                                  annotation (
+      Placement(visible = true, transformation(origin={70,-20},       extent={{-10,-10},
+              {10,10}},                                                                                rotation=0)));
+    AixLib.Controls.SetPoints.Table HeatingCurve_DistrictGrid(table=[-20,80; -15,
+          80; 15,65; 20,65])
+      annotation (Placement(transformation(extent={{438,270},{458,290}})));
+  equation
+    connect(u_CHP_command, u_CHP_command)
+      annotation (Line(points={{1579,-261},{1579,-261}}, color={0,0,127}));
+    connect(u_heatpump_schedule_extern, switch_2102_ZA.u1) annotation (Line(
+          points={{-120,140},{-40,140},{-40,148},{58,148}}, color={0,0,127}));
+    connect(boolean_internalControl.y, not2.u)
+      annotation (Line(points={{-19,220},{-2,220}}, color={255,0,255}));
+    connect(const5.y, switch_2102_ZA.u3) annotation (Line(points={{-19,180},{24,
+            180},{24,132},{58,132}}, color={0,0,127}));
+    connect(not2.y, switch_2102_ZA.u2) annotation (Line(points={{21,220},{40,
+            220},{40,140},{58,140}}, color={255,0,255}));
+    connect(not2.y, switch_2102_ZA1.u2) annotation (Line(points={{21,220},{40,
+            220},{40,60},{58,60}}, color={255,0,255}));
+    connect(not2.y, switch_2102_ZA2.u2) annotation (Line(points={{21,220},{40,
+            220},{40,20},{58,20}}, color={255,0,255}));
+    connect(not2.y, switch_2102_ZA3.u2) annotation (Line(points={{21,220},{40,
+            220},{40,-20},{58,-20}}, color={255,0,255}));
+    connect(const5.y, switch_2102_ZA1.u3) annotation (Line(points={{-19,180},{
+            24,180},{24,52},{58,52}}, color={0,0,127}));
+    connect(const5.y, switch_2102_ZA2.u3) annotation (Line(points={{-19,180},{
+            24,180},{24,12},{58,12}}, color={0,0,127}));
+    connect(const5.y, switch_2102_ZA3.u3) annotation (Line(points={{-19,180},{
+            24,180},{24,-28},{58,-28}}, color={0,0,127}));
+    connect(switch_2102_ZA1.u1, u_electrolyzer_schedule_extern) annotation (
+        Line(points={{58,68},{-40,68},{-40,60},{-120,60}}, color={0,0,127}));
+    connect(switch_2102_ZA2.u1, u_CHP_schedule_extern) annotation (Line(points=
+            {{58,28},{-40,28},{-40,20},{-120,20}}, color={0,0,127}));
+    connect(switch_2102_ZA3.u1, u_boiler_schedule_extern) annotation (Line(
+          points={{58,-12},{-40,-12},{-40,-20},{-120,-20}}, color={0,0,127}));
+    connect(switch_2102_ZA1.y, u_electrolyzer_command) annotation (Line(points=
+            {{81,60},{764,60},{764,-219},{1579,-219}}, color={0,0,127}));
+    connect(switch_2102_ZA.y, u_heatpump2_command) annotation (Line(points={{81,
+            140},{778,140},{778,-179},{1579,-179}}, color={0,0,127}));
+    connect(switch_2102_ZA.y, u_heatpump1_command) annotation (Line(points={{81,140},
+            {778,140},{778,-138},{1536,-138},{1536,-141},{1579,-141}},
+                                color={0,0,127}));
+    connect(switch_2102_ZA2.y, u_CHP_command) annotation (Line(points={{81,20},
+            {752,20},{752,-261},{1579,-261}}, color={0,0,127}));
+    connect(switch_2102_ZA3.y, u_boiler_command) annotation (Line(points={{81,
+            -20},{744,-20},{744,-301},{1579,-301}}, color={0,0,127}));
+    connect(HeatingCurve_DistrictGrid.u, u_TempAmp_extern)
+      annotation (Line(points={{436,280},{-120,280}}, color={0,0,127}));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -1020},{1560,300}})), Diagram(coordinateSystem(
+            preserveAspectRatio=false, extent={{-100,-1020},{1560,300}})));
+  end Controller_TM;
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>

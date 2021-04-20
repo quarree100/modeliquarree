@@ -966,81 +966,388 @@ Connector with one output signal of type Real.
   Connector with one output signal of type Boolean.
   </p>
   </html>"));
-  model ExcelReader "Excel XLSX file read in"
-    extends Modelica.Icons.Example;
-    parameter String sheetName="Sheet1" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
-    parameter String firstCell="A2" "First upper left cell of data set (without header)";
-    parameter Integer endRow = 35040 "Number of rows in data set (without header)";
-    parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
 
-    Modelica.Blocks.Math.Add add2 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,-40})));
-    Modelica.Blocks.Math.Add add3 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,40})));
-    Modelica.Blocks.Math.Add add4 annotation (
-      Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={50,0})));
-    parameter ExternData.XLSXFile dataSource(fileName=
-          Modelica.Utilities.Files.loadResource(
-          "C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-3.3/3.3.1 Energiebedarfsprofile/Kataster_v45/Stage_3/Quarree100_load_15_Modelica.xlsx"))
-      "XLSX file" annotation (Placement(transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-70,68})));
-    Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
-          dataSource.getRealArray2D(
-          firstCell,
-          sheetName,
-          endRow,
-          endColumne))  annotation (Placement(transformation(extent={{-8,-8},{8,8}},
-          rotation=0,
-          origin={-70,0})));
-    Modelica.Blocks.Math.Gain E_th_TWE_HH(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,20})));
-    Modelica.Blocks.Math.Gain E_th_RH_GHD(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,-20})));
-    Modelica.Blocks.Math.Gain E_th_TWE_GHD(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,-60})));
-    Modelica.Blocks.Math.Gain E_th_RH_HH(k=1) annotation (Placement(
-          transformation(
-          extent={{-10,-10},{10,10}},
-          rotation=0,
-          origin={-30,60})));
-    Modelica.Blocks.Interfaces.RealOutput E_th_load annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-  equation
-    connect(combiTimeTable.y[1], E_th_RH_HH.u) annotation (Line(points={{-61.2,0},
-            {-50,0},{-50,60},{-42,60}}, color={0,0,127}));
-    connect(combiTimeTable.y[2], E_th_TWE_HH.u) annotation (Line(points={{-61.2,0},
-            {-50,0},{-50,20},{-42,20}}, color={0,0,127}));
-    connect(combiTimeTable.y[4], E_th_RH_GHD.u) annotation (Line(points={{-61.2,0},
-            {-50,0},{-50,-20},{-42,-20}}, color={0,0,127}));
-    connect(combiTimeTable.y[5], E_th_TWE_GHD.u) annotation (Line(points={{-61.2,0},
-            {-50,0},{-50,-60},{-42,-60}}, color={0,0,127}));
-    connect(E_th_RH_HH.y, add3.u1) annotation (Line(points={{-19,60},{-10,60},{-10,
-            46},{-2,46}}, color={0,0,127}));
-    connect(E_th_TWE_HH.y, add3.u2) annotation (Line(points={{-19,20},{-10,20},{-10,
-            34},{-2,34}}, color={0,0,127}));
-    connect(E_th_RH_GHD.y, add2.u1) annotation (Line(points={{-19,-20},{-10,-20},{
-            -10,-34},{-2,-34}}, color={0,0,127}));
-    connect(E_th_TWE_GHD.y, add2.u2) annotation (Line(points={{-19,-60},{-10,-60},
-            {-10,-46},{-2,-46}}, color={0,0,127}));
-    connect(add2.y, add4.u2) annotation (Line(points={{21,-40},{30,-40},{30,-6},{38,
-            -6}}, color={0,0,127}));
-    connect(add3.y, add4.u1)
-      annotation (Line(points={{21,40},{30,40},{30,6},{38,6}}, color={0,0,127}));
-    connect(add4.y, E_th_load)
-      annotation (Line(points={{61,0},{100,0}}, color={0,0,127}));
-    annotation(experiment(StopTime=1),
-      Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"));
+  package ExcelReader
+    model ExcelReader_ErrorScheudle "Excel XLSX file read in"
+      extends Modelica.Icons.Record;
+      parameter String sheetName="error_signal" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+      parameter String firstCell="A2" "First upper left cell of data set (without header)";
+      parameter Integer endRow = 8760 "Number of rows in data set (without header)";
+      parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
+      parameter Integer i = 4 "Column number of heat pump profil in error data set (without time columne)";
+      parameter Integer j = 3 "Column number of electrolysis profil in error data set (without time columne)";
+      parameter Integer k = 2 "Column number of CHP profil in error data set (without time columne)";
+      parameter Integer l = 5 "Column number of boiler profil in error data set (without time columne)";
+      parameter Integer m = 6 "Column number of storage load profil in error data set (without time columne)";
+      parameter Integer n = 7 "Column number of storage unload profil in error data set (without time columne)";
+
+      parameter ExternData.XLSXFile dataSource(fileName=
+            Modelica.Utilities.Files.loadResource("C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-1.3/Versorgungssystem Sim oemof/Kataster_v45_Variante-3A/export_modelica/Failsignal.xlsx"))
+        "XLSX file" annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-70,68})));
+      Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
+            dataSource.getRealArray2D(
+            firstCell,
+            sheetName,
+            endRow,
+            endColumne))  annotation (Placement(transformation(extent={{-8,-8},{8,8}},
+            rotation=0,
+            origin={-70,0})));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation (
+        Placement(visible = true, transformation(origin={10,90},        extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold1
+                                                                annotation (
+        Placement(visible = true, transformation(origin={10,50},        extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2
+                                                                annotation (
+        Placement(visible = true, transformation(origin={10,10},        extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold3
+                                                                annotation (
+        Placement(visible = true, transformation(origin={10,-30},       extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.BooleanOutput u_HeatPump_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,80},{120,100}})));
+      Modelica.Blocks.Interfaces.BooleanOutput u_Electrolyzer_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,40},{120,60}})));
+      Modelica.Blocks.Interfaces.BooleanOutput u_CHP_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,0},{120,20}})));
+      Modelica.Blocks.Interfaces.BooleanOutput u_Boiler_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,-40},{120,-20}})));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold4
+                                                                annotation (
+        Placement(visible = true, transformation(origin={10,-70},       extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Logical.GreaterThreshold greaterThreshold5
+                                                                annotation (
+        Placement(visible = true, transformation(origin={10,-110},      extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.BooleanOutput u_StorageLoad_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,-80},{120,-60}})));
+      Modelica.Blocks.Interfaces.BooleanOutput u_StorageUnload_ErrorScheudle
+        annotation (Placement(transformation(extent={{100,-120},{120,-100}})));
+    equation
+      connect(combiTimeTable.y[i], greaterThreshold.u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,90},{-2,90}},            color={0,0,127}));
+      connect(combiTimeTable.y[j], greaterThreshold1.u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,50},{-2,50}},           color={0,0,127}));
+      connect(combiTimeTable.y[k], greaterThreshold2.u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,10},{-2,10}},             color={0,0,127}));
+      connect(combiTimeTable.y[l], greaterThreshold3.u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,-30},{-2,-30}},           color={0,0,127}));
+      connect(combiTimeTable.y[m],greaterThreshold4. u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,-70},{-2,-70}},           color={0,0,127}));
+      connect(combiTimeTable.y[n],greaterThreshold5. u) annotation (Line(points={{-61.2,0},
+              {-8,0},{-8,-110},{-2,-110}},         color={0,0,127}));
+
+      connect(greaterThreshold3.y, u_Boiler_ErrorScheudle)
+        annotation (Line(points={{21,-30},{110,-30}}, color={255,0,255}));
+      connect(greaterThreshold2.y, u_CHP_ErrorScheudle)
+        annotation (Line(points={{21,10},{110,10}}, color={255,0,255}));
+      connect(greaterThreshold1.y, u_Electrolyzer_ErrorScheudle)
+        annotation (Line(points={{21,50},{110,50}}, color={255,0,255}));
+      connect(greaterThreshold.y, u_HeatPump_ErrorScheudle)
+        annotation (Line(points={{21,90},{110,90}}, color={255,0,255}));
+     connect(greaterThreshold5.y, u_StorageUnload_ErrorScheudle)
+        annotation (Line(points={{21,-110},{110,-110}}, color={255,0,255}));
+      connect(greaterThreshold4.y, u_StorageLoad_ErrorScheudle)
+        annotation (Line(points={{21,-70},{110,-70}}, color={255,0,255}));
+      annotation(experiment(StopTime=1),
+        Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"),
+        Diagram(coordinateSystem(extent={{-100,-120},{100,100}})),
+        Icon(coordinateSystem(extent={{-100,-120},{100,100}})));
+    end ExcelReader_ErrorScheudle;
+
+    model ExcelReader_ScheudleProfiles "Excel XLSX file read in"
+      extends Modelica.Icons.Record;
+      parameter String sheetName="input_test_final" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+      parameter String firstCell="A2" "First upper left cell of data set (without header)";
+      parameter Integer endRow = 8760 "Number of rows in data set (without header)";
+      parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
+      parameter Integer i = 4 "Column number of heat pump profil in error data set (without time columne)";
+      parameter Integer j = 3 "Column number of electrolysis profil in error data set (without time columne)";
+      parameter Integer k = 2 "Column number of CHP profil in error data set (without time columne)";
+      parameter Integer l = 5 "Column number of boiler profil in error data set (without time columne)";
+      parameter Integer m = 6 "Column number of storage load profil in error data set (without time columne)";
+      parameter Integer n = 7 "Column number of storage unload profil in error data set (without time columne)";
+
+
+      parameter ExternData.XLSXFile dataSource(fileName=
+            Modelica.Utilities.Files.loadResource("C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-1.3/Versorgungssystem Sim oemof/Kataster_v45_Variante-3A/export_modelica/2018-PE-no-ely_Ekonzept02-min-no-excess_techdata5.xlsx"))
+        "XLSX file" annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-70,68})));
+      Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
+            dataSource.getRealArray2D(
+            firstCell,
+            sheetName,
+            endRow,
+            endColumne))  annotation (Placement(transformation(extent={{-8,-8},{8,8}},
+            rotation=0,
+            origin={-70,0})));
+      Modelica.Blocks.Interfaces.RealOutput u_HeatPump_scheudle
+        annotation (Placement(transformation(extent={{100,90},{120,110}})));
+      Modelica.Blocks.Interfaces.RealOutput u_Electrolyzer_scheudle
+        annotation (Placement(transformation(extent={{100,50},{120,70}})));
+      Modelica.Blocks.Interfaces.RealOutput u_CHP_scheudle
+        annotation (Placement(transformation(extent={{100,10},{120,30}})));
+      Modelica.Blocks.Interfaces.RealOutput u_boiler_scheudle
+        annotation (Placement(transformation(extent={{100,-30},{120,-10}})));
+      Modelica.Blocks.Interfaces.RealOutput u_StorageLoad_scheudle
+        annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
+      Modelica.Blocks.Interfaces.RealOutput u_StorageUnload_scheudle
+        annotation (Placement(transformation(extent={{100,-110},{120,-90}})));
+    equation
+      connect(combiTimeTable.y[i], u_HeatPump_scheudle) annotation (Line(points={{-61.2,0},
+              {72,0},{72,100},{110,100}},  color={0,0,127}));
+      connect(combiTimeTable.y[j], u_Electrolyzer_scheudle) annotation (Line(points={{-61.2,0},
+              {72,0},{72,60},{110,60}},           color={0,0,127}));
+      connect(combiTimeTable.y[k], u_CHP_scheudle) annotation (Line(points={{-61.2,0},
+              {72,0},{72,20},{110,20}},   color={0,0,127}));
+      connect(combiTimeTable.y[l], u_boiler_scheudle) annotation (Line(points={{-61.2,0},
+              {72,0},{72,-20},{110,-20}},    color={0,0,127}));
+      connect(combiTimeTable.y[m], u_StorageLoad_scheudle) annotation (Line(points={
+              {-61.2,0},{72,0},{72,-60},{110,-60}}, color={0,0,127}));
+      connect(combiTimeTable.y[n], u_StorageUnload_scheudle) annotation (Line(
+            points={{-61.2,0},{72,0},{72,-100},{110,-100}}, color={0,0,127}));
+      annotation(experiment(StopTime=1),
+        Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"));
+    end ExcelReader_ScheudleProfiles;
+
+    model ExcelReader_LoadProfiles "Excel XLSX file read in"
+      extends Modelica.Icons.Record;
+      parameter String sheetName="Sheet1" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+      parameter String firstCell="A2" "First upper left cell of data set (without header)";
+      parameter Integer endRow = 35040 "Number of rows in data set (without header)";
+      parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
+      parameter Integer k = 1 "Column number of E_th_RH_HH profil in data set (without time columne)";
+      parameter Integer l = 2 "Column number of E_th_TWE_HH profil in data set (without time columne)";
+      parameter Integer m = 4 "Column number of E_th_RH_GHD profil in data set (without time columne)";
+      parameter Integer n = 5 "Column number of E_th_TWE_GHD profil in data set (without time columne)";
+
+      Modelica.Blocks.Math.Add add2 annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,-40})));
+      Modelica.Blocks.Math.Add add3 annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,40})));
+      Modelica.Blocks.Math.Add add4 annotation (
+        Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={50,0})));
+      parameter ExternData.XLSXFile dataSource(fileName=
+            Modelica.Utilities.Files.loadResource(
+            "C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-3.3/3.3.1 Energiebedarfsprofile/Kataster_v45/Stage_3/Quarree100_load_15_Modelica.xlsx"))
+        "XLSX file" annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-70,68})));
+      Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(table=
+            dataSource.getRealArray2D(
+            firstCell,
+            sheetName,
+            endRow,
+            endColumne))  annotation (Placement(transformation(extent={{-8,-8},{8,8}},
+            rotation=0,
+            origin={-70,0})));
+      Modelica.Blocks.Math.Gain E_th_TWE_HH(k=1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-30,20})));
+      Modelica.Blocks.Math.Gain E_th_RH_GHD(k=1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-30,-20})));
+      Modelica.Blocks.Math.Gain E_th_TWE_GHD(k=1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-30,-60})));
+      Modelica.Blocks.Math.Gain E_th_RH_HH(k=1) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-30,60})));
+      Modelica.Blocks.Interfaces.RealOutput E_th_load annotation (Placement(transformation(extent={{100,-10},
+                {120,10}})));
+    equation
+      connect(combiTimeTable.y[k], E_th_RH_HH.u) annotation (Line(points={{-61.2,0},
+              {-50,0},{-50,60},{-42,60}}, color={0,0,127}));
+      connect(combiTimeTable.y[l], E_th_TWE_HH.u) annotation (Line(points={{-61.2,0},
+              {-50,0},{-50,20},{-42,20}}, color={0,0,127}));
+      connect(combiTimeTable.y[m], E_th_RH_GHD.u) annotation (Line(points={{-61.2,0},
+              {-50,0},{-50,-20},{-42,-20}}, color={0,0,127}));
+      connect(combiTimeTable.y[n], E_th_TWE_GHD.u) annotation (Line(points={{-61.2,0},
+              {-50,0},{-50,-60},{-42,-60}}, color={0,0,127}));
+      connect(E_th_RH_HH.y, add3.u1) annotation (Line(points={{-19,60},{-10,60},{-10,
+              46},{-2,46}}, color={0,0,127}));
+      connect(E_th_TWE_HH.y, add3.u2) annotation (Line(points={{-19,20},{-10,20},{-10,
+              34},{-2,34}}, color={0,0,127}));
+      connect(E_th_RH_GHD.y, add2.u1) annotation (Line(points={{-19,-20},{-10,-20},{
+              -10,-34},{-2,-34}}, color={0,0,127}));
+      connect(E_th_TWE_GHD.y, add2.u2) annotation (Line(points={{-19,-60},{-10,-60},
+              {-10,-46},{-2,-46}}, color={0,0,127}));
+      connect(add2.y, add4.u2) annotation (Line(points={{21,-40},{30,-40},{30,-6},{38,
+              -6}}, color={0,0,127}));
+      connect(add3.y, add4.u1)
+        annotation (Line(points={{21,40},{30,40},{30,6},{38,6}}, color={0,0,127}));
+      connect(add4.y, E_th_load)
+        annotation (Line(points={{61,0},{110,0}}, color={0,0,127}));
+      annotation(experiment(StopTime=1),
+        Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"));
+    end ExcelReader_LoadProfiles;
   end ExcelReader;
+
+  package UnitController
+    package HeatPump
+      model HeatPump_Controller
+        HeatPump_StSp_priority_int heatPump_StSp_priority_int
+          annotation (Placement(transformation(extent={{-60,-90},{-40,-70}})));
+        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext
+          annotation (Placement(transformation(extent={{-60,-50},{-40,-30}})));
+        Modelica.Blocks.Logical.Or or1
+          annotation (Placement(transformation(extent={{-20,-70},{0,-50}})));
+        Modelica.Blocks.Logical.Or or2
+          annotation (Placement(transformation(extent={{20,-30},{40,-10}})));
+        Modelica.Blocks.Logical.Or or3
+          annotation (Placement(transformation(extent={{-20,10},{0,30}})));
+        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext1
+          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext2
+          annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
+        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext3
+          annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
+        Modelica.Blocks.Logical.Or or4
+          annotation (Placement(transformation(extent={{60,-10},{80,10}})));
+      equation
+        connect(heatPump_StSp_priority_ext.OS_StSp_priority_ext, or1.u1)
+          annotation (Line(points={{-39,-40},{-28,-40},{-28,-60},{-22,-60}},
+              color={255,0,255}));
+        connect(heatPump_StSp_priority_int.OS_StSp_priority_int, or1.u2)
+          annotation (Line(points={{-39,-80},{-28,-80},{-28,-68},{-22,-68}},
+              color={255,0,255}));
+        connect(heatPump_StSp_priority_ext1.OS_StSp_priority_ext, or3.u2)
+          annotation (Line(points={{-39,0},{-28,0},{-28,12},{-22,12}}, color={
+                255,0,255}));
+        connect(heatPump_StSp_priority_ext2.OS_StSp_priority_ext, or3.u1)
+          annotation (Line(points={{-39,40},{-28,40},{-28,20},{-22,20}}, color=
+                {255,0,255}));
+        connect(or3.y, or2.u1) annotation (Line(points={{1,20},{12,20},{12,-20},
+                {18,-20}}, color={255,0,255}));
+        connect(or1.y, or2.u2) annotation (Line(points={{1,-60},{12,-60},{12,
+                -28},{18,-28}}, color={255,0,255}));
+        connect(heatPump_StSp_priority_ext3.OS_StSp_priority_ext, or4.u1)
+          annotation (Line(points={{-39,80},{52,80},{52,0},{58,0}}, color={255,
+                0,255}));
+        connect(or2.y, or4.u2) annotation (Line(points={{41,-20},{52,-20},{52,
+                -8},{58,-8}}, color={255,0,255}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_Controller;
+
+      model HeatPump_StSp_priority_int
+        Modelica.Blocks.Interfaces.BooleanOutput OS_StSp_priority_int
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        OR_Heatpump_StSp_priority_int.StSp_priority_int_OR_HP_prio_int
+          stSp_priority_int_OR_HP_prio_int
+          annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+      equation
+        connect(stSp_priority_int_OR_HP_prio_int.signal_HP_prio_int,
+          signal_HP_prio_int)
+          annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
+        connect(stSp_priority_int_OR_HP_prio_int.OS_HP_prio_int,
+          OS_StSp_priority_int)
+          annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_StSp_priority_int;
+
+      package OR_Heatpump_StSp_priority_int
+        model StSp_priority_int_OR_HP_prio_int
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation (
+            Placement(visible = true, transformation(origin={2,0},          extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+        equation
+          connect(signal_HP_prio_int, greaterThreshold.u)
+            annotation (Line(points={{-120,0},{-10,0}}, color={0,0,127}));
+          connect(greaterThreshold.y, OS_HP_prio_int)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_priority_int_OR_HP_prio_int;
+      end OR_Heatpump_StSp_priority_int;
+
+      model HeatPump_StSp_priority_ext
+        Modelica.Blocks.Interfaces.BooleanOutput OS_StSp_priority_ext
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-140,30},{-100,70}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+            Placement(transformation(extent={{-140,-70},{-100,-30}})));
+        OR_Heatpump_StSp_priority_ext.StSp_priority_ext_OR_HP_prio_ext
+          stSp_priority_ext_OR_HP_prio_ext
+          annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
+        OR_Heatpump_StSp_priority_ext.StSp_priority_ext_OR_HP_prio_int
+          stSp_priority_ext_OR_HP_prio_int
+          annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
+        Modelica.Blocks.Logical.And and1
+          annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+      equation
+        connect(stSp_priority_ext_OR_HP_prio_ext.signal_HP_prio_ext,
+          signal_HP_prio_ext)
+          annotation (Line(points={{-62,-50},{-120,-50}}, color={0,0,127}));
+        connect(stSp_priority_ext_OR_HP_prio_int.signal_HP_prio_int,
+          signal_HP_prio_int)
+          annotation (Line(points={{-62,50},{-120,50}}, color={0,0,127}));
+        connect(stSp_priority_ext_OR_HP_prio_int.OS_HP_prio_int, and1.u1)
+          annotation (Line(points={{-39,50},{32,50},{32,0},{38,0}}, color={255,
+                0,255}));
+        connect(stSp_priority_ext_OR_HP_prio_ext.OS_HP_prio_ext, and1.u2)
+          annotation (Line(points={{-39,-50},{32,-50},{32,-8},{38,-8}}, color={
+                255,0,255}));
+        connect(and1.y, OS_StSp_priority_ext)
+          annotation (Line(points={{61,0},{110,0}}, color={255,0,255}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_StSp_priority_ext;
+
+      package OR_Heatpump_StSp_priority_ext
+        model StSp_priority_ext_OR_HP_prio_ext
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation (
+            Placement(visible = true, transformation(origin={2,0},          extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_ext
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+        equation
+          connect(signal_HP_prio_ext, greaterThreshold.u)
+            annotation (Line(points={{-120,0},{-10,0}}, color={0,0,127}));
+          connect(greaterThreshold.y, OS_HP_prio_ext)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_priority_ext_OR_HP_prio_ext;
+
+        model StSp_priority_ext_OR_HP_prio_int
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_int)
+            annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_int)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_priority_ext_OR_HP_prio_int;
+      end OR_Heatpump_StSp_priority_ext;
+    end HeatPump;
+  end UnitController;
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
