@@ -149,15 +149,15 @@ package FMUs
       Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1190, -110})));
     Modelica.Blocks.Sources.Constant const3(k = 90 + 273.15) annotation (
       Placement(visible = true, transformation(origin = {-1240, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_boiler_dotQ = boiler.heater.Q_flow / 1000 annotation (
+    Components.RealOutput_JW y_boiler_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = boiler.heater.Q_flow / 1000 "Gaskessel Wärmeleistung" annotation (
       Placement(visible = true, transformation(extent = {{-1306, -112}, {-1298, -104}}, rotation = 0), iconTransformation(extent = {{-1312, 28}, {-1304, 36}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant const9(k = 20) annotation (
       Placement(visible = true, transformation(origin = {-1450, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant const16(k = 0) annotation (
       Placement(visible = true, transformation(origin = {-630, 350}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_heatpump2_dotQ = heatPump2.innerCycle.PerformanceDataHPHeating.QCon / 1000 annotation (
+    Components.RealOutput_JW y_heatpump2_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump2.innerCycle.PerformanceDataHPHeating.QCon / 1000 "Wärmepumpe 2 Wärmeleistung" annotation (
       Placement(transformation(extent = {{-1526, 636}, {-1518, 644}})));
-    Q100_DistrictModel.Components.RealOutput_JW y_heatpump2_Pel = heatPump2.innerCycle.PerformanceDataHPHeating.Pel / 1000 annotation (
+    Q100_DistrictModel.Components.RealOutput_JW y_heatpump2_Pel(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump2.innerCycle.PerformanceDataHPHeating.Pel / 1000 "Wärmepumpe 2 Elektrische Leistung" annotation (
       Placement(visible = true, transformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0), iconTransformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0)));
     Components.calc_mdot_production calc_mdot_production1 annotation (
       Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1402, 590})));
@@ -319,81 +319,81 @@ package FMUs
       Placement(visible = true, transformation(origin={-1150,1060},   extent = {{-10, -10}, {10, 10}}, rotation = 180)));
     AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatStorage_unload_FF57(T_0 = 70 + 273.15, length = 0.01,selectable = false) annotation (
       Placement(visible = true, transformation(origin={-1130,1160},   extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealInput u_boiler_0_1 annotation (
+    Modelica.Blocks.Interfaces.RealInput u_boiler_0_1(min=0, max=1) "Gaskessel Ansteuerung" annotation (
       Placement(transformation(extent = {{-2240, -20}, {-2200, 20}})));
-    Modelica.Blocks.Interfaces.RealInput u_heatpump_0_1 annotation (
+    Modelica.Blocks.Interfaces.RealInput u_heatpump_0_1(min=0, max=1) "Wärmepumpe Ansteuerung" annotation (
       Placement(transformation(extent = {{-2240, 446}, {-2200, 486}})));
-    Modelica.Blocks.Interfaces.RealInput u_7202_NS annotation (
+    Modelica.Blocks.Interfaces.RealInput u_7202_NS(min=0, max=1) "Wärmespeicher Entladung" annotation (
       Placement(transformation(extent = {{-2240, 340}, {-2200, 380}})));
-    Modelica.Blocks.Interfaces.RealInput u_7102_NS annotation (
+    Modelica.Blocks.Interfaces.RealInput u_7102_NS(min=0, max=1) "Wärmespeicher Beladung" annotation (
       Placement(transformation(extent = {{-2240, 370}, {-2200, 410}})));
-    Components.RealOutput_JW y_5303_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5303_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_5303_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5303_TRC.T - 273.15 "BHKW Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1228, -136}, {-1240, -124}})));
-    Components.RealOutput_JW y_5310_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_5310_FRC.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_5310_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_5310_FRC.dotm * 3600 / 1000 "BHKW Wärmemengenzähler Volumenstrom" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-1050, -126})));
-    Components.RealOutput_JW y_5312_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5312_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_5312_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5312_TRC.T - 273.15 "BHKW Wärmemengenzähler Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-976, -134}, {-988, -122}})));
-    Components.RealOutput_JW y_5311_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5311_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_5311_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_5311_TRC.T - 273.15 "BHKW Wärmemengenzähler Vorlauftemperatur" annotation (
       Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 180, origin = {-1030, -92})));
-    Components.RealOutput_JW y_5202_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = boiler.boilerFluid.enthalpyPort_a.T - 273.15 annotation (
+    Components.RealOutput_JW y_5202_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = boiler.boilerFluid.enthalpyPort_a.T - 273.15 "Gaskessel Abgastemperatur" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-1358, -80})));
-    Components.RealOutput_JW y_5201_FQ(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = boiler.enthalpyPort_a1.m_flow * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_5201_FQ(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = boiler.enthalpyPort_a1.m_flow * 3600 / 1000 "Gaskessel Gasmengenzähler" annotation (
       Placement(visible = true, transformation(origin = {-1358, -94}, extent = {{-6, 6}, {6, -6}}, rotation = 180), iconTransformation(extent = {{-6, -6}, {6, 6}}, rotation = 180)));
-    Components.RealOutput_JW y_2202_TRC_2(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2202_TRC_2.T - 273.15 annotation (
+    Components.RealOutput_JW y_2202_TRC_2(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2202_TRC_2.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1446, 566}, {-1458, 578}})));
-    Components.RealOutput_JW y_2204_TRC_2(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2204_TRC_2.T - 273.15 annotation (
+    Components.RealOutput_JW y_2204_TRC_2(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2204_TRC_2.T - 273.15 "HT-Wärmepumpe Vorlauftemperatur Steuerung Mischventil" annotation (
       Placement(transformation(extent = {{-1422, 668}, {-1434, 680}})));
-    Components.RealOutput_JW y_2213_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2213_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_2213_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2213_TRC.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1174, 538}, {-1186, 550}})));
-    Components.RealOutput_JW y_2216_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2216_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_2216_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2216_TRC.T - 273.15 "HT-Wärmepumpe Wärmemengenzähler Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1106, 538}, {-1118, 550}})));
-    Components.RealOutput_JW y_2215_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2215_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_2215_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2215_TRC.T - 273.15 "HT-Wärmepumpe Wärmemengenzähler Vorlauftemperatur" annotation (
       Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 180, origin = {-1130, 648})));
-    Components.RealOutput_JW y_2214_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_2214_FRC.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_2214_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_2214_FRC.dotm * 3600 / 1000 "HT-Wärmepumpe Wärmemengenzähler Volumenstrom" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-1142, 544})));
-    Components.RealOutput_JW y_8102_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8102_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8102_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8102_TRC.T - 273.15 "Wärmespeicher Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-694, 726}, {-706, 738}})));
-    Components.RealOutput_JW y_8101_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8101_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8101_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8101_TRC.T - 273.15 "Wärmespeicher Vorlauftemperatur" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 180, origin = {-656, 750})));
-    Components.RealOutput_JW y_7103_FRC_unload(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_7103_FRC_unload.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_7103_FRC_unload(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_7103_FRC_unload.dotm * 3600 / 1000 "Wärmespeicher Volumenstrom inkl. Fließrichtung entladen" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-262, 660})));
-    Components.RealOutput_JW y_7103_FRC_load(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_7103_FRC_load.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_7103_FRC_load(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_7103_FRC_load.dotm * 3600 / 1000 "Wärmespeicher Volumenstrom inkl. Fließrichtung beladen" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 180, origin = {-198, 638})));
-    Components.RealOutput_JW y_7103_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = (massFlowRate_7103_FRC_load.dotm + massFlowRate_7103_FRC_unload.dotm) * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_7103_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = (massFlowRate_7103_FRC_load.dotm + massFlowRate_7103_FRC_unload.dotm) * 3600 / 1000 "Wärmespeicher Volumenstrom inkl. Fließrichtung" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-260, 634})));
-    Components.RealOutput_JW y_7104_TRC_unload(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7104_TRC_unload.T - 273.15 annotation (
+    Components.RealOutput_JW y_7104_TRC_unload(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7104_TRC_unload.T - 273.15 "Wärmespeicher Vorlauftemperatur entladen" annotation (
       Placement(transformation(extent = {{-226, 786}, {-238, 798}})));
-    Components.RealOutput_JW y_7104_TRC_load(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7104_TRC_load.T - 273.15 annotation (
+    Components.RealOutput_JW y_7104_TRC_load(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7104_TRC_load.T - 273.15 "Wärmespeicher Vorlauftemperatur beladen" annotation (
       Placement(transformation(extent = {{-204, 746}, {-216, 758}})));
-    Components.RealOutput_JW y_7203_TRC_load(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7203_TRC_load.T - 273.15 annotation (
+    Components.RealOutput_JW y_7203_TRC_load(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7203_TRC_load.T - 273.15 "Wärmespeicher Rücklaufemperatur beladen" annotation (
       Placement(transformation(extent = {{-184, 446}, {-196, 458}})));
-    Components.RealOutput_JW y_7203_TRC_unload(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7203_TRC_unload.T - 273.15 annotation (
+    Components.RealOutput_JW y_7203_TRC_unload(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_7203_TRC_unload.T - 273.15 "Wärmespeicher Rücklaufemperatur entladen" annotation (
       Placement(transformation(extent = {{-162, 386}, {-174, 398}})));
-    Components.RealOutput_JW y_7302_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[8] - 273.15 annotation (
+    Components.RealOutput_JW y_7302_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[8] - 273.15 "Wärmespeicher Speichertemperatur Schicht 1" annotation (
       Placement(transformation(extent = {{140, 634}, {152, 646}})));
-    Components.RealOutput_JW y_7303_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[7] - 273.15 annotation (
+    Components.RealOutput_JW y_7303_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[7] - 273.15 "Wärmespeicher Speichertemperatur Schicht 2" annotation (
       Placement(visible = true, transformation(extent = {{140, 614}, {152, 626}}, rotation = 0), iconTransformation(extent = {{140, 614}, {152, 626}}, rotation = 0)));
-    Components.RealOutput_JW y_7304_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[6] - 273.15 annotation (
+    Components.RealOutput_JW y_7304_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[6] - 273.15 "Wärmespeicher Speichertemperatur Schicht 3" annotation (
       Placement(transformation(extent = {{140, 594}, {152, 606}})));
-    Components.RealOutput_JW y_7305_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[5] - 273.15 annotation (
+    Components.RealOutput_JW y_7305_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[5] - 273.15 "Wärmespeicher Speichertemperatur Schicht 4" annotation (
       Placement(transformation(extent = {{140, 574}, {152, 586}})));
-    Components.RealOutput_JW y_7306_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[4] - 273.15 annotation (
+    Components.RealOutput_JW y_7306_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[4] - 273.15 "Wärmespeicher Speichertemperatur Schicht 5" annotation (
       Placement(transformation(extent = {{140, 554}, {152, 566}})));
-    Components.RealOutput_JW y_7307_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[3] - 273.15 annotation (
+    Components.RealOutput_JW y_7307_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[3] - 273.15 "Wärmespeicher Speichertemperatur Schicht 6" annotation (
       Placement(transformation(extent = {{140, 534}, {152, 546}})));
-    Components.RealOutput_JW y_7308_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[2] - 273.15 annotation (
+    Components.RealOutput_JW y_7308_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[2] - 273.15 "Wärmespeicher Speichertemperatur Schicht 7" annotation (
       Placement(transformation(extent = {{140, 514}, {152, 526}})));
-    Components.RealOutput_JW y_7309_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[1] - 273.15 annotation (
+    Components.RealOutput_JW y_7309_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = heatStorageVariablePorts_central.T_layers[1] - 273.15 "Wärmespeicher Speichertemperatur Schicht 8" annotation (
       Placement(transformation(extent = {{140, 494}, {152, 506}})));
-    Components.RealOutput_JW y_8104_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8104_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8104_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8104_TRC.T - 273.15 "Wärmespeicher Rücklauftemperatur Steuerung Mischventil" annotation (
       Placement(transformation(extent = {{-492, 302}, {-504, 314}})));
-    Components.RealOutput_JW y_8103_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8103_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8103_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8103_TRC.T - 273.15 "Wärmespeicher Vorlauftemperatur Steuerung Mischventil" annotation (
       Placement(transformation(extent = {{-540, 284}, {-552, 296}})));
-    Components.RealOutput_JW y_8206_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8206_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8206_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8206_TRC.T - 273.15 "Wärmespeicher Wärmemengenzähler Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{12, 106}, {0, 118}})));
-    Components.RealOutput_JW y_8205_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8205_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_8205_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_8205_TRC.T - 273.15 "Wärmespeicher Wärmemengenzähler Vorlauftemperatur" annotation (
       Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 180, origin = {-10, 148})));
-    Components.RealOutput_JW y_8204_FRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = massFlowRate_8204_FRC.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_8204_FRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = massFlowRate_8204_FRC.dotm * 3600 / 1000 "Wärmespeicher Wärmemengenzähler Volumenstrom" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-34, 114})));
     Modelica.Blocks.Math.Add add1(k1 = -1) annotation (
       Placement(transformation(extent = {{-80, 34}, {-60, 54}})));
@@ -401,9 +401,9 @@ package FMUs
       Placement(transformation(extent = {{0, 40}, {20, 60}})));
     Modelica.Blocks.Math.Product product annotation (
       Placement(transformation(extent = {{-40, 40}, {-20, 60}})));
-    Components.RealOutput_JW y_WMZ_heatingGrid annotation (
+    Components.RealOutput_JW y_WMZ_heatingGrid(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Wärmenetz Wärmeleistung" annotation (
       Placement(transformation(extent = {{40, 44}, {52, 56}})));
-    Components.RealOutput_JW y_WMZ_Houses = sink.Load / 1000 annotation (
+    Components.RealOutput_JW y_WMZ_Houses(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = sink.Load / 1000 "Verbraucher Wärmeleistung" annotation (
       Placement(transformation(extent = {{834, 534}, {846, 546}})));
     Modelica.Blocks.Sources.Sine sineGeo_T_amb1(amplitude = 15, freqHz = 1 / (3600 * 24 * 365 * 2), offset = 3 + 273.15) annotation (
       Placement(visible = true, transformation(origin = {-1642, 864}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -417,9 +417,9 @@ package FMUs
       Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 270, origin = {-1452, 470})));
     Modelica.Blocks.Math.Gain gain4(k = 1000) annotation (
       Placement(visible = true, transformation(origin = {-1276, -108}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Q100_DistrictModel.Components.BooleanOutput_JW y_5203_OA = boiler.onOff_boiler annotation (
+    Q100_DistrictModel.Components.BooleanOutput_JW y_5203_OA = boiler.onOff_boiler "Gaskessel Betriebsmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1358, -110}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1362, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Q100_DistrictModel.Components.BooleanOutput_JW y_5204_ZA = logicalSwitch_5204_ZA.u2 annotation (
+    Q100_DistrictModel.Components.BooleanOutput_JW y_5204_ZA = not logicalSwitch_5204_ZA.u2 "Gaskessel Störmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1358, -124}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Logical.LogicalSwitch logicalSwitch_5204_ZA annotation (
       Placement(visible = true, transformation(origin = {-1322, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -427,23 +427,23 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1350, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Sources.BooleanConstant booleanConstant2(k = false) annotation (
       Placement(visible = true, transformation(origin = {-1290, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Q100_DistrictModel.Components.BooleanOutput_JW y_2102_ZA_2 = switch_2102_ZA_2.u2 annotation (
+    Q100_DistrictModel.Components.BooleanOutput_JW y_2102_ZA_2 = not switch_2102_ZA_2.u2 "Wärmepumpe 2 Störmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1522, 616}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Logical.Not not1 annotation (
       Placement(visible = true, transformation(origin = {-1502, 430}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     Modelica.Blocks.Logical.GreaterThreshold greaterThreshold_2101_OA_2 annotation (
       Placement(visible = true, transformation(origin = {-1512, 540}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Q100_DistrictModel.Components.BooleanOutput_JW y_2101_OA_2 = greaterThreshold_2101_OA_2.y annotation (
+    Q100_DistrictModel.Components.BooleanOutput_JW y_2101_OA_2 = greaterThreshold_2101_OA_2.y "Wärmepumpe 2 Betriebsmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1522, 624}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1332, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Gain gain5(k = 1000) annotation (
       Placement(visible = true, transformation(origin = {-1402, 620}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
-    Modelica.Blocks.Interfaces.BooleanInput u_disturb_boiler annotation (
+    Modelica.Blocks.Interfaces.BooleanInput u_disturb_boiler "Gaskessel externe Störung [Boolean]" annotation (
       Placement(transformation(extent = {{-2240, 20}, {-2200, 60}})));
-    Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump2 annotation (
+    Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump2 "Wärmepumpe 2 externe Störung [Boolean]" annotation (
       Placement(transformation(extent = {{-2240, 400}, {-2200, 440}})));
     Modelica.Blocks.Logical.Or or1 annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-1538, 444})));
-    Modelica.Blocks.Interfaces.RealInput u_loadProfile_kW annotation (
+    Modelica.Blocks.Interfaces.RealInput u_loadProfile_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Thermische Verbraucher Lastprofil" annotation (
       Placement(transformation(extent = {{-2240, 1340}, {-2200, 1380}})));
     Modelica.Blocks.Math.Gain gain8(k = 1) annotation (
       Placement(visible = true, transformation(origin = {-1570, 1360}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -467,15 +467,15 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1108, 180}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatStorage_unload_FF58(T_0 = 50 + 273.15, length = 0.1,selectable = false) annotation (
       Placement(visible = true, transformation(origin = {-1148, 180}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-    Components.RealOutput_JW y_4516_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_4516_FRC.dotm * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_4516_FRC(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = massFlowRate_4516_FRC.dotm * 3600 / 1000 "BHKW Wärmemengenzähler Volumenstrom" annotation (
       Placement(transformation(extent = {{6, -6}, {-6, 6}}, rotation = 0, origin = {-1190, 194})));
-    Components.RealOutput_JW y_4518_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4518_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_4518_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4518_TRC.T - 273.15 "BHKW Wärmemengenzähler Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1116, 186}, {-1128, 198}})));
-    Components.RealOutput_JW y_4517_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4517_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_4517_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4517_TRC.T - 273.15 "BHKW Wärmemengenzähler Vorlauftemperatur" annotation (
       Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 180, origin = {-1170, 228})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_4515_TRC annotation (
       Placement(visible = true, transformation(origin = {-1248, 180}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_4515_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4515_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_4515_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4515_TRC.T - 273.15 "BHKW Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1256, 186}, {-1268, 198}})));
     AixLib.FastHVAC.Components.Pipes.DynamicPipe dynamicPipe_HeatStorage_unload_FF59(T_0 = 50 + 273.15, length = 0.1,selectable = false) annotation (
       Placement(visible = true, transformation(origin = {-1216, 180}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
@@ -495,9 +495,9 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1348, 180}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_4504_TRC annotation (
       Placement(visible = true, transformation(origin = {-1446, 180}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_4504_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4504_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_4504_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4504_TRC.T - 273.15 "BHKW Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1454, 186}, {-1466, 198}})));
-    Components.RealOutput_JW y_4506_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4506_TRC.T - 273.15 annotation (
+    Components.RealOutput_JW y_4506_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_4506_TRC.T - 273.15 "BHKW Vorlauftemperatur Steuerung Mischventil" annotation (
       Placement(transformation(extent = {{-6, -6}, {6, 6}}, rotation = 180, origin = {-1388, 228})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_4506_TRC annotation (
       Placement(visible = true, transformation(origin = {-1378, 240}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
@@ -527,9 +527,9 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1534, 270}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
     Modelica.Blocks.Logical.Not not5 annotation (
       Placement(visible = true, transformation(origin = {-1570, 330}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.BooleanInput u_disturb_CHP annotation (
+    Modelica.Blocks.Interfaces.BooleanInput u_disturb_CHP "BHKW externe Störung [Boolean]" annotation (
       Placement(transformation(extent = {{-2240, 310}, {-2200, 350}})));
-    Modelica.Blocks.Interfaces.RealInput u_CHP_0_1 annotation (
+    Modelica.Blocks.Interfaces.RealInput u_CHP_0_1(min=0, max=1) "BHKW Ansteuerung" annotation (
       Placement(transformation(extent = {{-2240, 270}, {-2200, 310}})));
     Modelica.Blocks.Math.RealToBoolean realToBoolean annotation (
       Placement(visible = true, transformation(origin = {-1558, 240}, extent = {{-10, 10}, {10, -10}}, rotation = 270)));
@@ -537,17 +537,17 @@ package FMUs
       Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1430, 210})));
     Modelica.Blocks.Sources.Constant const15(k = 95 + 273.15) annotation (
       Placement(visible = true, transformation(origin = {-1490, 216}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.BooleanOutput_JW y_4202_ZA = CHP.onOff annotation (
+    Components.BooleanOutput_JW y_4202_ZA = not switch_4202_OA.u2 "BHKW Störmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1580, 182}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.BooleanOutput_JW y_4201_OA = switch_4202_OA.u2 annotation (
+    Components.BooleanOutput_JW y_4201_OA = CHP.onOff "BHKW Betriebsmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1580, 196}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1362, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_4203_FQ(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = CHP.enthalpyPort_a.m_flow * 3600 / 1000 annotation (
+    Components.RealOutput_JW y_4203_FQ(final quantity = "VolumeFlowRate", final unit = "m3/h", displayUnit = "m3/h", min = 0) = CHP.enthalpyPort_a.m_flow * 3600 / 1000 "BHKW Gasmengenzähler" annotation (
       Placement(visible = true, transformation(origin = {-1580, 212}, extent = {{-6, 6}, {6, -6}}, rotation = 180), iconTransformation(extent = {{-6, -6}, {6, 6}}, rotation = 180)));
     Components.calc_valve calc_valve1 annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 180, origin = {-1290, 138})));
     Modelica.Blocks.Sources.Constant const23(k = 90) annotation (
       Placement(visible = true, transformation(origin = {-1250, 132}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Components.RealOutput_JW y_CHP_dotQ = CHP.Capacity[2] / 1000 annotation (
+    Components.RealOutput_JW y_CHP_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = CHP.Capacity[2] / 1000 "BHKW Wärmeleistung" annotation (
       Placement(visible = true, transformation(extent = {{-1540, 184}, {-1532, 192}}, rotation = 0), iconTransformation(extent = {{-1312, 28}, {-1304, 36}}, rotation = 0)));
     AixLib.FastHVAC.Components.Sensors.MassFlowSensor massFlowRate2 annotation (
       Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 90, origin = {-1000, 650})));
@@ -609,17 +609,17 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1740, 620}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
     Modelica.Blocks.Math.Add add2 annotation (
       Placement(transformation(extent = {{-1790, 590}, {-1770, 610}})));
-    Components.RealOutput_JW y_heatpump1_dotQ = heatPump1.innerCycle.PerformanceDataHPHeating.QCon / 1000 annotation (
+    Components.RealOutput_JW y_heatpump1_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump1.innerCycle.PerformanceDataHPHeating.QCon / 1000 "Wärmepumpe 1 Wärmeleistung" annotation (
       Placement(transformation(extent = {{-1864, 636}, {-1856, 644}})));
-    Components.RealOutput_JW y_heatpump1_Pel = heatPump1.innerCycle.PerformanceDataHPHeating.Pel / 1000 annotation (
+    Components.RealOutput_JW y_heatpump1_Pel(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump1.innerCycle.PerformanceDataHPHeating.Pel / 1000 "Wärmepumpe 1 Elektrische Leistung" annotation (
       Placement(visible = true, transformation(extent = {{-1864, 628}, {-1856, 636}}, rotation = 0), iconTransformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0)));
-    Components.RealOutput_JW y_2202_TRC_1(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2202_TRC_1.T - 273.15 annotation (
+    Components.RealOutput_JW y_2202_TRC_1(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2202_TRC_1.T - 273.15 "Wärmepumpe 1 Rücklauftemperatur" annotation (
       Placement(transformation(extent = {{-1784, 526}, {-1796, 538}})));
-    Components.RealOutput_JW y_2204_TRC_1(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2204_TRC_1.T - 273.15 annotation (
+    Components.RealOutput_JW y_2204_TRC_1(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_2204_TRC_1.T - 273.15 "Wärmepumpe 1 Vorlauftemperatur Steuerung Mischventil" annotation (
       Placement(transformation(extent = {{-1760, 708}, {-1772, 720}})));
-    Components.BooleanOutput_JW y_2102_ZA_1 = switch_2102_ZA_1.u2 annotation (
+    Components.BooleanOutput_JW y_2102_ZA_1 = not switch_2102_ZA_1.u2 "Wärmepumpe 1 Störmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1860, 616}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Components.BooleanOutput_JW y_2101_OA_1 = greaterThreshold_2101_OA_1.y annotation (
+    Components.BooleanOutput_JW y_2101_OA_1 = greaterThreshold_2101_OA_1.y "Wärmepumpe 1 Betriebsmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1860, 624}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1332, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Pumps.FluidSource fluidSource2 annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 0, origin = {-1940, 860})));
@@ -657,7 +657,7 @@ package FMUs
       Placement(transformation(extent = {{-1610, 730}, {-1630, 750}})));
     Modelica.Blocks.Sources.Constant const28(k = 0.5) annotation (
       Placement(visible = true, transformation(origin = {-1210, 580}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump1 annotation (
+    Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump1 "Wärmepumpe 1 externe Störung [Boolean]" annotation (
       Placement(transformation(extent = {{-2240, 490}, {-2200, 530}})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_1313_TRC
       annotation (Placement(visible=true, transformation(
@@ -717,7 +717,7 @@ package FMUs
       final quantity="ThermodynamicTemperature",
       final unit="degC",
       displayUnit="degC",
-      min=0)=temperature_1315_TRC.T - 273.15 annotation (Placement(transformation(
+      min=0)=temperature_1315_TRC.T - 273.15 "HT-Wärmepumpe Wärmemengenzähler Vorlauftemperatur" annotation (Placement(transformation(
           extent={{-6,-6},{6,6}},
           rotation=180,
           origin={-1252,1148})));
@@ -725,13 +725,13 @@ package FMUs
       final quantity="ThermodynamicTemperature",
       final unit="degC",
       displayUnit="degC",
-      min=0)=temperature_1316_TRC.T - 273.15
+      min=0)=temperature_1316_TRC.T - 273.15 "HT-Wärmepumpe Wärmemengenzähler Rücklauftemperatur"
       annotation (Placement(transformation(extent={{-1198,1066},{-1210,1078}})));
     Components.RealOutput_JW y_1314_FRC(
       final quantity="VolumeFlowRate",
       final unit="m3/h",
       displayUnit="m3/h",
-      min=0)=massFlowRate_1314_FRC.dotm*3600/1000 annotation (Placement(
+      min=0)=massFlowRate_1314_FRC.dotm*3600/1000 "HT-Wärmepumpe Wärmemengenzähler Volumenstrom" annotation (Placement(
           transformation(
           extent={{6,-6},{-6,6}},
           rotation=0,
@@ -740,7 +740,7 @@ package FMUs
       final quantity="ThermodynamicTemperature",
       final unit="degC",
       displayUnit="degC",
-      min=0)=temperature_1313_TRC.T - 273.15
+      min=0)=temperature_1313_TRC.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur"
       annotation (Placement(transformation(extent={{-1338,1068},{-1350,1080}})));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_1302_TRC
       annotation (Placement(visible=true, transformation(
@@ -751,13 +751,13 @@ package FMUs
       final quantity="ThermodynamicTemperature",
       final unit="degC",
       displayUnit="degC",
-      min=0)=temperature_1302_TRC.T - 273.15
+      min=0)=temperature_1302_TRC.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur"
       annotation (Placement(transformation(extent={{-1536,1066},{-1548,1078}})));
     Components.RealOutput_JW y_1304_TRC(
       final quantity="ThermodynamicTemperature",
       final unit="degC",
       displayUnit="degC",
-      min=0)=temperature_1304_TRC.T - 273.15 annotation (Placement(transformation(
+      min=0)=temperature_1304_TRC.T - 273.15 "HT-Wärmepumpe Vorlauftemperatur Steuerung Mischventil" annotation (Placement(transformation(
           extent={{-6,-6},{6,6}},
           rotation=180,
           origin={-1470,1148})));
@@ -791,9 +791,9 @@ package FMUs
       uHigh=-80,uLow=-85)                                                                         annotation (
       Placement(visible = true, transformation(extent={{-1950,1010},{-1970,1030}},    rotation = 0)));
 
-    Modelica.Blocks.Interfaces.BooleanInput u_disturb_electrolysis annotation (
+    Modelica.Blocks.Interfaces.BooleanInput u_disturb_electrolysis "Elektrolyseur externe Störung [Boolean]" annotation (
         Placement(transformation(extent={{-2240,1020},{-2200,1060}})));
-    Modelica.Blocks.Interfaces.RealInput u_electrolysis_0_1
+    Modelica.Blocks.Interfaces.RealInput u_electrolysis_0_1(min = 0, max = 1) "Elektrolyseur Ansteuerung"
       annotation (Placement(transformation(extent={{-2240,950},{-2200,990}})));
   Modelica.Blocks.Math.RealToBoolean realToBoolean2 annotation (
       Placement(visible = true, transformation(origin = {-2004, 1160}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
@@ -809,15 +809,23 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1040, 790}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   AixLib.FastHVAC.Components.Sensors.MassFlowSensor massFlowRate annotation (
       Placement(visible = true, transformation(origin = {-1040, 830}, extent = {{10, 10}, {-10, -10}}, rotation = 90)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = switch_1101_OA.u2 annotation (
+      Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = Electrolyseur.onOff "Elektrolyseur Betriebsmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1854, 1100}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = Electrolyseur.onOff annotation (
+      Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = not switch_1101_OA.u2 "Elektrolyseur Störmeldung [Boolean]" annotation (
       Placement(visible = true, transformation(origin = {-1854, 1086}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Components.RealOutput_JW y_Elektrolyseur_dotQ = Electrolyseur.Capacity[2]/1000 annotation (
+      Components.RealOutput_JW y_Elektrolyseur_dotQ(
+      final quantity="Power",
+      final unit="kW",
+      displayUnit="kW",
+      min=0) = Electrolyseur.Capacity[2]/1000 "Elektrolyseur Wärmeleistung" annotation (
       Placement(visible = true, transformation(origin = {-1854, 1116}, extent = {{-6, 6}, {6, -6}}, rotation = 180)));
   Modelica.Blocks.Math.Add add(k1 = -1)  annotation (
       Placement(visible = true, transformation(origin = {-1572, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealInput u_temperature_heatingGrid_set annotation (
+  Modelica.Blocks.Interfaces.RealInput u_temperature_heatingGrid_set(
+      final quantity="ThermodynamicTemperature",
+      final unit="degC",
+      displayUnit="degC",
+      min=0, max=100) "Wärmenetz Solltemperatur" annotation (
       Placement(visible = true, transformation(extent = {{-2238, -170}, {-2198, -130}}, rotation = 0), iconTransformation(extent = {{-2240, -300}, {-2200, -260}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const6(k = 2) annotation (
       Placement(visible = true, transformation(origin = {-1610, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -1024,7 +1032,7 @@ package FMUs
     connect(dynamicPipe_HeatStorage_unload_FF29.enthalpyPort_a1, massFlowRate6.enthalpyPort_b) annotation (
       Line(points = {{-808.2, 720}, {-798.6, 720}, {-798.6, 719.9}, {-789, 719.9}}, color = {0, 128, 255}));
     connect(massFlowRate5.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF30.enthalpyPort_a1) annotation (
-      Line(points={{-901,759.9},{-887.8,759.9},{-887.8,760},{-874,760}},
+      Line(points={{-901,759.9},{-887.8,759.9},{-887.8,760},{-873.8,760}},
                                                 color = {176, 0, 0}));
     connect(massFlowRate7.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF31.enthalpyPort_b1) annotation (
       Line(points = {{-929.2, 719.9}, {-924.5, 719.9}, {-924.5, 720}, {-919.8, 720}}, color = {0, 128, 255}));
@@ -1537,7 +1545,7 @@ package FMUs
     connect(massFlowRate.dotm, calc_valve_ratio2.u_dotm_out) annotation (
       Line(points={{-1031,829},{-1000,829},{-1000,790},{-992,790}},          color = {0, 0, 127}));
     connect(massFlowRate.enthalpyPort_b, dynamicPipe.enthalpyPort_a1) annotation (
-      Line(points={{-1040.1,821},{-1040.1,809.8},{-1040,809.8},{-1040,800}},
+      Line(points={{-1040.1,821},{-1040.1,809.8},{-1040,809.8},{-1040,799.8}},
                                                   color = {176, 0, 0}));
     connect(massFlowRate.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF57.enthalpyPort_b1) annotation (
       Line(points={{-1040.1,838.8},{-1040.1,1160},{-1120.2,1160}},color = {176, 0, 0}));
