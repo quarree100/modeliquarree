@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-'''
-**hptestbench: OpenModelica Heatpump Testbench in Python**
+"""hptestbench: OpenModelica Heatpump Testbench in Python.
 
 Copyright (C) 2019 Joris Nettelstroth
 
@@ -23,7 +22,11 @@ hptestbench
 
 This Python package allows simulating heatpumps with OpenModelica, in order
 to evaluate their performance and integrate the results in other workflows.
-'''
+
+TODO: "Installation" of different heatpump does not actually work,
+because setElementModifierValue() is not behaving as expected. See:
+https://github.com/OpenModelica/OpenModelica/issues/7182
+"""
 
 import os
 import sys
@@ -40,15 +43,14 @@ pd.plotting.register_matplotlib_converters()
 
 
 def main():
-    '''The typical workflow with the heatpump testbench.
-    '''
+    """Run the main workflow with the heatpump testbench."""
     # Create our testbench:
     bench = testbench()
 
     # Optionally, install a specific heat pump
     # bench.install_HP('Q100_air_water_001')  # optional (custom)
-    # bench.install_HP('AlphaInnotec_SW170I')  # optional (AixLib)
-    # bench.install_HP('Vitocal350BWH113')  # optional (AixLib)
+    # bench.install_HP('EN14511.AlphaInnotec_SW170I')  # optional (AixLib)
+    # bench.install_HP('EN14511.Vitocal350BWH113')  # optional (AixLib)
 
     # Run the simulation with Modelica
     bench.test_with_modelica(make_FMU=True)
@@ -58,25 +60,26 @@ def main():
 
     # Evaluate the results
     data = bench.evaluate()
-    COP_mean = data['heatPump1.CoP_out'].mean()
+    COP_mean = data['heatPump_IO.COP'].mean()
 
     logger.info('The annual mean COP is {:.3f}'.format(COP_mean))
 
 
 class testbench(object):
-    '''The heatpump testbench. Prepare, (optionally) install a heatpump,
-    test, and evaluate the results.
-    '''
+    """The heatpump testbench.
+
+    Prepare, (optionally) install a heatpump, test, and evaluate the results.
+    """
 
     def __init__(self):
-        '''Set all required options of ``self``.
+        """Set all required options of ``self``.
+
         This includes the modelica model name, the weather data (its location
         is user dependend), simulation times and the desired solutions.
 
         .. note::
             We change directory to a simulation folder
-        '''
-
+        """
         # Create and change to a subdirectory to create all simulation
         # files there
         sim_dir = os.path.join(
@@ -106,13 +109,16 @@ class testbench(object):
         # from the simulation. They are grouped by types of units, to
         # allow unit conversions in post_processing()
         self.solutions = dict(
-                temperatures=['temperatureSensor.T',  # Convert K to °C
-                              'fluidSource1.T_fluid',
-                              'weaBus.TDryBul',
+                # Convert K to °C
+                temperatures=['heatPump_IO.T_evap_in',
+                              'heatPump_IO.T_evap_out',
+                              'heatPump_IO.T_cond_in',
+                              'heatPump_IO.T_cond_out',
                               ],
-                normalized=['heatPump1.CoP_out'],
-                power=['heatPump1.heatFlow_dotQCo.Q_flow',  # Convert W to kW
-                       'heatPump1.Pel_out',
+                normalized=['heatPump_IO.COP'],
+                # Convert W to kW
+                power=['heatPump_IO.P_th_cond',
+                       'heatPump_IO.P_el',
                        ],
                 )
 
@@ -162,11 +168,16 @@ class testbench(object):
 
             self.HP_dict['path'] = os.path.abspath(database_path)
 
-            self.HP_dict['replace_expression'] = '''
-            setComponentModifierValue(HP_testbench.HeatPump_weather,
-                                     heatPump1.data_table,
-                                     $Code(=HP_database.Q100_air_water_001())
-                                     )'''
+            self.HP_dict['replace_expressions'] = [
+                '''setElementModifierValue(
+                HP_testbench.HeatPump_IO,
+                heatPump.PerDataHea,
+                $Code((
+                    redeclare model PerDataHea =
+                    AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
+                    (dataTable=HP_database.Q100_air_water_001())))
+                )'''
+                ]
 
             # Set default for FMU, depending on operating system:
             self.FMU_path = os.path.join(
@@ -176,17 +187,29 @@ class testbench(object):
 
         else:
             # Assume the heatpump is part of the AixLib
-            self.HP_dict['replace_expression'] = '''
-            setComponentModifierValue(
-                HP_testbench.HeatPump_weather,
-                heatPump1.data_table,
-                $Code(=AixLib.DataBase.HeatPump.EN255.{}())
-                )'''.format(HP_select)
-
+            self.HP_dict['replace_expressions'] = [
+                '''getElementModifierNames(HP_testbench.HeatPump_IO,
+                                           "heatPump")''',
+                '''getElementModifierValue(HP_testbench.HeatPump_IO,
+                                           heatPump.PerDataHea)''',
+                '''removeElementModifiers(HP_testbench.HeatPump_IO,
+                                          "heatPump", false)''',
+                '''setElementModifierValue(
+                HP_testbench.HeatPump_IO,
+                heatPump.PerDataHea,
+                $Code((
+                    redeclare model PerDataHea =
+                    AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D
+                    (dataTable=AixLib.DataBase.HeatPump.{}())))
+                )'''.format(HP_select),
+                '''getElementModifierNames(HP_testbench.HeatPump_IO,
+                                           "heatPump")''',
+                '''getElementModifierValue(HP_testbench.HeatPump_IO,
+                                           heatPump.PerDataHea)''',
+                ]
 
     def test_with_modelica(self, make_FMU=False):
-        '''Direct simulation with modelica model
-        '''
+        """Run direct simulation with modelica model."""
         self.data = run_ModelicaSystem(self.fileName, self.modelName,
                                        self.solutions, self.stepSize,
                                        self.stopTime, self.parameters,
@@ -194,12 +217,12 @@ class testbench(object):
                                        HP_dict=self.HP_dict)
 
     def test_with_FMU(self):
-        '''Direct simulation with FMU created from modelica model
-        '''
+        """Run direct simulation with FMU created from modelica model."""
         self.data = run_FMU(self.FMU_path, self.solutions,
                             self.stepSize, self.stopTime, self.parameters)
 
     def evaluate(self, plot_show=True):
+        """Combine post-processing, printing and plotting."""
         data = post_processing(self.data, self.solutions, self.stepSize)
 
         logger.info('Resulting DataFrame:')
@@ -217,7 +240,9 @@ class testbench(object):
 def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
                        stopTime=60, parameters=dict(), list_models=[],
                        make_FMU=False, HP_dict=dict()):
-    '''Create a ``ModelicaSystem`` object which provides functions to
+    """Run the simulation with OpenModelica.
+
+    Create a ``ModelicaSystem`` object which provides functions to
     load, configure and simulate a model.
 
     Args:
@@ -250,7 +275,7 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
         As of 2019-12-04 this script requires the latest version from
         https://github.com/OpenModelica/OMPython
 
-    '''
+    """
     from OMPython import ModelicaSystem  # import only if necessary
 
     # If we want to simulate with some other than the default heatpump,
@@ -265,12 +290,15 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
     mod = ModelicaSystem(fileName=fileName, modelName=modelName,
                          lmodel=list_models)
 
-    if HP_dict.get('replace_expression', False):
+    if HP_dict.get('replace_expressions', False):
         # This part is tricky! If we want to change the heat pump that is
         # used in the simulation, we cannot simply use setParameters(),
         # because we are replacing the reference to a "record".
         # Instead we have to modify the component value directly...
-        mod.sendExpression(HP_dict['replace_expression'])
+        for expression in HP_dict['replace_expressions']:
+            answer = mod.sendExpression(expression)
+            logger.debug(expression)
+            logger.debug(answer)
         # ... and re-build the model afterwards, for the changes to take effect
         mod.buildModel()
 
@@ -338,8 +366,9 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
 def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
             parameters=dict(), make_FMU=False):
-    '''Perform the simulation with an FMU by using the
-    PyFMI package. This is using the "Model Exchange" method.
+    """Perform the simulation with an FMU by using the PyFMI package.
+
+    This is using the "Model Exchange" method.
 
     Args:
         fileName (str): Name (including path) of a *.fmu file with the model
@@ -381,7 +410,7 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
     .. code::
 
         conda install -c conda-forge assimulo
-    '''
+    """
     import pyfmi
 
     try:
@@ -418,7 +447,7 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
 
 def post_processing(data, eval_values, stepSize,
                     origin=pd.Timestamp('2018-01-01')):
-    '''Post processing steps:
+    """Perform post processing steps.
 
     - Apply a time index, while removing the first and all other time
       steps that do not match the stepSize (modelica can simulate with a
@@ -426,8 +455,7 @@ def post_processing(data, eval_values, stepSize,
     - Apply unit conversions
     - Plot data
     - Return data
-    '''
-
+    """
     # Create a time index for our data
     data['time'] = pd.to_datetime(data['time'], unit='s', origin=origin)
     data.set_index('time', drop=True, inplace=True)
@@ -476,9 +504,7 @@ def post_processing(data, eval_values, stepSize,
 
 
 def setup():
-    '''Basic setup of Pandas' terminal output, logger and colours.
-    '''
-
+    """Set up Pandas' terminal output, logger and colours."""
     # Define the logging function
     logging.basicConfig(format='%(asctime)-15s %(levelname)-8s %(message)s')
 

@@ -18,6 +18,9 @@ Modelica example project.
 
 ## HP_testbench
 
+> Careful: Until issue #5 Update heatpump testbench to AixLib 0.9.1 has been
+> resolved, this part is not fully functional!
+
 This directory contains a Python package called ``hptestbench``, which allows
 simulating heatpumps with OpenModelica or FMUs, in order to evaluate their
 performance and integrate the results in other workflows. The main purpose is
@@ -45,6 +48,8 @@ conda develop .
 ```
 This may be the preferred option, since it just registers a link to the Git
 directory. After any changes are made, no new installation is required.
+Since this way no dependencies are installed, you may find the file
+''requirements.txt'' useful for installing those.
 
 You can now simulate FMUs with [``pyfmi``](https://pypi.org/project/PyFMI/).
 If you want to simulate via OpenModelica, both

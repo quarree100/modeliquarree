@@ -41,7 +41,7 @@ def run_ModelicaSystem():
     file = os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      '../modelica/Q100_DistrictModel/package.mo'))
-    model = 'Q100_DistrictModel.Simulations.SIM_RI_Schema'
+    model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
     input_path = os.path.join(os.path.dirname(os.path.abspath(file)), 'input/')
 
     # Change to a simulation directory
@@ -55,11 +55,11 @@ def run_ModelicaSystem():
                          commandLineOptions='-d=newInst')
 
     # Adapt the path of all the input files
-    cmd = '''setComponentModifierValue(
-             Q100_DistrictModel.Simulations.SIM_RI_Schema,
-             inputData.Pfad,
-             $Code(="{}"))'''.format(input_path.replace("\\", "/"))
-    mod.sendExpression(cmd)
+    # cmd = '''setComponentModifierValue(
+    #          Q100_DistrictModel.Simulations.SIM_RI_Schema,
+    #          inputData.Pfad,
+    #          $Code(="{}"))'''.format(input_path.replace("\\", "/"))
+    # mod.sendExpression(cmd)
 
     # Rebuild the model afterwards, for the changes to take effect
     mod.buildModel()
@@ -79,8 +79,9 @@ def run_ModelicaSystem():
     data = pd.DataFrame(data=solution_data.T, columns=solution_list)
     print(data)
 
-    # Evaluate some any variable just to see if the simulation  finished:
-    return data['heatStorageVariablePorts_central.Heat_loss'].mean() < 0
+    # Evaluate some variable just to see if the simulation finished:
+    condition = data['heatStorageVariablePorts_central.Heat_loss'].mean() < 0
+    return condition
 
 
 def setup():
