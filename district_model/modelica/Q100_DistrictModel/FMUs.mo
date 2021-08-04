@@ -758,11 +758,43 @@ package FMUs
       Placement(transformation(extent = {{-2160, -160}, {-2140, -140}})));
     Modelica.Blocks.Sources.Constant const21(k = 70) annotation(
       Placement(visible = true, transformation(origin = {-2150, -188}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Components.busbar_4consumer busbar_4consumer1 annotation(
+      Placement(transformation(extent = {{380, 1060}, {460, 1140}})));
+    Modelica.Blocks.Interfaces.RealInput u_loadProfile_DemandPower_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Elektrischer Verbraucher Lastprofil" annotation(
+      Placement(transformation(extent = {{-2240, 1260}, {-2200, 1300}})));
+    Components.exeptionHandling_no_division_zero exeptionHandling_no_division_zero2 annotation(
+      Placement(transformation(extent = {{-2160, 1270}, {-2140, 1290}})));
+    Modelica.Blocks.Math.Add add4 annotation(
+      Placement(transformation(extent = {{-1480, 900}, {-1460, 920}})));
+    Components.RealOutput_JW y_Elektrolyseur_Pel(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = Electrolyseur.Capacity[1] / 1000 "Elektrolyseur elektrische Leistung" annotation(
+      Placement(visible = true, transformation(origin = {-1854, 1130}, extent = {{-6, 6}, {6, -6}}, rotation = 180)));
+    Modelica.Blocks.Math.Gain gain10(k = 1 / 1000) annotation(
+      Placement(transformation(extent = {{-10, 10}, {10, -10}}, rotation = 90, origin = {-1420, 290})));
+    Modelica.Blocks.Interfaces.RealInput u_loadProfile_DemandPower_kW1(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Elektrischer Verbraucher Lastprofil" annotation(
+      Placement(transformation(extent = {{-2240, 1300}, {-2200, 1340}})));
+    Components.exeptionHandling_no_division_zero exeptionHandling_no_division_zero3 annotation(
+      Placement(transformation(extent = {{-2160, 1310}, {-2140, 1330}})));
+    Components.exeptionHandling_no_division_zero exeptionHandling_no_division_zero4 annotation(
+      Placement(transformation(extent = {{-2160, 1230}, {-2140, 1250}})));
+    Modelica.Blocks.Interfaces.RealInput u_loadProfile_DemandEMob_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "E-Mobilität Lastprofil" annotation(
+      Placement(transformation(extent = {{-2240, 1220}, {-2200, 1260}})));
+    Components.RealOutput_JW y_DirectConsumption_CHP(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Direktverbrauch der vom BHKW erzeugten Leistung" annotation(
+      Placement(transformation(extent = {{540, 1126}, {552, 1138}})));
+    Components.RealOutput_JW y_FeedIn_CHP(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Einspeiseleistung des BHKWs" annotation(
+      Placement(transformation(extent = {{540, 1114}, {552, 1126}})));
+    Components.RealOutput_JW y_FeedIn_PV(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Einspeiseleistung der PV-Anlage" annotation(
+      Placement(transformation(extent = {{540, 1066}, {552, 1078}})));
+    Components.RealOutput_JW y_DirectConsumption_PV(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Direktverbrauch der von der PV-Anlage erzeugten Leistung" annotation(
+      Placement(transformation(extent = {{540, 1102}, {552, 1114}})));
+    Components.RealOutput_JW y_GridLoad(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Netzbezugsleistung" annotation(
+      Placement(transformation(extent = {{560, 1078}, {572, 1090}})));
+    Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.ControlBus controlBus_7_heatStorage "Signal-Bus des Pufferspeichers" annotation(
+      Placement(transformation(extent = {{232, 570}, {272, 610}}), iconTransformation(extent = {{-488, 590}, {-468, 610}})));
   equation
     connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation(
-      Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}));
+      Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_HeatGrid_FF.enthalpyPort_b, dynamicPipe_HeatGrid_FF.enthalpyPort_a1) annotation(
-      Line(points = {{319, 160.1}, {350.2, 160.1}, {350.2, 160}, {380.2, 160}}, color = {176, 0, 0}));
+      Line(points = {{319, 160.1}, {350.2, 160.1}, {350.2, 160}, {380.2, 160}}, color = {176, 0, 0}, thickness = 1));
     connect(prescribedTemperature.port, dynamicPipe_HeatGrid_RF.heatPort_outside) annotation(
       Line(points = {{360, 138}, {398, 138}, {398, 105.2}, {398.8, 105.2}}, color = {191, 0, 0}));
     connect(prescribedTemperature.port, dynamicPipe_HeatGrid_FF.heatPort_outside) annotation(
@@ -772,43 +804,43 @@ package FMUs
     connect(heatStorageVariablePorts_central.out, fixedTemperature.port) annotation(
       Line(points = {{79.2, 681.6}, {121.6, 681.6}, {121.6, 680}, {166, 680}}, color = {191, 0, 0}));
     connect(massFlowRate_2214_FRC.enthalpyPort_a, temperature_2216_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1123.2, 529.9}, {-1109, 529.9}}, color = {0, 128, 255}));
+      Line(points = {{-1123.2, 529.9}, {-1109, 529.9}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2213_TRC.enthalpyPort_a, massFlowRate_2214_FRC.enthalpyPort_b) annotation(
-      Line(points = {{-1159.2, 529.9}, {-1141, 529.9}}, color = {0, 128, 255}));
+      Line(points = {{-1159.2, 529.9}, {-1141, 529.9}}, color = {0, 128, 255}, thickness = 1));
     connect(const10.y, heatPump2.iceFac_in) annotation(
       Line(points = {{-1569.5, 621}, {-1564, 621}, {-1564, 620.88}, {-1555.87, 620.88}}, color = {0, 0, 127}));
     connect(const11.y, fluidSource3.dotm) annotation(
       Line(points = {{-1631, 830}, {-1622, 830}, {-1622, 857.4}, {-1610, 857.4}}, color = {0, 0, 127}));
     connect(pump_8113_NP.enthalpyPort_b, temperature_8205_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-310.4, 160}, {-160, 160}, {-160, 160.1}, {-8.8, 160.1}}, color = {176, 0, 0}));
+      Line(points = {{-310.4, 160}, {-160, 160}, {-160, 160.1}, {-8.8, 160.1}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate_8204_FRC.enthalpyPort_a, temperature_8206_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-11.2, 99.9}, {11, 99.9}}, color = {0, 128, 255}));
+      Line(points = {{-11.2, 99.9}, {11, 99.9}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_1.enthalpyPort_ab, massFlowRate_8204_FRC.enthalpyPort_b) annotation(
-      Line(points = {{-170.2, 100}, {-100, 100}, {-100, 99.9}, {-29, 99.9}}, color = {0, 128, 255}));
+      Line(points = {{-170.2, 100}, {-100, 100}, {-100, 99.9}, {-29, 99.9}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_1.enthalpyPort_b, temperature_8301_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-180, 90}, {-180, 48.8}, {-180.1, 48.8}}, color = {0, 128, 255}));
+      Line(points = {{-180, 90}, {-180, 48.8}, {-180.1, 48.8}}, color = {0, 128, 255}, thickness = 1));
     connect(manifold_NS_1.enthalpyPort_a[2], temperature_8302_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-240, 100.5}, {-240, 69}, {-240.1, 69}}, color = {0, 128, 255}));
+      Line(points = {{-240, 100.5}, {-240, 69}, {-240.1, 69}}, color = {0, 128, 255}, thickness = 1));
     connect(manifold_NS_1.enthalpyPort_a[1], threeWayValve_NS_1.enthalpyPort_a) annotation(
-      Line(points = {{-240, 99.5}, {-216, 99.5}, {-216, 100}, {-190, 100}}, color = {0, 128, 255}));
+      Line(points = {{-240, 99.5}, {-216, 99.5}, {-216, 100}, {-190, 100}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_8302_TRC.enthalpyPort_a, fluidSource4.enthalpyPort_b) annotation(
-      Line(points = {{-240.1, 51.2}, {-240.1, 43.6}, {-239, 43.6}, {-239, 18}}, color = {0, 128, 255}));
+      Line(points = {{-240.1, 51.2}, {-240.1, 43.6}, {-239, 43.6}, {-239, 18}}, color = {0, 128, 255}, thickness = 1));
     connect(const12.y, fluidSource4.T_fluid) annotation(
       Line(points = {{-259, -12}, {-242.2, -12}, {-242.2, 0}}, color = {0, 0, 127}));
     connect(const13.y, threeWayValve_NS_1.opening) annotation(
       Line(points = {{-161, 120}, {-180, 120}, {-180, 109}}, color = {0, 0, 127}));
     connect(massFlowRate3.enthalpyPort_b, vessel4.enthalpyPort_a) annotation(
-      Line(points = {{-179.9, -27}, {-179.9, -33.5}, {-180, -33.5}, {-180, -39}}, color = {0, 128, 255}));
+      Line(points = {{-179.9, -27}, {-179.9, -33.5}, {-180, -33.5}, {-180, -39}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_8301_TRC.enthalpyPort_b, massFlowRate3.enthalpyPort_a) annotation(
-      Line(points = {{-180.1, 31}, {-180.1, 10.5}, {-179.9, 10.5}, {-179.9, -9.2}}, color = {0, 128, 255}));
+      Line(points = {{-180.1, 31}, {-180.1, 10.5}, {-179.9, 10.5}, {-179.9, -9.2}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate3.dotm, fluidSource4.dotm) annotation(
       Line(points = {{-189, -19}, {-235.4, -19}, {-235.4, 0}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF.enthalpyPort_b1, temperature_HeatGrid_FF.enthalpyPort_a) annotation(
-      Line(points = {{179.8, 160}, {240, 160}, {240, 160.1}, {301.2, 160.1}}, color = {176, 0, 0}));
+      Line(points = {{179.8, 160}, {240, 160}, {240, 160.1}, {301.2, 160.1}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_8205_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF.enthalpyPort_a1) annotation(
-      Line(points = {{9, 160.1}, {84.5, 160.1}, {84.5, 160}, {160.2, 160}}, color = {176, 0, 0}));
+      Line(points = {{9, 160.1}, {84.5, 160.1}, {84.5, 160}, {160.2, 160}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_8206_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_b1) annotation(
-      Line(points = {{28.8, 99.9}, {94.4, 99.9}, {94.4, 100}, {160.2, 100}}, color = {0, 128, 255}));
+      Line(points = {{28.8, 99.9}, {94.4, 99.9}, {94.4, 100}, {160.2, 100}}, color = {0, 128, 255}, thickness = 1));
     connect(calc_mdot_production.y_mdot, pump_5304_UP.dotm_setValue) annotation(
       Line(points = {{-1179, -110}, {-1160, -110}, {-1160, -132}}, color = {0, 0, 127}));
     connect(calc_mdot_production.u_TemperatureInput, temperature_5303_TRC.T) annotation(
@@ -822,17 +854,17 @@ package FMUs
     connect(calc_mdot_production1.y_mdot, pump_2205_UP_2.dotm_setValue) annotation(
       Line(points = {{-1391, 590}, {-1372, 590}, {-1372, 568}}, color = {0, 0, 127}));
     connect(TemperatureInput.enthalpyPort_b, sink.enthalpyPort_a1) annotation(
-      Line(points = {{729, 519.9}, {814.5, 519.9}, {814.5, 520}, {809.2, 520}}, color = {176, 0, 0}));
+      Line(points = {{729, 519.9}, {814.5, 519.9}, {814.5, 520}, {809.2, 520}}, color = {176, 0, 0}, thickness = 1));
     connect(sink.enthalpyPort_b1, TemperatureOutput.enthalpyPort_a) annotation(
-      Line(points = {{830.8, 520}, {850, 520}, {850, 519.9}, {871.2, 519.9}}, color = {176, 0, 0}));
+      Line(points = {{830.8, 520}, {850, 520}, {850, 519.9}, {871.2, 519.9}}, color = {176, 0, 0}, thickness = 1));
     connect(gain2.y, sink.Load) annotation(
       Line(points = {{820, 579}, {820, 530.68}, {819.88, 530.68}}, color = {0, 0, 127}));
     connect(TemperatureOutput.enthalpyPort_b, dynamicPipe_HeatGrid_RF.enthalpyPort_a1) annotation(
-      Line(points = {{889, 519.9}, {900, 519.9}, {900, 460}, {680, 460}, {680, 100}, {399.8, 100}}, color = {0, 128, 255}));
+      Line(points = {{889, 519.9}, {900, 519.9}, {900, 460}, {680, 460}, {680, 100}, {399.8, 100}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatGrid_FF.enthalpyPort_b1, TemperatureInput.enthalpyPort_a) annotation(
-      Line(points = {{399.8, 160}, {620, 160}, {620, 519.9}, {711.2, 519.9}}, color = {176, 0, 0}));
+      Line(points = {{399.8, 160}, {620, 160}, {620, 519.9}, {711.2, 519.9}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold3.enthalpyPort_b, massFlowRate5.enthalpyPort_a) annotation(
-      Line(points = {{-1020, 760}, {-970, 760}, {-970, 759.9}, {-918.8, 759.9}}, color = {176, 0, 0}));
+      Line(points = {{-1020, 760}, {-970, 760}, {-970, 759.9}, {-918.8, 759.9}}, color = {176, 0, 0}, thickness = 1));
     connect(calc_Qdot.u_T_measurement, temperature_8104_TRC.T) annotation(
       Line(points = {{-1442, -54.2}, {-1520, -54.2}, {-1520, -180}, {-860, -180}, {-860, 302}, {-670, 302}, {-670, 301}, {-491, 301}}, color = {0, 0, 127}));
     connect(calc_valve.u_T_source_input, temperature_8104_TRC.T) annotation(
@@ -858,163 +890,163 @@ package FMUs
     connect(const1.y, min.u1) annotation(
       Line(points = {{-669, 410}, {-660, 410}, {-660, 392}, {-642, 392}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF2.enthalpyPort_a1, threeWayValve_NS_7102_1.enthalpyPort_a) annotation(
-      Line(points = {{-570, 559.7}, {-570, 564}, {-480, 564}, {-480, 590}}, color = {176, 0, 0}));
+      Line(points = {{-570, 559.7}, {-570, 564}, {-480, 564}, {-480, 590}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF3.enthalpyPort_a1, threeWayValve_NS_7202_2.enthalpyPort_a) annotation(
-      Line(points = {{-540, 426.3}, {-540, 416}, {-520, 416}, {-520, 390}}, color = {0, 128, 255}));
+      Line(points = {{-540, 426.3}, {-540, 416}, {-520, 416}, {-520, 390}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF4.enthalpyPort_b1, manifold_NS_7202_1.enthalpyPort_a[1]) annotation(
-      Line(points = {{-570, 432.3}, {-570, 420}, {-519.5, 420}, {-519.5, 440}}, color = {0, 128, 255}));
+      Line(points = {{-570, 432.3}, {-570, 420}, {-519.5, 420}, {-519.5, 440}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_7203_TRC_unload.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF6.enthalpyPort_a1) annotation(
-      Line(points = {{-151, 379.9}, {-123.5, 379.9}, {-123.5, 379.5}, {-96.71, 379.5}}, color = {0, 128, 255}));
+      Line(points = {{-151, 379.9}, {-123.5, 379.9}, {-123.5, 379.5}, {-96.71, 379.5}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF6.enthalpyPort_b1, heatStorageVariablePorts_central.UnloadingCycle_In[1]) annotation(
-      Line(points = {{-68.29, 379.5}, {38.4, 379.5}, {38.4, 462}}, color = {0, 128, 255}));
+      Line(points = {{-68.29, 379.5}, {38.4, 379.5}, {38.4, 462}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF5.enthalpyPort_b1, temperature_7203_TRC_load.enthalpyPort_a) annotation(
-      Line(points = {{-120.71, 439.5}, {-144.355, 439.5}, {-144.355, 439.9}, {-169.2, 439.9}}, color = {0, 128, 255}));
+      Line(points = {{-120.71, 439.5}, {-144.355, 439.5}, {-144.355, 439.9}, {-169.2, 439.9}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF5.enthalpyPort_a1, heatStorageVariablePorts_central.LoadingCycle_Out[1]) annotation(
-      Line(points = {{-92.29, 439.5}, {-2.4, 439.5}, {-2.4, 462}}, color = {0, 128, 255}));
+      Line(points = {{-92.29, 439.5}, {-2.4, 439.5}, {-2.4, 462}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF8.enthalpyPort_b1, heatStorageVariablePorts_central.LoadingCycle_In[1]) annotation(
-      Line(points = {{-54.29, 739.5}, {-2.4, 739.5}, {-2.4, 706}}, color = {176, 0, 0}));
+      Line(points = {{-54.29, 739.5}, {-2.4, 739.5}, {-2.4, 706}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF7.enthalpyPort_a1, heatStorageVariablePorts_central.UnloadingCycle_Out[1]) annotation(
-      Line(points = {{-76.29, 779.5}, {38.4, 779.5}, {38.4, 706}}, color = {176, 0, 0}));
+      Line(points = {{-76.29, 779.5}, {38.4, 779.5}, {38.4, 706}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_7104_TRC_load.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF8.enthalpyPort_a1) annotation(
-      Line(points = {{-193, 739.9}, {-137.5, 739.9}, {-137.5, 739.5}, {-82.71, 739.5}}, color = {176, 0, 0}));
+      Line(points = {{-193, 739.9}, {-137.5, 739.9}, {-137.5, 739.5}, {-82.71, 739.5}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_7104_TRC_unload.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF7.enthalpyPort_b1) annotation(
-      Line(points = {{-211.2, 779.9}, {-158.6, 779.9}, {-158.6, 779.5}, {-104.71, 779.5}}, color = {176, 0, 0}));
+      Line(points = {{-211.2, 779.9}, {-158.6, 779.9}, {-158.6, 779.5}, {-104.71, 779.5}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_7102_2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF9.enthalpyPort_a1) annotation(
-      Line(points = {{-480, 520}, {-480, 479.8}}, color = {176, 0, 0}));
+      Line(points = {{-480, 520}, {-480, 479.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF9.enthalpyPort_b1, massFlowRate9.enthalpyPort_a) annotation(
-      Line(points = {{-480, 460.2}, {-480, 444.4}, {-480.1, 444.4}, {-480.1, 374.8}}, color = {176, 0, 0}));
+      Line(points = {{-480, 460.2}, {-480, 444.4}, {-480.1, 444.4}, {-480.1, 374.8}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate9.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF10.enthalpyPort_a1) annotation(
-      Line(points = {{-480.1, 357}, {-480.1, 349.4}, {-480, 349.4}, {-480, 341.8}}, color = {176, 0, 0}));
+      Line(points = {{-480.1, 357}, {-480.1, 349.4}, {-480, 349.4}, {-480, 341.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF10.enthalpyPort_b1, temperature_8104_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-480, 322.2}, {-480.1, 310.8}, {-479.9, 310.8}}, color = {176, 0, 0}));
+      Line(points = {{-480, 322.2}, {-480.1, 310.8}, {-479.9, 310.8}}, color = {176, 0, 0}, thickness = 1));
     connect(pump_8113_NP.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF11.enthalpyPort_b1) annotation(
-      Line(points = {{-329.6, 160}, {-480, 160}, {-480, 180.2}}, color = {176, 0, 0}));
+      Line(points = {{-329.6, 160}, {-480, 160}, {-480, 180.2}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF11.enthalpyPort_a1, manifold_NS_8106.enthalpyPort_b) annotation(
-      Line(points = {{-480, 199.8}, {-480, 220}}, color = {176, 0, 0}));
+      Line(points = {{-480, 199.8}, {-480, 220}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_8104_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF12.enthalpyPort_a1) annotation(
-      Line(points = {{-479.9, 293}, {-479.9, 284.5}, {-480, 284.5}, {-480, 275.8}}, color = {176, 0, 0}));
+      Line(points = {{-479.9, 293}, {-479.9, 284.5}, {-480, 284.5}, {-480, 275.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF12.enthalpyPort_b1, manifold_NS_8106.enthalpyPort_a[1]) annotation(
-      Line(points = {{-480, 256.2}, {-480, 240}, {-479.5, 240}}, color = {176, 0, 0}));
+      Line(points = {{-480, 256.2}, {-480, 240}, {-479.5, 240}}, color = {176, 0, 0}, thickness = 1));
     connect(threeWayValve_NS_8106.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF13.enthalpyPort_a1) annotation(
       Line(points = {{-508, 240}, {-508, 240.5}, {-504.91, 240.5}}, color = {0, 128, 255}));
     connect(dynamicPipe_HeatStorage_unload_FF13.enthalpyPort_b1, manifold_NS_8106.enthalpyPort_a[2]) annotation(
-      Line(points = {{-496.09, 240.5}, {-488.045, 240.5}, {-488.045, 240}, {-480.5, 240}}, color = {0, 128, 255}));
+      Line(points = {{-496.09, 240.5}, {-488.045, 240.5}, {-488.045, 240}, {-480.5, 240}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_8103_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF14.enthalpyPort_b1) annotation(
       Line(points = {{-519.9, 279.2}, {-519.9, 276.6}, {-520, 276.6}, {-520, 273.8}}, color = {0, 128, 255}));
     connect(dynamicPipe_HeatStorage_unload_FF14.enthalpyPort_a1, threeWayValve_NS_8106.enthalpyPort_a) annotation(
       Line(points = {{-520, 254.2}, {-520, 252.1}, {-518, 252.1}, {-518, 250}}, color = {0, 128, 255}));
     connect(manifold_NS_1.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF15.enthalpyPort_a1) annotation(
-      Line(points = {{-260, 100}, {-520, 100}, {-520, 190.2}}, color = {0, 128, 255}));
+      Line(points = {{-260, 100}, {-520, 100}, {-520, 190.2}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF15.enthalpyPort_b1, threeWayValve_NS_8106.enthalpyPort_ab) annotation(
-      Line(points = {{-520, 209.8}, {-520, 220}, {-518, 220}, {-518, 230.2}}, color = {0, 128, 255}));
+      Line(points = {{-520, 209.8}, {-520, 220}, {-518, 220}, {-518, 230.2}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_7202_2.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF16.enthalpyPort_b1) annotation(
-      Line(points = {{-520, 370.2}, {-520, 339.8}}, color = {0, 128, 255}));
+      Line(points = {{-520, 370.2}, {-520, 339.8}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF16.enthalpyPort_a1, temperature_8103_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-520, 320.2}, {-520, 297}, {-519.9, 297}}, color = {0, 128, 255}));
+      Line(points = {{-520, 320.2}, {-520, 297}, {-519.9, 297}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF17.enthalpyPort_a1, temperature_7203_TRC_load.enthalpyPort_b) annotation(
-      Line(points = {{-240.2, 440}, {-214, 440}, {-214, 439.9}, {-187, 439.9}}, color = {0, 128, 255}));
+      Line(points = {{-240.2, 440}, {-214, 440}, {-214, 439.9}, {-187, 439.9}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF17.enthalpyPort_b1, manifold_NS_7202_1.enthalpyPort_a[2]) annotation(
-      Line(points = {{-259.8, 440}, {-520.5, 440}}, color = {0, 128, 255}));
+      Line(points = {{-259.8, 440}, {-520.5, 440}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_7203_TRC_unload.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF18.enthalpyPort_b1) annotation(
-      Line(points = {{-168.8, 379.9}, {-204.5, 379.9}, {-204.5, 380}, {-240.2, 380}}, color = {0, 128, 255}));
+      Line(points = {{-168.8, 379.9}, {-204.5, 379.9}, {-204.5, 380}, {-240.2, 380}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF18.enthalpyPort_a1, threeWayValve_NS_7202_2.enthalpyPort_b) annotation(
-      Line(points = {{-259.8, 380}, {-349.4, 379.9}, {-349.4, 380}, {-510, 380}}, color = {0, 128, 255}));
+      Line(points = {{-259.8, 380}, {-349.4, 379.9}, {-349.4, 380}, {-510, 380}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_7102_1.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF19.enthalpyPort_a1) annotation(
-      Line(points = {{-470, 600}, {-359.8, 600}}, color = {176, 0, 0}));
+      Line(points = {{-470, 600}, {-359.8, 600}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF19.enthalpyPort_b1, massFlowRate_7103_FRC_load.enthalpyPort_a) annotation(
-      Line(points = {{-340.2, 600}, {-220.1, 600}, {-220.1, 629.2}}, color = {176, 0, 0}));
+      Line(points = {{-340.2, 600}, {-220.1, 600}, {-220.1, 629.2}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_7102_2.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF20.enthalpyPort_b1) annotation(
-      Line(points = {{-479.5, 540}, {-361.8, 540}}, color = {176, 0, 0}));
+      Line(points = {{-479.5, 540}, {-361.8, 540}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF20.enthalpyPort_a1, massFlowRate_7103_FRC_unload.enthalpyPort_b) annotation(
-      Line(points = {{-342.2, 540}, {-239.9, 540}, {-239.9, 651}}, color = {176, 0, 0}));
+      Line(points = {{-342.2, 540}, {-239.9, 540}, {-239.9, 651}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate8.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF23.enthalpyPort_a1) annotation(
-      Line(points = {{-480.1, 701}, {-480.1, 680.5}, {-480, 680.5}, {-480, 659.8}}, color = {176, 0, 0}));
+      Line(points = {{-480.1, 701}, {-480.1, 680.5}, {-480, 680.5}, {-480, 659.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF23.enthalpyPort_b1, threeWayValve_NS_7102_1.enthalpyPort_ab) annotation(
-      Line(points = {{-480, 640.2}, {-480, 609.8}}, color = {176, 0, 0}));
+      Line(points = {{-480, 640.2}, {-480, 609.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF24.enthalpyPort_b1, massFlowRate8.enthalpyPort_a) annotation(
-      Line(points = {{-560.2, 760}, {-480.1, 760}, {-480.1, 718.8}}, color = {176, 0, 0}));
+      Line(points = {{-560.2, 760}, {-480.1, 760}, {-480.1, 718.8}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_8101_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF24.enthalpyPort_a1) annotation(
-      Line(points = {{-659, 760.1}, {-656, 760.1}, {-656, 760}, {-579.8, 760}}, color = {176, 0, 0}));
+      Line(points = {{-659, 760.1}, {-656, 760.1}, {-656, 760}, {-579.8, 760}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_8102_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF25.enthalpyPort_b1) annotation(
-      Line(points = {{-679.2, 719.9}, {-668, 719.9}, {-668, 720}, {-659.8, 720}}, color = {0, 128, 255}));
+      Line(points = {{-679.2, 719.9}, {-668, 719.9}, {-668, 720}, {-659.8, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF25.enthalpyPort_a1, manifold_NS_7202_1.enthalpyPort_b) annotation(
-      Line(points = {{-640.2, 720}, {-520, 719.9}, {-520, 460}}, color = {0, 128, 255}));
+      Line(points = {{-640.2, 720}, {-520, 719.9}, {-520, 460}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate6.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF26.enthalpyPort_b1) annotation(
-      Line(points = {{-771.2, 719.9}, {-762, 719.9}, {-762, 720}, {-739.8, 720}}, color = {0, 128, 255}));
+      Line(points = {{-771.2, 719.9}, {-762, 719.9}, {-762, 720}, {-739.8, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF26.enthalpyPort_a1, temperature_8102_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-720.2, 720}, {-708.6, 720}, {-708.6, 719.9}, {-697, 719.9}}, color = {0, 128, 255}));
+      Line(points = {{-720.2, 720}, {-708.6, 720}, {-708.6, 719.9}, {-697, 719.9}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate4.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF27.enthalpyPort_a1) annotation(
-      Line(points = {{-741, 759.9}, {-730.5, 759.9}, {-730.5, 760.1}, {-719.8, 760}}, color = {176, 0, 0}));
+      Line(points = {{-741, 759.9}, {-730.5, 759.9}, {-730.5, 760.1}, {-719.8, 760}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF27.enthalpyPort_b1, temperature_8101_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-700.2, 760}, {-688.5, 760}, {-688.5, 760.1}, {-676.8, 760.1}}, color = {176, 0, 0}));
+      Line(points = {{-700.2, 760}, {-688.5, 760}, {-688.5, 760.1}, {-676.8, 760.1}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF28.enthalpyPort_a1) annotation(
-      Line(points = {{-820, 760}, {-814, 760}, {-814, 759.9}, {-803.8, 760}}, color = {176, 0, 0}));
+      Line(points = {{-820, 760}, {-814, 760}, {-814, 759.9}, {-803.8, 760}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF28.enthalpyPort_b1, massFlowRate4.enthalpyPort_a) annotation(
-      Line(points = {{-784.2, 760}, {-771.5, 760}, {-771.5, 759.9}, {-758.8, 759.9}}, color = {176, 0, 0}));
+      Line(points = {{-784.2, 760}, {-771.5, 760}, {-771.5, 759.9}, {-758.8, 759.9}}, color = {176, 0, 0}, thickness = 1));
     connect(threeWayValve2.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF29.enthalpyPort_b1) annotation(
-      Line(points = {{-870.2, 720}, {-866.6, 720}, {-866.6, 719.9}, {-827.8, 720}}, color = {0, 128, 255}));
+      Line(points = {{-870.2, 720}, {-866.6, 720}, {-866.6, 719.9}, {-827.8, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF29.enthalpyPort_a1, massFlowRate6.enthalpyPort_b) annotation(
-      Line(points = {{-808.2, 720}, {-798.6, 720}, {-798.6, 719.9}, {-789, 719.9}}, color = {0, 128, 255}));
+      Line(points = {{-808.2, 720}, {-798.6, 720}, {-798.6, 719.9}, {-789, 719.9}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate5.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF30.enthalpyPort_a1) annotation(
-      Line(points = {{-901, 759.9}, {-887.8, 759.9}, {-887.8, 760}, {-873.8, 760}}, color = {176, 0, 0}));
+      Line(points = {{-901, 759.9}, {-887.8, 759.9}, {-887.8, 760}, {-873.8, 760}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate7.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF31.enthalpyPort_b1) annotation(
-      Line(points = {{-929.2, 719.9}, {-924.5, 719.9}, {-924.5, 720}, {-919.8, 720}}, color = {0, 128, 255}));
+      Line(points = {{-929.2, 719.9}, {-924.5, 719.9}, {-924.5, 720}, {-919.8, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF31.enthalpyPort_a1, threeWayValve2.enthalpyPort_a) annotation(
-      Line(points = {{-900.2, 720}, {-895.6, 719.9}, {-895.6, 720}, {-890, 720}}, color = {0, 128, 255}));
+      Line(points = {{-900.2, 720}, {-895.6, 719.9}, {-895.6, 720}, {-890, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve3.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF32.enthalpyPort_b1) annotation(
-      Line(points = {{-990.2, 720}, {-979.8, 720}}, color = {176, 0, 0}));
+      Line(points = {{-990.2, 720}, {-979.8, 720}}, color = {28, 108, 200}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF32.enthalpyPort_a1, massFlowRate7.enthalpyPort_b) annotation(
-      Line(points = {{-960.2, 720}, {-954.6, 720}, {-954.6, 719.9}, {-947, 719.9}}, color = {176, 0, 0}));
+      Line(points = {{-960.2, 720}, {-954.6, 720}, {-954.6, 719.9}, {-947, 719.9}}, color = {28, 108, 200}, thickness = 1));
     connect(manifold2.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF33.enthalpyPort_b1) annotation(
-      Line(points = {{-840, 760.5}, {-840, 679.8}}, color = {176, 0, 0}));
+      Line(points = {{-840, 760.5}, {-840, 679.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF33.enthalpyPort_a1, temperature_5311_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-840, 660.2}, {-840, -79.9}, {-1011, -79.9}}, color = {176, 0, 0}));
+      Line(points = {{-840, 660.2}, {-840, -79.9}, {-1011, -79.9}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_5312_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF34.enthalpyPort_b1) annotation(
-      Line(points = {{-959.2, -140.1}, {-880, -140.1}, {-880, 660.2}}, color = {0, 128, 255}));
+      Line(points = {{-959.2, -140.1}, {-880, -140.1}, {-880, 660.2}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF34.enthalpyPort_a1, threeWayValve2.enthalpyPort_b) annotation(
-      Line(points = {{-880, 679.8}, {-880, 710}}, color = {0, 128, 255}));
+      Line(points = {{-880, 679.8}, {-880, 710}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate_5310_FRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF35.enthalpyPort_b1) annotation(
-      Line(points = {{-1031.2, -140.1}, {-1024.5, -140.1}, {-1024.5, -140}, {-1017.8, -140}}, color = {0, 128, 255}));
+      Line(points = {{-1031.2, -140.1}, {-1024.5, -140.1}, {-1024.5, -140}, {-1017.8, -140}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF35.enthalpyPort_a1, temperature_5312_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-998.2, -140}, {-987.6, -140}, {-987.6, -140.1}, {-977, -140.1}}, color = {0, 128, 255}));
+      Line(points = {{-998.2, -140}, {-987.6, -140}, {-987.6, -140.1}, {-977, -140.1}}, color = {0, 128, 255}, thickness = 1));
     connect(boiler.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF36.enthalpyPort_a1) annotation(
-      Line(points = {{-1318, -100}, {-1300, -100}, {-1300, -79.9}, {-1119.8, -80}}, color = {0, 128, 255}));
+      Line(points = {{-1318, -100}, {-1300, -100}, {-1300, -79.9}, {-1119.8, -80}}, color = {238, 46, 47}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF36.enthalpyPort_b1, temperature_5311_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1100.2, -80}, {-1064.5, -80}, {-1064.5, -79.9}, {-1028.8, -79.9}}, color = {176, 0, 0}));
+      Line(points = {{-1100.2, -80}, {-1064.5, -80}, {-1064.5, -79.9}, {-1028.8, -79.9}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF37.enthalpyPort_a1, massFlowRate_5310_FRC.enthalpyPort_b) annotation(
-      Line(points = {{-1092.2, -140}, {-1070, -140}, {-1070, -140.1}, {-1049, -140.1}}, color = {0, 128, 255}));
+      Line(points = {{-1092.2, -140}, {-1070, -140}, {-1070, -140.1}, {-1049, -140.1}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF37.enthalpyPort_b1, pump_5304_UP.enthalpyPort_a) annotation(
       Line(points = {{-1111.8, -140}, {-1150.4, -140}}, color = {0, 128, 255}));
     connect(temperature_5303_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF38.enthalpyPort_b1) annotation(
-      Line(points = {{-1209.2, -140.1}, {-1204.6, -140.1}, {-1204.6, -140}, {-1199.8, -140}}, color = {0, 128, 255}));
+      Line(points = {{-1209.2, -140.1}, {-1204.6, -140.1}, {-1204.6, -140}, {-1199.8, -140}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF38.enthalpyPort_a1, pump_5304_UP.enthalpyPort_b) annotation(
-      Line(points = {{-1180.2, -140}, {-1169.6, -140}}, color = {0, 128, 255}));
+      Line(points = {{-1180.2, -140}, {-1169.6, -140}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_5303_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF39.enthalpyPort_a1) annotation(
-      Line(points = {{-1227, -140.1}, {-1234, -140.1}, {-1234, -140}, {-1280.2, -140}}, color = {0, 128, 255}));
+      Line(points = {{-1227, -140.1}, {-1234, -140.1}, {-1234, -140}, {-1280.2, -140}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF39.enthalpyPort_b1, boiler.enthalpyPort_a1) annotation(
-      Line(points = {{-1299.8, -140}, {-1360, -140}, {-1360, -100.48}, {-1342, -100.48}}, color = {0, 128, 255}));
+      Line(points = {{-1299.8, -140}, {-1360, -140}, {-1360, -100.48}, {-1342, -100.48}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF30.enthalpyPort_b1, manifold2.enthalpyPort_a[1]) annotation(
-      Line(points = {{-854.2, 760}, {-864, 760}, {-864, 759.5}, {-840, 759.5}}, color = {176, 0, 0}));
+      Line(points = {{-854.2, 760}, {-864, 760}, {-864, 759.5}, {-840, 759.5}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF1.enthalpyPort_b1, manifold_NS_7102_2.enthalpyPort_a[1]) annotation(
-      Line(points = {{-540, 549.7}, {-540, 556}, {-480.5, 556}, {-480.5, 540}}, color = {176, 0, 0}));
+      Line(points = {{-540, 549.7}, {-540, 556}, {-480.5, 556}, {-480.5, 540}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_7104_TRC_unload.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF21.enthalpyPort_a1) annotation(
-      Line(points = {{-229, 779.9}, {-240, 779.9}, {-240, 719.8}}, color = {176, 0, 0}));
+      Line(points = {{-229, 779.9}, {-240, 779.9}, {-240, 719.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF21.enthalpyPort_b1, massFlowRate_7103_FRC_unload.enthalpyPort_a) annotation(
-      Line(points = {{-240, 700.2}, {-240, 668.8}, {-239.9, 668.8}}, color = {176, 0, 0}));
+      Line(points = {{-240, 700.2}, {-240, 668.8}, {-239.9, 668.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF22.enthalpyPort_a1, massFlowRate_7103_FRC_load.enthalpyPort_b) annotation(
-      Line(points = {{-220, 674.2}, {-220, 647}, {-220.1, 647}}, color = {176, 0, 0}));
+      Line(points = {{-220, 674.2}, {-220, 647}, {-220.1, 647}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_7104_TRC_load.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF22.enthalpyPort_b1) annotation(
-      Line(points = {{-210.8, 739.9}, {-220, 739.9}, {-220, 693.8}}, color = {176, 0, 0}));
+      Line(points = {{-210.8, 739.9}, {-220, 739.9}, {-220, 693.8}}, color = {176, 0, 0}, thickness = 1));
     connect(calc_valve.y_valve, threeWayValve_NS_8106.opening) annotation(
       Line(points = {{-557, 240}, {-527, 240}}, color = {0, 0, 127}));
     connect(dHWHeatExchanger.enthalpyPort_dHWIn, dynamicPipe_HeatStorage_unload_FF3.enthalpyPort_b1) annotation(
-      Line(points = {{-546.2, 482.8}, {-540, 482.8}, {-540, 455.7}}, color = {176, 0, 0}));
+      Line(points = {{-546.2, 482.8}, {-540, 482.8}, {-540, 455.7}}, color = {176, 0, 0}, thickness = 1));
     connect(dHWHeatExchanger.enthalpyPort_dHWOut, dynamicPipe_HeatStorage_unload_FF1.enthalpyPort_a1) annotation(
-      Line(points = {{-546, 492.8}, {-540, 492.8}, {-540, 520.3}}, color = {176, 0, 0}));
+      Line(points = {{-546, 492.8}, {-540, 492.8}, {-540, 520.3}}, color = {176, 0, 0}, thickness = 1));
     connect(dHWHeatExchanger.enthalpyPort_heaterOut, dynamicPipe_HeatStorage_unload_FF4.enthalpyPort_a1) annotation(
-      Line(points = {{-563.8, 482.8}, {-570, 482.8}, {-570, 461.7}}, color = {176, 0, 0}));
+      Line(points = {{-563.8, 482.8}, {-570, 482.8}, {-570, 461.7}}, color = {176, 0, 0}, thickness = 1));
     connect(dHWHeatExchanger.enthalpyPort_heaterIn, dynamicPipe_HeatStorage_unload_FF2.enthalpyPort_b1) annotation(
-      Line(points = {{-563.6, 492.8}, {-570, 492.8}, {-570, 530.3}}, color = {176, 0, 0}));
+      Line(points = {{-563.6, 492.8}, {-570, 492.8}, {-570, 530.3}}, color = {176, 0, 0}, thickness = 1));
     connect(const4.y, max2.u2) annotation(
       Line(points = {{-679, 570}, {-662, 570}, {-662, 594}, {-642, 594}}, color = {0, 0, 127}));
     connect(min1.y, max2.u1) annotation(
@@ -1024,39 +1056,39 @@ package FMUs
     connect(max2.y, threeWayValve_NS_7102_1.opening) annotation(
       Line(points = {{-619, 600}, {-489, 600}}, color = {0, 0, 127}));
     connect(threeWayValve3.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF40.enthalpyPort_a1) annotation(
-      Line(points = {{-1000, 710}, {-1000, 699.8}}, color = {0, 128, 255}));
+      Line(points = {{-1000, 710}, {-1000, 699.8}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve4.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF41.enthalpyPort_a1) annotation(
       Line(points = {{-1000, 520}, {-1000, 505.8}}, color = {0, 128, 255}));
     connect(manifold4.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF42.enthalpyPort_b1) annotation(
-      Line(points = {{-1040.5, 660}, {-1040.5, 549.8}, {-1040, 549.8}, {-1040, 519.8}}, color = {176, 0, 0}));
+      Line(points = {{-1040.5, 660}, {-1040.5, 549.8}, {-1040, 549.8}, {-1040, 519.8}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_2216_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF43.enthalpyPort_b1) annotation(
-      Line(points = {{-1091.2, 529.9}, {-1085.5, 529.9}, {-1085.5, 530}, {-1079.8, 530}}, color = {0, 128, 255}));
+      Line(points = {{-1091.2, 529.9}, {-1085.5, 529.9}, {-1085.5, 530}, {-1079.8, 530}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF43.enthalpyPort_a1, threeWayValve4.enthalpyPort_b) annotation(
-      Line(points = {{-1060.2, 530}, {-1050.6, 529.9}, {-1050.6, 530}, {-1010, 530}}, color = {0, 128, 255}));
+      Line(points = {{-1060.2, 530}, {-1050.6, 529.9}, {-1050.6, 530}, {-1010, 530}}, color = {0, 128, 255}, thickness = 1));
     connect(pump_2205_UP_2.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF46.enthalpyPort_b1) annotation(
-      Line(points = {{-1362.4, 560}, {-1351.8, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1362.4, 560}, {-1351.8, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2202_TRC_2.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF47.enthalpyPort_b1) annotation(
-      Line(points = {{-1431.2, 559.9}, {-1424.5, 559.9}, {-1424.5, 560}, {-1417.8, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1431.2, 559.9}, {-1424.5, 559.9}, {-1424.5, 560}, {-1417.8, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF47.enthalpyPort_a1, pump_2205_UP_2.enthalpyPort_b) annotation(
-      Line(points = {{-1398.2, 560}, {-1380.6, 559.9}, {-1380.6, 560}, {-1381.6, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1398.2, 560}, {-1380.6, 559.9}, {-1380.6, 560}, {-1381.6, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2202_TRC_2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF48.enthalpyPort_a1) annotation(
-      Line(points = {{-1449, 559.9}, {-1470.6, 559.9}, {-1470.6, 560}, {-1472.2, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1449, 559.9}, {-1470.6, 559.9}, {-1470.6, 560}, {-1472.2, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(fluidSource3.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF50.enthalpyPort_a1) annotation(
       Line(points = {{-1592, 861}, {-1587.9, 861}, {-1587.9, 860}, {-1575.8, 860}}, color = {176, 0, 0}));
     connect(temperature_2204_TRC_2.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF51.enthalpyPort_b1) annotation(
-      Line(points = {{-1428.8, 659.9}, {-1426.5, 659.9}, {-1426.5, 660}, {-1492.2, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1428.8, 659.9}, {-1426.5, 659.9}, {-1426.5, 660}, {-1492.2, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_2204_TRC_2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF52.enthalpyPort_a1) annotation(
-      Line(points = {{-1411, 659.9}, {-1361.5, 659.9}, {-1361.5, 660}, {-1351.8, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1411, 659.9}, {-1361.5, 659.9}, {-1361.5, 660}, {-1351.8, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_2215_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF54.enthalpyPort_a1) annotation(
-      Line(points = {{-1111, 660.1}, {-1105.5, 660.1}, {-1105.5, 660}, {-1099.8, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1111, 660.1}, {-1107.5, 660.1}, {-1107.5, 660}, {-1099.8, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF54.enthalpyPort_b1, manifold4.enthalpyPort_a[1]) annotation(
-      Line(points = {{-1080.2, 660}, {-1039.5, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1080.2, 660}, {-1039.5, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold3.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF55.enthalpyPort_b1) annotation(
-      Line(points = {{-1040, 760.5}, {-1040, 719.8}}, color = {176, 0, 0}));
+      Line(points = {{-1040, 760.5}, {-1040, 719.8}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF55.enthalpyPort_a1, manifold4.enthalpyPort_b) annotation(
-      Line(points = {{-1040, 700.2}, {-1040, 680}}, color = {176, 0, 0}));
+      Line(points = {{-1040, 700.2}, {-1040, 680}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF56.enthalpyPort_a1, threeWayValve3.enthalpyPort_a) annotation(
-      Line(points = {{-1140.2, 1060}, {-1010, 1060}, {-1010, 720}}, color = {0, 128, 255}));
+      Line(points = {{-1140.2, 1060}, {-1010, 1060}, {-1010, 720}}, color = {0, 128, 255}, thickness = 1));
     connect(product.y, gain.u) annotation(
       Line(points = {{-19, 50}, {-2, 50}}, color = {0, 0, 127}));
     connect(y_8204_FRC, product.u1) annotation(
@@ -1104,17 +1136,17 @@ package FMUs
     connect(const19.y, add5.u1) annotation(
       Line(points = {{-1473, 606}, {-1454, 606}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF52.enthalpyPort_b1, threeWayValve_NS_2211.enthalpyPort_ab) annotation(
-      Line(points = {{-1332.2, 660}, {-1322, 660}, {-1322, 662}, {-1311.8, 662}}, color = {176, 0, 0}));
+      Line(points = {{-1332.2, 660}, {-1322, 660}, {-1322, 662}, {-1311.8, 662}}, color = {176, 0, 0}, thickness = 1));
     connect(threeWayValve_NS_2211.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF53.enthalpyPort_a1) annotation(
-      Line(points = {{-1292, 662}, {-1282, 662}, {-1282, 660}, {-1271.8, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1292, 662}, {-1282, 662}, {-1282, 660}, {-1271.8, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(threeWayValve_NS_2211.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF44.enthalpyPort_a1) annotation(
-      Line(points = {{-1302, 652}, {-1302, 639.8}}, color = {176, 0, 0}));
+      Line(points = {{-1302, 652}, {-1302, 639.8}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_2211.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF46.enthalpyPort_a1) annotation(
-      Line(points = {{-1322, 562}, {-1328, 562}, {-1328, 560}, {-1332.2, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1322, 562}, {-1328, 562}, {-1328, 560}, {-1332.2, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF44.enthalpyPort_b1, manifold_NS_2211.enthalpyPort_a[2]) annotation(
-      Line(points = {{-1302, 620.2}, {-1302, 562.5}}, color = {0, 128, 255}));
+      Line(points = {{-1302, 620.2}, {-1302, 562.5}}, color = {0, 128, 255}, thickness = 1));
     connect(manifold_NS_2211.enthalpyPort_a[1], dynamicPipe_HeatStorage_unload_FF45.enthalpyPort_b1) annotation(
-      Line(points = {{-1302, 561.5}, {-1291.8, 561.5}, {-1291.8, 560}, {-1279.8, 560}}, color = {0, 128, 255}));
+      Line(points = {{-1302, 561.5}, {-1291.8, 561.5}, {-1291.8, 560}, {-1279.8, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(PID.y, threeWayValve_NS_2211.opening) annotation(
       Line(points = {{-1273, 740}, {-1302, 740}, {-1302, 671}}, color = {0, 0, 127}));
     connect(const18.y, PID.u_m) annotation(
@@ -1138,39 +1170,39 @@ package FMUs
     connect(gain2.u, gain8.y) annotation(
       Line(points = {{820, 602}, {820, 1360}, {-1559, 1360}}, color = {0, 0, 127}));
     connect(massFlowRate_4516_FRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF58.enthalpyPort_b1) annotation(
-      Line(points = {{-1171.2, 179.9}, {-1164.5, 179.9}, {-1164.5, 180}, {-1157.8, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1171.2, 179.9}, {-1164.5, 179.9}, {-1164.5, 180}, {-1157.8, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF58.enthalpyPort_a1, temperature_4518_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1138.2, 180}, {-1127.6, 180}, {-1127.6, 179.9}, {-1117, 179.9}}, color = {0, 128, 255}));
+      Line(points = {{-1138.2, 180}, {-1127.6, 180}, {-1127.6, 179.9}, {-1117, 179.9}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_4518_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF41.enthalpyPort_b1) annotation(
-      Line(points = {{-1099.2, 179.9}, {-1000, 179.9}, {-1000, 486.2}}, color = {0, 128, 255}));
+      Line(points = {{-1099.2, 179.9}, {-1000, 179.9}, {-1000, 486.2}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_4515_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF59.enthalpyPort_b1) annotation(
-      Line(points = {{-1239.2, 179.9}, {-1240, 179.9}, {-1240, 180}, {-1225.8, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1239.2, 179.9}, {-1240, 179.9}, {-1240, 180}, {-1225.8, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF59.enthalpyPort_a1, massFlowRate_4516_FRC.enthalpyPort_b) annotation(
-      Line(points = {{-1206.2, 180}, {-1204.6, 180}, {-1204.6, 179.9}, {-1189, 179.9}}, color = {0, 128, 255}));
+      Line(points = {{-1206.2, 180}, {-1204.6, 180}, {-1204.6, 179.9}, {-1189, 179.9}}, color = {0, 128, 255}, thickness = 1));
     connect(manifold.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF61.enthalpyPort_a1) annotation(
-      Line(points = {{-1300, 240}, {-1259.8, 240}}, color = {176, 0, 0}));
+      Line(points = {{-1300, 240}, {-1259.8, 240}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF61.enthalpyPort_b1, temperature_4517_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1240.2, 240}, {-1204, 240}, {-1204, 240.1}, {-1168.8, 240.1}}, color = {0, 128, 255}));
+      Line(points = {{-1240.2, 240}, {-1204, 240}, {-1204, 240.1}, {-1168.8, 240.1}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF62.enthalpyPort_b1) annotation(
-      Line(points = {{-1320, 240.5}, {-1320, 219.8}}, color = {0, 128, 255}));
+      Line(points = {{-1320, 240.5}, {-1320, 219.8}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF62.enthalpyPort_a1, threeWayValve.enthalpyPort_b) annotation(
-      Line(points = {{-1320, 200.2}, {-1320, 190}}, color = {0, 128, 255}));
+      Line(points = {{-1320, 200.2}, {-1320, 190}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF60.enthalpyPort_b1) annotation(
-      Line(points = {{-1310.2, 180}, {-1299.8, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1310.2, 180}, {-1308, 180}, {-1308, 178}, {-1306, 178}, {-1306, 180}, {-1299.8, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF60.enthalpyPort_a1, temperature_4515_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1280.2, 180}, {-1268, 180}, {-1268, 179.9}, {-1257, 179.9}}, color = {0, 128, 255}));
+      Line(points = {{-1280.2, 180}, {-1268, 180}, {-1268, 179.9}, {-1257, 179.9}}, color = {0, 128, 255}, thickness = 1));
     connect(pump_4507_up.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF63.enthalpyPort_b1) annotation(
-      Line(points = {{-1400.4, 180}, {-1357.8, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1400.4, 180}, {-1357.8, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF63.enthalpyPort_a1, threeWayValve.enthalpyPort_a) annotation(
-      Line(points = {{-1338.2, 180}, {-1330, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1338.2, 180}, {-1336, 180}, {-1336, 178}, {-1334, 178}, {-1334, 180}, {-1330, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_4504_TRC.enthalpyPort_a, pump_4507_up.enthalpyPort_b) annotation(
-      Line(points = {{-1437.2, 179.9}, {-1419.6, 179.9}, {-1419.6, 180}}, color = {0, 128, 255}));
+      Line(points = {{-1437.2, 179.9}, {-1419.6, 179.9}, {-1419.6, 180}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF64.enthalpyPort_b1, manifold.enthalpyPort_a[1]) annotation(
-      Line(points = {{-1340.2, 240}, {-1330, 240}, {-1330, 239.5}, {-1320, 239.5}}, color = {176, 0, 0}));
+      Line(points = {{-1340.2, 240}, {-1330, 240}, {-1330, 239.5}, {-1320, 239.5}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF66.enthalpyPort_a1, temperature_4504_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1500.2, 180}, {-1462, 180}, {-1462, 179.9}, {-1455, 179.9}}, color = {0, 128, 255}));
+      Line(points = {{-1500.2, 180}, {-1462, 180}, {-1462, 179.9}, {-1455, 179.9}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF66.enthalpyPort_b1, CHP.enthalpyPort_a) annotation(
-      Line(points = {{-1519.8, 180}, {-1560, 180}, {-1560, 210}, {-1550, 210}}, color = {176, 0, 0}));
+      Line(points = {{-1519.8, 180}, {-1560, 180}, {-1560, 210}, {-1550, 210}}, color = {176, 0, 0}, thickness = 1));
     connect(or1.u1, not2.y) annotation(
       Line(points = {{-1538, 432}, {-1538, 420}, {-2119, 420}}, color = {255, 0, 255}));
     connect(not3.y, logicalSwitch_5204_ZA.u2) annotation(
@@ -1200,11 +1232,11 @@ package FMUs
     connect(calc_mdot_production2.y_mdot, pump_4507_up.dotm_setValue) annotation(
       Line(points = {{-1419, 210}, {-1410, 210}, {-1410, 188}}, color = {0, 0, 127}));
     connect(temperature_4506_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF64.enthalpyPort_a1) annotation(
-      Line(points = {{-1369, 240.1}, {-1365.5, 240.1}, {-1365.5, 240}, {-1359.8, 240}}, color = {176, 0, 0}));
+      Line(points = {{-1369, 240.1}, {-1365.5, 240.1}, {-1365.5, 240}, {-1359.8, 240}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF67.enthalpyPort_b1, temperature_4506_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1396.2, 240}, {-1392, 240}, {-1392, 240.1}, {-1386.8, 240.1}}, color = {176, 0, 0}));
+      Line(points = {{-1396.2, 240}, {-1392, 240}, {-1392, 240.1}, {-1386.8, 240.1}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF67.enthalpyPort_a1, CHP.enthalpyPort_b) annotation(
-      Line(points = {{-1415.8, 240}, {-1520, 240}, {-1520, 210}, {-1530, 210}}, color = {176, 0, 0}));
+      Line(points = {{-1415.8, 240}, {-1520, 240}, {-1520, 210}, {-1530, 210}}, color = {176, 0, 0}, thickness = 1));
     connect(const15.y, calc_mdot_production2.u_TemperatureOutput) annotation(
       Line(points = {{-1479, 216}, {-1446, 216}, {-1446, 215.8}, {-1442, 215.8}}, color = {0, 0, 127}));
     connect(calc_mdot_production2.u_dotQ, CHP.Capacity[2]) annotation(
@@ -1218,13 +1250,13 @@ package FMUs
     connect(calc_valve1.u_T_consumer_input, const23.y) annotation(
       Line(points = {{-1278, 132.2}, {-1269, 132.2}, {-1269, 132}, {-1261, 132}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF40.enthalpyPort_b1, massFlowRate2.enthalpyPort_a) annotation(
-      Line(points = {{-1000, 680.2}, {-1000, 670}, {-1000, 658.8}, {-1000.1, 658.8}}, color = {0, 128, 255}));
+      Line(points = {{-1000, 680.2}, {-1000, 670}, {-1000, 658.8}, {-1000.1, 658.8}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF65.enthalpyPort_a1) annotation(
       Line(points = {{-1000.1, 641}, {-1000.1, 629.5}, {-1000, 629.5}, {-1000, 619.8}}, color = {0, 128, 255}));
     connect(dynamicPipe_HeatStorage_unload_FF65.enthalpyPort_b1, threeWayValve4.enthalpyPort_ab) annotation(
-      Line(points = {{-1000, 600.2}, {-1000, 539.8}}, color = {0, 128, 255}));
+      Line(points = {{-1000, 600.2}, {-1000, 539.8}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_4517_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF68.enthalpyPort_a1) annotation(
-      Line(points = {{-1151, 240.1}, {-1040, 240.1}, {-1040, 442.2}}, color = {176, 0, 0}));
+      Line(points = {{-1151, 240.1}, {-1040, 240.1}, {-1040, 442.2}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF68.enthalpyPort_b1, massFlowRate10.enthalpyPort_a) annotation(
       Line(points = {{-1040, 461.8}, {-1040, 465.5}, {-1040.1, 465.5}, {-1040.1, 469.2}}, color = {176, 0, 0}));
     connect(massFlowRate10.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF42.enthalpyPort_a1) annotation(
@@ -1236,21 +1268,21 @@ package FMUs
     connect(massFlowRate2.dotm, calc_valve_ratio1.u_dotm_in) annotation(
       Line(points = {{-991, 649}, {-960, 649}, {-960, 542}}, color = {0, 0, 127}));
     connect(threeWayValve_NS_2.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF69.enthalpyPort_b1) annotation(
-      Line(points = {{-1240, 530.2}, {-1230, 530.2}, {-1230, 530}, {-1219.8, 530}}, color = {0, 128, 255}));
+      Line(points = {{-1240, 530.2}, {-1230, 530.2}, {-1230, 530}, {-1219.8, 530}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF69.enthalpyPort_a1, temperature_2213_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1200.2, 530}, {-1188, 530}, {-1188, 529.9}, {-1177, 529.9}}, color = {0, 128, 255}));
+      Line(points = {{-1200.2, 530}, {-1188, 530}, {-1188, 529.9}, {-1177, 529.9}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF45.enthalpyPort_a1, threeWayValve_NS_2.enthalpyPort_a) annotation(
-      Line(points = {{-1260.2, 560}, {-1240, 560}, {-1240, 550}}, color = {0, 128, 255}));
+      Line(points = {{-1260.2, 560}, {-1240, 560}, {-1240, 550}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF70.enthalpyPort_a1, threeWayValve_NS_2.enthalpyPort_b) annotation(
-      Line(points = {{-1260.2, 520}, {-1256, 520}, {-1256, 540}, {-1250, 540}}, color = {0, 128, 255}));
+      Line(points = {{-1260.2, 520}, {-1256, 520}, {-1256, 540}, {-1250, 540}}, color = {0, 128, 255}, thickness = 1));
     connect(manifold_NS_2.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF71.enthalpyPort_a1) annotation(
-      Line(points = {{-1180, 660}, {-1159.8, 660}}, color = {176, 0, 0}));
+      Line(points = {{-1180, 660}, {-1159.8, 660}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF71.enthalpyPort_b1, temperature_2215_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1140.2, 660}, {-1134, 660}, {-1134, 660.1}, {-1128.8, 660.1}}, color = {176, 0, 0}));
+      Line(points = {{-1140.2, 660}, {-1134, 660}, {-1134, 660.1}, {-1128.8, 660.1}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF53.enthalpyPort_b1, manifold_NS_2.enthalpyPort_a[2]) annotation(
-      Line(points = {{-1252.2, 660}, {-1226, 660}, {-1226, 660.5}, {-1200, 660.5}}, color = {176, 0, 0}));
+      Line(points = {{-1252.2, 660}, {-1226, 660}, {-1226, 660.5}, {-1200, 660.5}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF72.enthalpyPort_b1, manifold_NS_2.enthalpyPort_a[1]) annotation(
-      Line(points = {{-1252.2, 700}, {-1220, 700}, {-1220, 659.5}, {-1200, 659.5}}, color = {176, 0, 0}));
+      Line(points = {{-1252.2, 700}, {-1220, 700}, {-1220, 659.5}, {-1200, 659.5}}, color = {176, 0, 0}, thickness = 1));
     connect(const7.y, heatPump1.iceFac_in) annotation(
       Line(points = {{-1907.5, 621}, {-1902, 621}, {-1902, 620.88}, {-1893.87, 620.88}}, color = {0, 0, 127}));
     connect(calc_mdot_production3.u_TemperatureInput, temperature_2202_TRC_1.T) annotation(
@@ -1258,21 +1290,21 @@ package FMUs
     connect(calc_mdot_production3.y_mdot, pump_2205_UP_1.dotm_setValue) annotation(
       Line(points = {{-1729, 590}, {-1710, 590}, {-1710, 528}}, color = {0, 0, 127}));
     connect(pump_2205_UP_1.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF75.enthalpyPort_b1) annotation(
-      Line(points = {{-1700.4, 520}, {-1689.8, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1700.4, 520}, {-1689.8, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2202_TRC_1.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF76.enthalpyPort_b1) annotation(
-      Line(points = {{-1769.2, 519.9}, {-1762.5, 519.9}, {-1762.5, 520}, {-1755.8, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1769.2, 519.9}, {-1762.5, 519.9}, {-1762.5, 520}, {-1755.8, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF76.enthalpyPort_a1, pump_2205_UP_1.enthalpyPort_b) annotation(
-      Line(points = {{-1736.2, 520}, {-1718.6, 519.9}, {-1718.6, 520}, {-1719.6, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1736.2, 520}, {-1718.6, 519.9}, {-1718.6, 520}, {-1719.6, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2202_TRC_1.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF77.enthalpyPort_a1) annotation(
-      Line(points = {{-1787, 519.9}, {-1808.6, 519.9}, {-1808.6, 520}, {-1810.2, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1787, 519.9}, {-1808.6, 519.9}, {-1808.6, 520}, {-1810.2, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_2204_TRC_1.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF78.enthalpyPort_b1) annotation(
-      Line(points = {{-1766.8, 699.9}, {-1764.5, 699.9}, {-1764.5, 700}, {-1830.2, 700}}, color = {176, 0, 0}));
+      Line(points = {{-1766.8, 699.9}, {-1764.5, 699.9}, {-1764.5, 700}, {-1830.2, 700}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_2204_TRC_1.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF79.enthalpyPort_a1) annotation(
-      Line(points = {{-1749, 699.9}, {-1699.5, 699.9}, {-1699.5, 700}, {-1689.8, 700}}, color = {176, 0, 0}));
+      Line(points = {{-1749, 699.9}, {-1699.5, 699.9}, {-1699.5, 700}, {-1689.8, 700}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF77.enthalpyPort_b1, heatPump1.enthalpyPort_a) annotation(
-      Line(points = {{-1829.8, 520}, {-1871, 520}, {-1871, 618}}, color = {0, 128, 255}));
+      Line(points = {{-1829.8, 520}, {-1871, 520}, {-1871, 618}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF78.enthalpyPort_a1, heatPump1.enthalpyPort_b) annotation(
-      Line(points = {{-1849.8, 700}, {-1871, 700}, {-1871, 642}}, color = {176, 0, 0}));
+      Line(points = {{-1849.8, 700}, {-1871, 700}, {-1871, 642}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF82.enthalpyPort_b1, heatPump1.enthalpyPort_a1) annotation(
       Line(points = {{-1894.2, 860}, {-1885, 860}, {-1885, 642}}, color = {176, 0, 0}));
     connect(heatPump1.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF81.enthalpyPort_a1) annotation(
@@ -1286,13 +1318,13 @@ package FMUs
     connect(const24.y, add2.u1) annotation(
       Line(points = {{-1811, 606}, {-1792, 606}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF79.enthalpyPort_b1, threeWayValve_NS_3.enthalpyPort_ab) annotation(
-      Line(points = {{-1670.2, 700}, {-1649.8, 700}}, color = {176, 0, 0}));
+      Line(points = {{-1670.2, 700}, {-1649.8, 700}}, color = {176, 0, 0}, thickness = 1));
     connect(threeWayValve_NS_3.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF73.enthalpyPort_a1) annotation(
-      Line(points = {{-1640, 690}, {-1640, 639.8}}, color = {176, 0, 0}));
+      Line(points = {{-1640, 690}, {-1640, 639.8}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_3.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF75.enthalpyPort_a1) annotation(
-      Line(points = {{-1660, 520}, {-1670.2, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1660, 520}, {-1670.2, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF73.enthalpyPort_b1, manifold_NS_3.enthalpyPort_a[2]) annotation(
-      Line(points = {{-1640, 620.2}, {-1640, 520.5}}, color = {0, 128, 255}));
+      Line(points = {{-1640, 620.2}, {-1640, 520.5}}, color = {0, 128, 255}, thickness = 1));
     connect(const25.y, fluidSource2.dotm) annotation(
       Line(points = {{-1969, 830}, {-1960, 830}, {-1960, 857.4}, {-1948, 857.4}}, color = {0, 0, 127}));
     connect(vessel2.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF81.enthalpyPort_b1) annotation(
@@ -1302,9 +1334,9 @@ package FMUs
     connect(sineGeo_T_amb2.y, fluidSource2.T_fluid) annotation(
       Line(points = {{-1969, 864}, {-1970, 864}, {-1970, 864.2}, {-1948, 864.2}}, color = {0, 0, 127}));
     connect(manifold_NS_3.enthalpyPort_a[1], dynamicPipe_HeatStorage_unload_FF70.enthalpyPort_b1) annotation(
-      Line(points = {{-1640, 519.5}, {-1459.8, 519.5}, {-1459.8, 520}, {-1279.8, 520}}, color = {0, 128, 255}));
+      Line(points = {{-1640, 519.5}, {-1459.8, 519.5}, {-1459.8, 520}, {-1279.8, 520}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_3.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF72.enthalpyPort_a1) annotation(
-      Line(points = {{-1630, 700}, {-1271.8, 700}}, color = {176, 0, 0}));
+      Line(points = {{-1630, 700}, {-1271.8, 700}}, color = {176, 0, 0}, thickness = 1));
     connect(booleanConstant1.y, heatPump1.modeSet) annotation(
       Line(points = {{-1899, 580}, {-1880.1, 580}, {-1880.1, 616.08}}, color = {255, 0, 255}));
     connect(u_7102_NS, min1.u2) annotation(
@@ -1356,7 +1388,7 @@ package FMUs
     connect(y_heatpump1_dotQ, gain6.u) annotation(
       Line(points = {{-1860, 640}, {-1740, 640}, {-1740, 632}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF51.enthalpyPort_a1, heatPump2.enthalpyPort_b) annotation(
-      Line(points = {{-1511.8, 660}, {-1533, 660}, {-1533, 642}}, color = {176, 0, 0}));
+      Line(points = {{-1511.8, 660}, {-1533, 660}, {-1533, 642}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF49.enthalpyPort_a1, heatPump2.enthalpyPort_b1) annotation(
       Line(points = {{-1574.2, 800}, {-1560, 800}, {-1560, 600}, {-1547, 600}, {-1547, 618}}, color = {176, 0, 0}));
     connect(booleanConstant.y, heatPump2.modeSet) annotation(
@@ -1364,7 +1396,7 @@ package FMUs
     connect(heatPump2.nSet, switch_2102_ZA_2.y) annotation(
       Line(points = {{-1537.67, 616.08}, {-1537.67, 564}, {-1538, 564}, {-1538, 491}}, color = {0, 0, 127}));
     connect(heatPump2.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF48.enthalpyPort_b1) annotation(
-      Line(points = {{-1533, 618}, {-1534, 618}, {-1534, 560}, {-1491.8, 560}}, color = {176, 0, 0}));
+      Line(points = {{-1533, 618}, {-1534, 618}, {-1534, 560}, {-1491.8, 560}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF50.enthalpyPort_b1, heatPump2.enthalpyPort_a1) annotation(
       Line(points = {{-1556.2, 860}, {-1548, 860}, {-1548, 642}, {-1547, 642}}, color = {176, 0, 0}));
     connect(u_heatpump_0_1, switch_2102_ZA_1.u3) annotation(
@@ -1372,33 +1404,33 @@ package FMUs
     connect(u_disturb_heatpump1, not7.u) annotation(
       Line(points = {{-2220, 510}, {-2181, 510}, {-2181, 510}, {-2142, 510}}, color = {255, 0, 255}));
     connect(temperature_1316_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF56.enthalpyPort_b1) annotation(
-      Line(points = {{-1181.2, 1059.9}, {-1169.6, 1059.9}, {-1169.6, 1060}, {-1159.8, 1060}}, color = {0, 128, 255}));
+      Line(points = {{-1181.2, 1059.9}, {-1169.6, 1059.9}, {-1169.6, 1060}, {-1159.8, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF88.enthalpyPort_a1, temperature_1316_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1220.2, 1060}, {-1210, 1060}, {-1210, 1059.9}, {-1199, 1059.9}}, color = {0, 128, 255}));
+      Line(points = {{-1220.2, 1060}, {-1210, 1060}, {-1210, 1059.9}, {-1199, 1059.9}}, color = {0, 128, 255}, thickness = 1));
     connect(massFlowRate_1314_FRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF88.enthalpyPort_b1) annotation(
-      Line(points = {{-1255.2, 1059.9}, {-1246.6, 1059.9}, {-1246.6, 1060}, {-1239.8, 1060}}, color = {0, 128, 255}));
+      Line(points = {{-1255.2, 1059.9}, {-1246.6, 1059.9}, {-1246.6, 1060}, {-1239.8, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF87.enthalpyPort_a1, massFlowRate_1314_FRC.enthalpyPort_b) annotation(
-      Line(points = {{-1288.2, 1060}, {-1280, 1060}, {-1280, 1059.9}, {-1273, 1059.9}}, color = {0, 128, 255}));
+      Line(points = {{-1288.2, 1060}, {-1280, 1060}, {-1280, 1059.9}, {-1273, 1059.9}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_1313_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF87.enthalpyPort_b1) annotation(
-      Line(points = {{-1321.2, 1059.9}, {-1314.6, 1059.9}, {-1314.6, 1060}, {-1307.8, 1060}}, color = {0, 128, 255}));
+      Line(points = {{-1321.2, 1059.9}, {-1314.6, 1059.9}, {-1314.6, 1060}, {-1307.8, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF74.enthalpyPort_a1, temperature_1313_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1362.2, 1060}, {-1350, 1060}, {-1350, 1059.9}, {-1339, 1059.9}}, color = {0, 128, 255}));
+      Line(points = {{-1362.2, 1060}, {-1350, 1060}, {-1350, 1059.9}, {-1339, 1059.9}}, color = {0, 128, 255}, thickness = 1));
     connect(pump_1305_up.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF80.enthalpyPort_b1) annotation(
-      Line(points = {{-1482.4, 1060}, {-1459.8, 1060}}, color = {0, 128, 255}));
+      Line(points = {{-1482.4, 1060}, {-1459.8, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(temperature_1302_TRC.enthalpyPort_a, pump_1305_up.enthalpyPort_b) annotation(
-      Line(points = {{-1519.2, 1059.9}, {-1510.6, 1059.9}, {-1510.6, 1060}, {-1501.6, 1060}}, color = {0, 128, 255}));
+      Line(points = {{-1519.2, 1059.9}, {-1510.6, 1059.9}, {-1510.6, 1060}, {-1501.6, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(calc_mdot_production4.y_mdot, pump_1305_up.dotm_setValue) annotation(
       Line(points = {{-1499, 1090}, {-1492, 1090}, {-1492, 1068}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF89.enthalpyPort_a1, temperature_1302_TRC.enthalpyPort_b) annotation(
-      Line(points = {{-1582.2, 1060}, {-1560, 1060}, {-1560, 1059.9}, {-1537, 1059.9}}, color = {0, 128, 255}));
+      Line(points = {{-1582.2, 1060}, {-1560, 1060}, {-1560, 1059.9}, {-1537, 1059.9}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF83.enthalpyPort_b1, temperature_1304_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1580.2, 1160}, {-1474, 1160}, {-1474, 1160.1}, {-1468.8, 1160.1}}, color = {176, 0, 0}));
+      Line(points = {{-1580.2, 1160}, {-1474, 1160}, {-1474, 1160.1}, {-1468.8, 1160.1}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_1304_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF84.enthalpyPort_a1) annotation(
-      Line(points = {{-1451, 1160.1}, {-1446.5, 1160.1}, {-1446.5, 1160}, {-1441.8, 1160}}, color = {176, 0, 0}));
+      Line(points = {{-1451, 1160.1}, {-1446.5, 1160.1}, {-1446.5, 1160}, {-1441.8, 1160}}, color = {176, 0, 0}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF86.enthalpyPort_b1, temperature_1315_TRC.enthalpyPort_a) annotation(
-      Line(points = {{-1322.2, 1160}, {-1286, 1160}, {-1286, 1160.1}, {-1250.8, 1160.1}}, color = {176, 0, 0}));
+      Line(points = {{-1322.2, 1160}, {-1286, 1160}, {-1286, 1160.1}, {-1250.8, 1160.1}}, color = {176, 0, 0}, thickness = 1));
     connect(temperature_1315_TRC.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF57.enthalpyPort_a1) annotation(
-      Line(points = {{-1233, 1160.1}, {-1186.5, 1160.1}, {-1186.5, 1160}, {-1139.8, 1160}}, color = {176, 0, 0}));
+      Line(points = {{-1233, 1160.1}, {-1186.5, 1160.1}, {-1186.5, 1160}, {-1139.8, 1160}}, color = {176, 0, 0}, thickness = 1));
     connect(const30.y, switch_1101_OA.u1) annotation(
       Line(points = {{-2049, 1060}, {-2040, 1060}, {-2040, 1048}, {-2030, 1048}}, color = {0, 0, 127}));
     connect(not8.y, or4.u2) annotation(
@@ -1426,9 +1458,9 @@ package FMUs
     connect(gain9.u, y_1302_TRC) annotation(
       Line(points = {{-1918, 1020}, {-1548, 1020}, {-1548, 1072}, {-1542, 1072}}, color = {0, 0, 127}));
     connect(dynamicPipe_HeatStorage_unload_FF89.enthalpyPort_b1, Electrolyseur.enthalpyPort_a) annotation(
-      Line(points = {{-1601.8, 1060}, {-1860, 1060}, {-1860, 1110}, {-1840, 1110}}, color = {176, 0, 0}));
+      Line(points = {{-1601.8, 1060}, {-1860, 1060}, {-1860, 1110}, {-1840, 1110}}, color = {0, 128, 255}, thickness = 1));
     connect(Electrolyseur.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF83.enthalpyPort_a1) annotation(
-      Line(points = {{-1820, 1110}, {-1800, 1110}, {-1800, 1160}, {-1599.8, 1160}}, color = {176, 0, 0}));
+      Line(points = {{-1820, 1110}, {-1800, 1110}, {-1800, 1160}, {-1599.8, 1160}}, color = {176, 0, 0}, thickness = 1));
     connect(realToBoolean2.y, Electrolyseur.onOff) annotation(
       Line(points = {{-1993, 1160}, {-1834, 1160}, {-1834, 1119.2}}, color = {255, 0, 255}));
     connect(Electrolyseur.P_elRel, switch_1101_OA.y) annotation(
@@ -1436,17 +1468,17 @@ package FMUs
     connect(Electrolyseur.Capacity[2], calc_mdot_production4.u_dotQ) annotation(
       Line(points = {{-1819.8, 1115.6}, {-1510, 1115.6}, {-1510, 1102}}, color = {0, 0, 127}));
     connect(threeWayValve_NS_4.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF74.enthalpyPort_b1) annotation(
-      Line(points = {{-1390.2, 1060}, {-1381.8, 1060}}, color = {176, 0, 0}));
+      Line(points = {{-1390.2, 1060}, {-1381.8, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF85.enthalpyPort_a1, threeWayValve_NS_4.enthalpyPort_b) annotation(
-      Line(points = {{-1400, 1080.2}, {-1400, 1070}}, color = {176, 0, 0}));
+      Line(points = {{-1400, 1080.2}, {-1400, 1070}}, color = {0, 128, 255}, thickness = 1));
     connect(threeWayValve_NS_4.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF80.enthalpyPort_a1) annotation(
-      Line(points = {{-1410, 1060}, {-1440.2, 1060}}, color = {176, 0, 0}));
+      Line(points = {{-1410, 1060}, {-1440.2, 1060}}, color = {0, 128, 255}, thickness = 1));
     connect(dynamicPipe_HeatStorage_unload_FF84.enthalpyPort_b1, manifold_NS_4.enthalpyPort_a[1]) annotation(
-      Line(points = {{-1422.2, 1160}, {-1412, 1160}, {-1412, 1159.5}, {-1400, 1159.5}}, color = {176, 0, 0}));
+      Line(points = {{-1422.2, 1160}, {-1412, 1160}, {-1412, 1159.5}, {-1400, 1159.5}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_4.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF86.enthalpyPort_a1) annotation(
-      Line(points = {{-1380, 1160}, {-1341.8, 1160}}, color = {176, 0, 0}));
+      Line(points = {{-1380, 1160}, {-1370, 1160}, {-1370, 1162}, {-1360, 1162}, {-1360, 1160}, {-1341.8, 1160}}, color = {176, 0, 0}, thickness = 1));
     connect(manifold_NS_4.enthalpyPort_a[2], dynamicPipe_HeatStorage_unload_FF85.enthalpyPort_b1) annotation(
-      Line(points = {{-1400, 1160.5}, {-1400, 1099.8}}, color = {176, 0, 0}));
+      Line(points = {{-1400, 1160.5}, {-1400, 1099.8}}, color = {0, 128, 255}, thickness = 1));
     connect(const.y, calc_valve2.u_T_consumer_input) annotation(
       Line(points = {{-1341, 1004}, {-1350, 1004}, {-1350, 1004.2}, {-1358, 1004.2}}, color = {0, 0, 127}));
     connect(calc_valve2.y_valve, threeWayValve_NS_4.opening) annotation(
@@ -1456,13 +1488,13 @@ package FMUs
     connect(calc_valve2.u_T_source_input, y_1304_TRC) annotation(
       Line(points = {{-1370, 998}, {-1370, 990}, {-1470, 990}, {-1470, 1148}}, color = {0, 0, 127}));
     connect(dynamicPipe.enthalpyPort_b1, manifold3.enthalpyPort_a[1]) annotation(
-      Line(points = {{-1040, 780.2}, {-1040, 759.5}}, color = {176, 0, 0}));
+      Line(points = {{-1040, 780.2}, {-1040, 759.5}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate.dotm, calc_valve_ratio2.u_dotm_out) annotation(
       Line(points = {{-1031, 829}, {-1000, 829}, {-1000, 790}, {-992, 790}}, color = {0, 0, 127}));
     connect(massFlowRate.enthalpyPort_b, dynamicPipe.enthalpyPort_a1) annotation(
-      Line(points = {{-1040.1, 821}, {-1040.1, 809.8}, {-1040, 809.8}, {-1040, 799.8}}, color = {176, 0, 0}));
+      Line(points = {{-1040.1, 821}, {-1040.1, 807.8}, {-1040, 807.8}, {-1040, 799.8}}, color = {176, 0, 0}, thickness = 1));
     connect(massFlowRate.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF57.enthalpyPort_b1) annotation(
-      Line(points = {{-1040.1, 838.8}, {-1040.1, 1160}, {-1120.2, 1160}}, color = {176, 0, 0}));
+      Line(points = {{-1040.1, 838.8}, {-1040.1, 1160}, {-1120.2, 1160}}, color = {176, 0, 0}, thickness = 1));
     connect(const2.y, calc_mdot_production4.u_TemperatureOutput) annotation(
       Line(points = {{-1539, 1096}, {-1530, 1096}, {-1530, 1095.8}, {-1522, 1095.8}}, color = {0, 0, 127}));
     connect(const6.y, add.u1) annotation(
@@ -1489,10 +1521,89 @@ package FMUs
       Line(points = {{-2110, -142}, {-2126, -142}, {-2126, -120}, {-2180, -120}, {-2180, -150}, {-2218, -150}}, color = {0, 0, 127}));
     connect(const21.y, switch1.u3) annotation(
       Line(points = {{-2139, -188}, {-2126, -188}, {-2126, -158}, {-2110, -158}}, color = {0, 0, 127}));
+    connect(u_loadProfile_DemandPower_kW, exeptionHandling_no_division_zero2.u) annotation(
+      Line(points = {{-2220, 1280}, {-2162, 1280}}, color = {0, 0, 127}));
+    connect(exeptionHandling_no_division_zero2.y, busbar_4consumer1.u_DemandHouses) annotation(
+      Line(points = {{-2139, 1280}, {260, 1280}, {260, 1088}, {372, 1088}}, color = {0, 0, 127}));
+    connect(y_heatpump2_Pel, add4.u2) annotation(
+      Line(points = {{-1522, 632}, {-1486, 632}, {-1486, 904}, {-1482, 904}}, color = {0, 0, 127}));
+    connect(y_heatpump1_Pel, add4.u1) annotation(
+      Line(points = {{-1860, 632}, {-1820, 632}, {-1820, 916}, {-1482, 916}}, color = {0, 0, 127}));
+    connect(add4.y, busbar_4consumer1.u_DemandHeatPump) annotation(
+      Line(points = {{-1459, 910}, {282, 910}, {282, 1112}, {372, 1112}}, color = {0, 0, 127}));
+    connect(y_Elektrolyseur_Pel, busbar_4consumer1.u_DemandElectrolyser) annotation(
+      Line(points = {{-1854, 1130}, {-1900, 1130}, {-1900, 1200}, {300, 1200}, {300, 1132}, {372, 1132}}, color = {0, 0, 127}));
+    connect(CHP.Capacity[1], gain10.u) annotation(
+      Line(points = {{-1529.8, 214.933}, {-1512, 214.933}, {-1512, 236}, {-1420, 236}, {-1420, 278}}, color = {0, 0, 127}));
+    connect(gain10.y, busbar_4consumer1.u_ProductionCHP) annotation(
+      Line(points = {{-1420, 301}, {-1420, 340}, {-760, 340}, {-760, 1180}, {396, 1180}, {396, 1148}}, color = {0, 0, 127}));
+    connect(u_loadProfile_DemandPower_kW1, exeptionHandling_no_division_zero3.u) annotation(
+      Line(points = {{-2220, 1320}, {-2162, 1320}}, color = {0, 0, 127}));
+    connect(exeptionHandling_no_division_zero3.y, busbar_4consumer1.uProductionPV) annotation(
+      Line(points = {{-2139, 1320}, {420, 1320}, {420, 1148}}, color = {0, 0, 127}));
+    connect(u_loadProfile_DemandEMob_kW, exeptionHandling_no_division_zero4.u) annotation(
+      Line(points = {{-2220, 1240}, {-2162, 1240}}, color = {0, 0, 127}));
+    connect(exeptionHandling_no_division_zero4.y, busbar_4consumer1.u_EMob) annotation(
+      Line(points = {{-2139, 1240}, {340, 1240}, {340, 1068}, {372, 1068}}, color = {0, 0, 127}));
+    connect(busbar_4consumer1.y_DirectConsumptionCHP, y_DirectConsumption_CHP) annotation(
+      Line(points = {{464, 1132}, {546, 1132}}, color = {0, 0, 127}));
+    connect(busbar_4consumer1.y_FeedInCHP, y_FeedIn_CHP) annotation(
+      Line(points = {{464, 1120}, {546, 1120}}, color = {0, 0, 127}));
+    connect(busbar_4consumer1.y_DirectConsumptionPV, y_DirectConsumption_PV) annotation(
+      Line(points = {{464, 1108}, {546, 1108}}, color = {0, 0, 127}));
+    connect(busbar_4consumer1.y_PVProductionToBattery, y_FeedIn_PV) annotation(
+      Line(points = {{464, 1072}, {546, 1072}}, color = {0, 0, 127}));
+    connect(busbar_4consumer1.y_LoadToBattery, y_GridLoad) annotation(
+      Line(points = {{464, 1084}, {566, 1084}}, color = {0, 0, 127}));
+    connect(y_7309_TRC, controlBus_7_heatStorage.y_7309_TRC) annotation(
+      Line(points = {{146, 500}, {252, 500}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7308_TRC, controlBus_7_heatStorage.y_7308_TRC) annotation(
+      Line(points = {{146, 520}, {252, 520}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7307_TRC, controlBus_7_heatStorage.y_7307_TRC) annotation(
+      Line(points = {{146, 540}, {252, 540}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7306_TRC, controlBus_7_heatStorage.y_7306_TRC) annotation(
+      Line(points = {{146, 560}, {252, 560}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7305_TRC, controlBus_7_heatStorage.y_7305_TRC) annotation(
+      Line(points = {{146, 580}, {252, 580}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7304_TRC, controlBus_7_heatStorage.y_7304_TRC) annotation(
+      Line(points = {{146, 600}, {252, 600}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7303_TRC, controlBus_7_heatStorage.y_7303_TRC) annotation(
+      Line(points = {{146, 620}, {252, 620}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7302_TRC, controlBus_7_heatStorage.y_7302_TRC) annotation(
+      Line(points = {{146, 640}, {252, 640}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7203_TRC_unload, controlBus_7_heatStorage.y_7203_TRC_unload) annotation(
+      Line(points = {{-168, 392}, {-200, 392}, {-200, 340}, {252, 340}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
+    connect(y_7203_TRC_load, controlBus_7_heatStorage.y_7203_TRC_load) annotation(
+      Line(points = {{-190, 452}, {-200, 452}, {-200, 340}, {252, 340}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
+    connect(y_7103_FRC_load, controlBus_7_heatStorage.y_7103_FRC_load) annotation(
+      Line(points = {{-198, 638}, {-180, 638}, {-180, 620}, {-280, 620}, {-280, 820}, {252, 820}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{6, 3}, {6, 3}}, horizontalAlignment = TextAlignment.Left));
+    connect(y_7104_TRC_load, controlBus_7_heatStorage.y_7104_TRC_load) annotation(
+      Line(points = {{-210, 752}, {-280, 752}, {-280, 820}, {252, 820}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
+    connect(y_7104_TRC_unload, controlBus_7_heatStorage.y_7104_TRC_unload) annotation(
+      Line(points = {{-232, 792}, {-280, 792}, {-280, 820}, {252, 820}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
+    connect(y_7103_FRC_unload, controlBus_7_heatStorage.y_7103_FRC_unload) annotation(
+      Line(points = {{-262, 660}, {-280, 660}, {-280, 820}, {252, 820}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
+    connect(y_7103_FRC, controlBus_7_heatStorage.y_7103_FRC) annotation(
+      Line(points = {{-260, 634}, {-280, 634}, {-280, 820}, {252, 820}, {252, 590}}, color = {0, 0, 127}),
+      Text(string = "%second", index = 1, extent = {{-6, 3}, {-6, 3}}, horizontalAlignment = TextAlignment.Right));
     annotation(
       Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics = {Line(origin = {688, 380}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),
-      experiment(StopTime = 31536000, Interval = 900, Tolerance = 0.01, __Dymola_Algorithm = "Dassl"));
+      experiment(StopTime = 7200, Interval = 900, Tolerance = 1e-6, StartTime = 0));
   end FMU_PhyModel;
   annotation(
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
