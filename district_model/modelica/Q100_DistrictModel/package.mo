@@ -3,7 +3,7 @@
 
   annotation (
     uses(                                                        BuildingSystems,
-    Modelica(version="4.0.0"),
+    Modelica(version="3.2.3"),
     ExternData(version="2.6.1"),
     AixLib(version="0.10.7")),
     Documentation(info = "<html>

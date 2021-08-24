@@ -986,48 +986,101 @@ package Simulations
       Placement(transformation(extent={{-254,62},{6,262}})));
 
     Controller_TM controller_TM
-      annotation (Placement(transformation(extent={{-414,74},{-340,136}})));
+      annotation (Placement(transformation(extent={{-424,70},{-340,136}})));
     Components.ExcelReader.ExcelReader_ScheudleProfiles
       excelReader_ScheudleProfiles
-      annotation (Placement(transformation(extent={{-580,110},{-560,130}})));
-    Components.ExcelReader.ExcelReader_ErrorProfiles excelReader_ErrorScheudle
-      annotation (Placement(transformation(extent={{-582,188},{-562,210}})));
+      annotation (Placement(transformation(extent={{-580,94},{-560,114}})));
     Components.ExcelReader.ExcelReader_LoadProfiles excelReader_LoadProfiles
-      annotation (Placement(transformation(extent={{-580,270},{-560,290}})));
+      annotation (Placement(transformation(extent={{-580,252},{-560,272}})));
+    Components.ExcelReader.ExcelReader_ErrorScheudle excelReader_ErrorScheudle
+      annotation (Placement(transformation(extent={{-584,194},{-564,214}})));
+    Components.ExcelReader.DataBus dataBus annotation (Placement(transformation(
+            extent={{-336,162},{-314,182}}), iconTransformation(extent={{-618,
+              32},{-598,52}})));
+    Components.ExcelReader.DataBus dataBus1 annotation (Placement(
+          transformation(extent={{-336,192},{-314,214}}), iconTransformation(
+            extent={{-608,78},{-588,98}})));
   equation
-    connect(controller_TM.u_boiler_command, fMU_PhyModel.u_boiler_0_1)
-      annotation (Line(points={{-339.153,115.286},{-288,115.286},{-288,162},{
-            -256,162}}, color={0,0,127}));
-    connect(controller_TM.u_CHP_command, fMU_PhyModel.u_CHP_0_1) annotation (
-        Line(points={{-339.153,115.286},{-339.153,116},{-288,116},{-288,191},{
-            -256,191}}, color={0,0,127}));
-    connect(controller_TM.u_heatpump1_command, fMU_PhyModel.u_heatpump_0_1)
-      annotation (Line(points={{-339.153,115.286},{-339.153,116},{-288,116},{
-            -288,212},{-256,212}}, color={0,0,127}));
-    connect(excelReader_ScheudleProfiles.u_HeatPump_scheudle, controller_TM.u_heatpump_schedule_extern)
-      annotation (Line(points={{-559,130},{-559,140},{-424,140},{-424,128.485},
-            {-414.892,128.485}}, color={0,0,127}));
-    connect(excelReader_ScheudleProfiles.u_Electrolyzer_scheudle, controller_TM.u_electrolyzer_schedule_extern)
-      annotation (Line(points={{-559,126},{-432,126},{-432,124.727},{-414.892,
-            124.727}}, color={0,0,127}));
-    connect(excelReader_ScheudleProfiles.u_CHP_scheudle, controller_TM.u_CHP_schedule_extern)
-      annotation (Line(points={{-559,122},{-412,122},{-412,132},{-414.892,132},
-            {-414.892,122.848}}, color={0,0,127}));
-    connect(excelReader_ScheudleProfiles.u_boiler_scheudle, controller_TM.u_boiler_schedule_extern)
-      annotation (Line(points={{-559,118},{-432,118},{-432,120.97},{-414.892,
-            120.97}}, color={0,0,127}));
-    connect(excelReader_ErrorScheudle.u_HeatPump_Error, fMU_PhyModel.u_Stoerung_Tino_heatpump)
-      annotation (Line(points={{-561,209},{-561,216},{-276,216},{-276,208},{
-            -256,208}}, color={255,0,255}));
-    connect(excelReader_ErrorScheudle.u_CHP_Error, fMU_PhyModel.u_Stoerung_Tino_CHP)
-      annotation (Line(points={{-561,201},{-264,201},{-264,195},{-256,195}},
-          color={255,0,255}));
-    connect(excelReader_ErrorScheudle.u_Boiler_Error, fMU_PhyModel.u_Stoerung_Tino_boiler)
-      annotation (Line(points={{-561,197},{-284,197},{-284,166},{-256,166}},
-          color={255,0,255}));
     connect(excelReader_LoadProfiles.E_th_load, fMU_PhyModel.u_loadProfile_kW)
-      annotation (Line(points={{-559,280},{-260,280},{-260,272},{-256,272},{
-            -256,261}}, color={0,0,127}));
+      annotation (Line(points={{-559,262},{-256,262},{-256,261}},
+                        color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.datalBus, controller_TM.dataBus1)
+      annotation (Line(
+        points={{-558.6,104.1},{-554,104.1},{-554,104},{-427.92,104}},
+        color={255,204,51},
+        thickness=0.5));
+    connect(controller_TM.dataBus, dataBus) annotation (Line(
+        points={{-336.547,103.65},{-336.547,172},{-325,172}},
+        color={255,204,51},
+        thickness=0.5), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(fMU_PhyModel.u_heatpump_0_1, dataBus.u_HeatPump_controll)
+      annotation (Line(points={{-256,212},{-300,212},{-300,172},{-325,172}},
+          color={0,0,127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_boiler_0_1, dataBus.u_Boiler_controll) annotation (
+        Line(points={{-256,162},{-300,162},{-300,172},{-325,172}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_CHP_0_1, dataBus.u_CHP_controll) annotation (Line(
+          points={{-256,191},{-300,191},{-300,172},{-325,172}}, color={0,0,127}),
+        Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(excelReader_ErrorScheudle.datalBus, dataBus1) annotation (Line(
+        points={{-562.3,204},{-562.3,203},{-325,203}},
+        color={255,204,51},
+        thickness=0.5), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(fMU_PhyModel.u_Stoerung_Tino_heatpump, dataBus1.u_HeatPumo_ErrorScheudle)
+      annotation (Line(points={{-256,208},{-316,208},{-316,203},{-325,203}},
+          color={255,0,255}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_Stoerung_Tino_CHP, dataBus1.u_CHP_ErrorScheudle)
+      annotation (Line(points={{-256,195},{-316,195},{-316,203},{-325,203}},
+          color={255,0,255}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_Stoerung_Tino_boiler, dataBus1.u_Boiler_ErrorScheudle)
+      annotation (Line(points={{-256,166},{-316,166},{-316,203},{-325,203}},
+          color={255,0,255}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_7202_NS, dataBus.u_StorageUnload_scheudle)
+      annotation (Line(points={{-256,200},{-276,200},{-276,172},{-325,172}},
+          color={0,0,127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(fMU_PhyModel.u_7102_NS, dataBus.u_StorageLoad_scheudle) annotation
+      (Line(points={{-256,205},{-284,205},{-284,172},{-325,172}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
     annotation (
       Diagram(coordinateSystem(extent={{-560,-60},{80,400}}),            graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent={{-560,-60},{80,400}})),
@@ -1035,18 +1088,6 @@ package Simulations
   end Gesamt_Sim_Excel;
 
   model Controller_TM "Coltroller for fmu"
-    Modelica.Blocks.Interfaces.RealInput u_heatpump_schedule_extern
-      "Heat pump schedule signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{-140,120},{-100,160}})));
-    Modelica.Blocks.Interfaces.RealInput u_electrolyzer_schedule_extern
-      "electrolyzer schedule signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
-    Modelica.Blocks.Interfaces.RealInput u_CHP_schedule_extern
-      "CHP schedule signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
-    Modelica.Blocks.Interfaces.RealInput u_boiler_schedule_extern
-      "Boiler schedule signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
     Modelica.Blocks.Interfaces.RealInput u_TempAmp_extern
       "Ambient temperature in °C"
       annotation (Placement(transformation(extent={{-140,260},{-100,300}})));
@@ -1080,104 +1121,134 @@ package Simulations
     Modelica.Blocks.Interfaces.RealInput u_mdot_HeatGrid_RF
       "Return mass flow of the heat grid in kg/s"
       annotation (Placement(transformation(extent={{1600,220},{1560,260}})));
-    Modelica.Blocks.Interfaces.RealOutput u_heatpump1_command
-      "Heat pump one command signal as 0 (not run) and 1 (run) " annotation (
-        Placement(transformation(extent={{1560,-160},{1598,-122}}),
-          iconTransformation(extent={{1560,-160},{1598,-122}})));
-    Modelica.Blocks.Interfaces.RealOutput u_heatpump2_command
-      "Heat pump two command signal as 0 (not run) and 1 (run) " annotation (
-        Placement(transformation(extent={{1560,-198},{1598,-160}}),
-          iconTransformation(extent={{1560,-160},{1598,-122}})));
-    Modelica.Blocks.Interfaces.RealOutput u_electrolyzer_command
-      "Electrolyzer command signal as 0 (not run) and 1 (run) " annotation (
-        Placement(transformation(extent={{1560,-238},{1598,-200}}),
-          iconTransformation(extent={{1560,-160},{1598,-122}})));
-    Modelica.Blocks.Interfaces.RealOutput u_CHP_command
-      "CHP command signal as 0 (not run) and 1 (run) " annotation (Placement(
-          transformation(extent={{1560,-280},{1598,-242}}), iconTransformation(
-            extent={{1560,-160},{1598,-122}})));
-    Modelica.Blocks.Interfaces.RealOutput u_boiler_command
-      "Boiler command signal as 0 (not run) and 1 (run) " annotation (Placement(
-          transformation(extent={{1560,-320},{1598,-282}}), iconTransformation(
-            extent={{1560,-160},{1598,-122}})));
     Modelica.Blocks.Interfaces.RealInput u_el_pv_district
       "photovoltaic production in the district in kW"
       annotation (Placement(transformation(extent={{1602,-80},{1562,-40}})));
     Modelica.Blocks.Logical.Switch switch_2102_ZA annotation (
-      Placement(visible = true, transformation(origin={70,140},       extent={{-10,-10},
+      Placement(visible = true, transformation(origin={70,-312},      extent={{-10,-10},
               {10,10}},                                                                                rotation=0)));
     Modelica.Blocks.Sources.Constant const5(k=0)   annotation (
-      Placement(visible = true, transformation(origin={-30,180},      extent={{-10,-10},
+      Placement(visible = true, transformation(origin={-30,-196},     extent={{-10,-10},
               {10,10}},                                                                                rotation = 0)));
     Modelica.Blocks.Logical.Not not2 annotation (
-      Placement(visible = true, transformation(origin={10,220},       extent={{-10,-10},
+      Placement(visible = true, transformation(origin={10,-156},      extent={{-10,-10},
               {10,10}},                                                                                rotation = 0)));
     Modelica.Blocks.Sources.BooleanConstant boolean_internalControl(k=false)
       "True if internal contral false if extrern schedule control" annotation (
         Placement(visible=true, transformation(
-          origin={-30,220},
+          origin={-30,-156},
           extent={{-10,-10},{10,10}},
           rotation=0)));
     Modelica.Blocks.Logical.Switch switch_2102_ZA1
                                                   annotation (
-      Placement(visible = true, transformation(origin={70,60},        extent={{-10,-10},
+      Placement(visible = true, transformation(origin={70,-352},      extent={{-10,-10},
               {10,10}},                                                                                rotation=0)));
     Modelica.Blocks.Logical.Switch switch_2102_ZA2
                                                   annotation (
-      Placement(visible = true, transformation(origin={70,20},        extent={{-10,-10},
+      Placement(visible = true, transformation(origin={70,-392},      extent={{-10,-10},
               {10,10}},                                                                                rotation=0)));
     Modelica.Blocks.Logical.Switch switch_2102_ZA3
                                                   annotation (
-      Placement(visible = true, transformation(origin={70,-20},       extent={{-10,-10},
+      Placement(visible = true, transformation(origin={70,-432},      extent={{-10,-10},
               {10,10}},                                                                                rotation=0)));
     AixLib.Controls.SetPoints.Table HeatingCurve_DistrictGrid(table=[-20,80; -15,
           80; 15,65; 20,65])
       annotation (Placement(transformation(extent={{438,270},{458,290}})));
+    Components.ExcelReader.DataBus dataBus annotation (Placement(transformation(
+            extent={{-290,-384},{-250,-344}}), iconTransformation(extent={{1574,
+              -414},{1694,-280}})));
+    Components.ExcelReader.DataBus dataBus1 annotation (Placement(
+          transformation(extent={{1558,-390},{1598,-350}}), iconTransformation(
+            extent={{-254,-410},{-394,-270}})));
   equation
-    connect(u_CHP_command, u_CHP_command)
-      annotation (Line(points={{1579,-261},{1579,-261}}, color={0,0,127}));
-    connect(u_heatpump_schedule_extern, switch_2102_ZA.u1) annotation (Line(
-          points={{-120,140},{-40,140},{-40,148},{58,148}}, color={0,0,127}));
     connect(boolean_internalControl.y, not2.u)
-      annotation (Line(points={{-19,220},{-2,220}}, color={255,0,255}));
-    connect(const5.y, switch_2102_ZA.u3) annotation (Line(points={{-19,180},{24,
-            180},{24,132},{58,132}}, color={0,0,127}));
-    connect(not2.y, switch_2102_ZA.u2) annotation (Line(points={{21,220},{40,
-            220},{40,140},{58,140}}, color={255,0,255}));
-    connect(not2.y, switch_2102_ZA1.u2) annotation (Line(points={{21,220},{40,
-            220},{40,60},{58,60}}, color={255,0,255}));
-    connect(not2.y, switch_2102_ZA2.u2) annotation (Line(points={{21,220},{40,
-            220},{40,20},{58,20}}, color={255,0,255}));
-    connect(not2.y, switch_2102_ZA3.u2) annotation (Line(points={{21,220},{40,
-            220},{40,-20},{58,-20}}, color={255,0,255}));
-    connect(const5.y, switch_2102_ZA1.u3) annotation (Line(points={{-19,180},{
-            24,180},{24,52},{58,52}}, color={0,0,127}));
-    connect(const5.y, switch_2102_ZA2.u3) annotation (Line(points={{-19,180},{
-            24,180},{24,12},{58,12}}, color={0,0,127}));
-    connect(const5.y, switch_2102_ZA3.u3) annotation (Line(points={{-19,180},{
-            24,180},{24,-28},{58,-28}}, color={0,0,127}));
-    connect(switch_2102_ZA1.u1, u_electrolyzer_schedule_extern) annotation (
-        Line(points={{58,68},{-40,68},{-40,60},{-120,60}}, color={0,0,127}));
-    connect(switch_2102_ZA2.u1, u_CHP_schedule_extern) annotation (Line(points=
-            {{58,28},{-40,28},{-40,20},{-120,20}}, color={0,0,127}));
-    connect(switch_2102_ZA3.u1, u_boiler_schedule_extern) annotation (Line(
-          points={{58,-12},{-40,-12},{-40,-20},{-120,-20}}, color={0,0,127}));
-    connect(switch_2102_ZA1.y, u_electrolyzer_command) annotation (Line(points=
-            {{81,60},{764,60},{764,-219},{1579,-219}}, color={0,0,127}));
-    connect(switch_2102_ZA.y, u_heatpump2_command) annotation (Line(points={{81,
-            140},{778,140},{778,-179},{1579,-179}}, color={0,0,127}));
-    connect(switch_2102_ZA.y, u_heatpump1_command) annotation (Line(points={{81,140},
-            {778,140},{778,-138},{1536,-138},{1536,-141},{1579,-141}},
-                                color={0,0,127}));
-    connect(switch_2102_ZA2.y, u_CHP_command) annotation (Line(points={{81,20},
-            {752,20},{752,-261},{1579,-261}}, color={0,0,127}));
-    connect(switch_2102_ZA3.y, u_boiler_command) annotation (Line(points={{81,
-            -20},{744,-20},{744,-301},{1579,-301}}, color={0,0,127}));
+      annotation (Line(points={{-19,-156},{-2,-156}},
+                                                    color={255,0,255}));
+    connect(const5.y, switch_2102_ZA.u3) annotation (Line(points={{-19,-196},{
+            24,-196},{24,-320},{58,-320}},
+                                     color={0,0,127}));
+    connect(not2.y, switch_2102_ZA.u2) annotation (Line(points={{21,-156},{40,
+            -156},{40,-312},{58,-312}},
+                                     color={255,0,255}));
+    connect(not2.y, switch_2102_ZA1.u2) annotation (Line(points={{21,-156},{40,
+            -156},{40,-352},{58,-352}},
+                                   color={255,0,255}));
+    connect(not2.y, switch_2102_ZA2.u2) annotation (Line(points={{21,-156},{40,
+            -156},{40,-392},{58,-392}},
+                                   color={255,0,255}));
+    connect(not2.y, switch_2102_ZA3.u2) annotation (Line(points={{21,-156},{40,
+            -156},{40,-432},{58,-432}},
+                                     color={255,0,255}));
+    connect(const5.y, switch_2102_ZA1.u3) annotation (Line(points={{-19,-196},{
+            24,-196},{24,-360},{58,-360}},
+                                      color={0,0,127}));
+    connect(const5.y, switch_2102_ZA2.u3) annotation (Line(points={{-19,-196},{
+            24,-196},{24,-400},{58,-400}},
+                                      color={0,0,127}));
+    connect(const5.y, switch_2102_ZA3.u3) annotation (Line(points={{-19,-196},{
+            24,-196},{24,-440},{58,-440}},
+                                        color={0,0,127}));
     connect(HeatingCurve_DistrictGrid.u, u_TempAmp_extern)
       annotation (Line(points={{436,280},{-120,280}}, color={0,0,127}));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+    connect(switch_2102_ZA.u1, dataBus.u_HeatPump_scheudle) annotation (Line(
+          points={{58,-304},{-168,-304},{-168,-364},{-270,-364}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(switch_2102_ZA1.u1, dataBus.u_Electrolyzer_scheudle) annotation (
+        Line(points={{58,-344},{-168,-344},{-168,-364},{-270,-364}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(switch_2102_ZA2.u1, dataBus.u_CHP_scheudle) annotation (Line(points=
+           {{58,-384},{-168,-384},{-168,-364},{-270,-364}}, color={0,0,127}),
+        Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(switch_2102_ZA3.u1, dataBus.u_boiler_scheudle) annotation (Line(
+          points={{58,-424},{-168,-424},{-168,-364},{-270,-364}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{-6,3},{-6,3}},
+        horizontalAlignment=TextAlignment.Right));
+    connect(switch_2102_ZA.y, dataBus1.u_HeatPump_controll) annotation (Line(
+          points={{81,-312},{830,-312},{830,-370},{1578,-370}}, color={0,0,127}),
+        Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(switch_2102_ZA1.y, dataBus1.u_Electrolyzer_controll) annotation (
+        Line(points={{81,-352},{830,-352},{830,-370},{1578,-370}}, color={0,0,
+            127}), Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(switch_2102_ZA2.y, dataBus1.u_CHP_controll) annotation (Line(points=
+           {{81,-392},{830,-392},{830,-370},{1578,-370}}, color={0,0,127}),
+        Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    connect(switch_2102_ZA3.y, dataBus1.u_Boiler_controll) annotation (Line(
+          points={{81,-432},{830,-432},{830,-370},{1578,-370}}, color={0,0,127}),
+        Text(
+        string="%second",
+        index=1,
+        extent={{6,3},{6,3}},
+        horizontalAlignment=TextAlignment.Left));
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-240,
               -1020},{1560,300}})), Diagram(coordinateSystem(
-            preserveAspectRatio=false, extent={{-100,-1020},{1560,300}})));
+            preserveAspectRatio=false, extent={{-240,-1020},{1560,300}})));
   end Controller_TM;
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
