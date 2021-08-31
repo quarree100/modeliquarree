@@ -85,6 +85,7 @@ model ElectrolysisSystem "electrolysis system with all components and heat pump"
   SI.Energy var_P_cons(start = 0.0, fixed = true) "integrated power consumption";
   Real var_P_cons_kWh = SI.Conversions.to_kWh(var_P_cons) "integrated power consumption in kWh";
   Real var_P_av_kWh = SI.Conversions.to_kWh(block_max.y) "integrated power avaiable in kWh";
+  SI.Volume var_Vnorm_H2(start = 0.0, fixed = true) "integrated normal volume of produced hydrogen [Nm3]";
   // components
   Electrolyser comp_electrolyser(comp_stack(redeclare package O2 = O2, redeclare package H2 = H2, redeclare CellModel comp_cell(redeclare package H2 = H2, redeclare package O2 = O2, param_p_op_cathode = param_stack_p_op_cathode, param_p_op_anode = param_stack_p_op_anode, param_kWh_per_m3 = param_stack_kWh_per_m3, param_HHV_h2 = param_stack_HHV_h2, param_membrane_area = param_stack_cell_area, param_membrane_d = param_stack_cell_d), comp_heater(param_T_op_min = param_stack_T_op - 5)), param_stack_kWh_per_m3 = param_stack_kWh_per_m3, param_stack_HHV_h2 = param_stack_HHV_h2, param_stack_P_el_min = param_stack_P_el_min, param_stack_P_el_max = param_stack_P_el_max, param_stack_i_min = 0.2e4, param_stack_i_max = param_stack_i_max, param_stack_T_init = param_stack_T_init, param_stack_T_op = param_stack_T_op, param_stack_T_crit = param_stack_T_crit, param_stack_T_in = param_stack_T_in, param_stack_p_op_cathode = param_stack_p_op_cathode, param_stack_p_op_anode = param_stack_p_op_anode, param_stack_cell_n = param_stack_cell_n, param_stack_cell_area = param_stack_cell_area, param_stack_cell_d = param_stack_cell_d, param_stack_cell_length = param_stack_cell_length, param_stack_cell_depth = param_stack_cell_depth, param_stack_mass = param_stack_mass, param_stack_cp = param_stack_cp, param_stack_mass_h2o = param_stack_mass_h2o, param_ppm_h2o_h2 = param_ppm_h2o_h2, param_p_comp_h2 = param_p_comp_h2, param_n_comp_h2 = param_n_comp_h2, param_pump_Qmax = param_pump_Qmax, param_pump_dp = param_pump_dp, param_pump_eta = param_pump_eta) annotation(
     Placement(transformation(extent = {{-14, 24}, {18, 56}})));
@@ -122,22 +123,25 @@ model ElectrolysisSystem "electrolysis system with all components and heat pump"
     Placement(transformation(extent = {{-148, 92}, {-128, 112}})));
   Modelica.Blocks.Interfaces.RealInput inp_T_air "outside air temperature" annotation(
     Placement(transformation(extent = {{-180, 8}, {-140, 48}}), iconTransformation(extent = {{-160, 40}, {-140, 60}})));
-  Modelica.Blocks.Interfaces.RealOutput out_P_th "thermal power output of electrolysis system [W]" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_P_th(final quantity = "Power", final unit = "W", displayUnit = "W", min = 0) "thermal power output of electrolysis system [W]" annotation(
     Placement(visible = true, transformation(extent = {{140, 80}, {160, 100}}, rotation = 0), iconTransformation(extent = {{140, 80}, {160, 100}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput out_P_el "electrical power demand of electrolysis system [W]" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_P_el(final quantity = "Power", final unit = "W", displayUnit = "W", min = 0) "electrical power demand of electrolysis system [W]" annotation(
     Placement(visible = true, transformation(extent = {{140, 100}, {160, 120}}, rotation = 0), iconTransformation(extent = {{140, 100}, {160, 120}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput out_H2 "hydrogen output of electrolysis system" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_H2(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m³/h", min = 0) "hydrogen production of electrolysis system [Nm3/h]" annotation(
     Placement(visible = true, transformation(extent = {{140, 60}, {160, 80}}, rotation = 0), iconTransformation(extent = {{140, 60}, {160, 80}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput out_O2 "oxygen output of electrolysis system" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_O(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m³/h", min = 0) "oxygen production of electrolysis system [Nm3/h]" annotation(
     Placement(visible = true, transformation(extent = {{140, 40}, {160, 60}}, rotation = 0), iconTransformation(extent = {{140, 40}, {160, 60}}, rotation = 0)));
+  Q100_DistrictModel.ElectrolysisSystem.Tools.Components.GasConverter gasConverter_H2(redeclare package Gas = Media.Gases.H2andWaterVapor) annotation(
+    Placement(visible = true, transformation(extent = {{60, 60}, {80, 80}}, rotation = 0)));
+  Q100_DistrictModel.ElectrolysisSystem.Tools.Components.GasConverter gasConverter_O(redeclare package Gas = Media.Gases.O2andWaterVapor) annotation(
+    Placement(visible = true, transformation(origin = {70, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   var_P_ex = block_max.y - comp_electrolyser.port_P_el.P - comp_heatPump.port_P_el.P;
   port_P_el.P = (comp_electrolyser.port_P_el.P + comp_heatPump.port_P_el.P) / param_transformer_eta;
   out_P_el = (comp_electrolyser.port_P_el.P + comp_heatPump.port_P_el.P) / param_transformer_eta;
   out_P_th = comp_heatPump.heatflow_dotQCond.Q_flow;
-  out_H2 = 1;
-  out_O2 = 1;
   der(var_P_cons) = port_P_el.P;
+  der(var_Vnorm_H2) = gasConverter_H2.Vdot_norm / 3600; // Convert from m3/h to m3/s
 // mass flow output
   if param_outputPumpMassFlow then
     connect(contr_hp_cond_mflow.y, out_hp_cond_mflow) annotation(
@@ -178,6 +182,14 @@ equation
     Line(points = {{-160, 28}, {-88, 28}, {-88, 36}, {-15, 36}}, color = {0, 0, 127}));
   connect(out_P_th, out_P_th) annotation(
     Line(points = {{150, 90}, {150, 90}}, color = {0, 0, 127}));
+  connect(comp_electrolyser.port_outlet_h2, gasConverter_H2.gasConnector) annotation(
+    Line(points = {{16, 54}, {30, 54}, {30, 70}, {62, 70}}));
+  connect(comp_electrolyser.port_outlet_o2, gasConverter_O.gasConnector) annotation(
+    Line(points = {{16, 50}, {62, 50}}));
+  connect(gasConverter_H2.Vdot_norm, out_H2) annotation(
+    Line(points = {{79, 70}, {150, 70}}, color = {0, 0, 127}));
+  connect(gasConverter_O.Vdot_norm, out_O) annotation(
+    Line(points = {{79, 50}, {150, 50}}, color = {0, 0, 127}));
   annotation(
     Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -160}, {160, 160}}), graphics = {Ellipse(origin = {17, 45}, extent = {{-117, 107}, {83, -93}}, endAngle = 360), Line(points = {{-120, -148}, {-120, -110}, {120, -110}, {120, -150}}, thickness = 0.5), Line(points = {{90, -68}, {90, -88}, {-90, -88}, {-90, -68}}, thickness = 0.5), Text(origin = {-23.76, 35.82}, extent = {{-44.24, 48.18}, {11.76, -17.82}}, textString = "P"), Text(origin = {58.66, 35.82}, extent = {{-42.66, 48.18}, {11.34, -17.82}}, textString = "H"), Text(origin = {57.0526, 38.6666}, extent = {{-5.05259, 3.33338}, {18.9474, -16.6666}}, textString = "2"), Polygon(fillColor = {76, 76, 76}, fillPattern = FillPattern.Solid, points = {{-10, 64}, {14, 52}, {-10, 38}, {-10, 64}}), Text(origin = {-46.3632, 39.1428}, extent = {{-3.63632, 2.85714}, {16.3632, -17.1428}}, textString = "el"), Rectangle(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-30, -78}, {30, -120}}), Text(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-30, -78}, {30, -120}}, textString = "HP"), Polygon(fillColor = {28, 108, 200}, fillPattern = FillPattern.Solid, lineThickness = 0.5, points = {{-100, -68}, {-90, -48}, {-80, -68}, {-100, -68}}), Polygon(origin = {86, -53}, rotation = 180, fillColor = {238, 46, 47}, fillPattern = FillPattern.Solid, lineThickness = 0.5, points = {{6, -5}, {-4, 15}, {-14, -5}, {6, -5}}), Ellipse(fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, lineThickness = 0.5, extent = {{-36, -78}, {-56, -98}}, endAngle = 360), Line(points = {{-46, -78}, {-56, -88}, {-46, -98}}, thickness = 0.5)}),
     Diagram(coordinateSystem(preserveAspectRatio = false, extent = {{-160, -160}, {160, 160}})),

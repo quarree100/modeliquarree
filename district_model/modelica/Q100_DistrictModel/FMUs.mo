@@ -794,6 +794,8 @@ package FMUs
       Placement(visible = true, transformation(origin = {-1735, 1143}, extent = {{-5, -5}, {5, 5}}, rotation = 180)));
   Modelica.Blocks.Sources.Constant ambientTemperature(k = 20) "Replace this with connection to actual weather data" annotation(
       Placement(visible = true, transformation(origin = {-1920, 1064}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_6204_FRC (final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "Normal volume flow hydrogen [Nm³/h]" annotation(
+      Placement(visible = true, transformation(origin = {-1854, 1146}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1854, 1150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
     connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation(
       Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}, thickness = 1));
@@ -1610,6 +1612,8 @@ package FMUs
       Line(points = {{-1740.5, 1143}, {-1761.5, 1143}, {-1761.5, 1116}, {-1854, 1116}}, color = {0, 0, 127}));
   connect(ambientTemperature.y, electrolysisSystem.inp_T_air) annotation(
       Line(points = {{-1909, 1064}, {-1832, 1064}, {-1832, 1102}}, color = {0, 0, 127}));
+  connect(electrolysisSystem.out_H2, y_6204_FRC) annotation(
+      Line(points = {{-1803, 1103}, {-1793, 1103}, {-1793, 1140}, {-1800, 1140}, {-1800, 1145}, {-1854, 1145}, {-1854, 1146}}, color = {0, 0, 127}));
     annotation(
       Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics = {Line(origin = {688, 380}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),

@@ -5,9 +5,9 @@ connector GasConnector
   replaceable package Gas = Modelica.Media.Interfaces.PartialMedium
       "gas model" annotation (choicesAllMatching=true);
 
-  Gas.AbsolutePressure p "pressure of gas";
-  SI.MolarFlowRate n_flow "molar flow rate of gas";
-  Gas.SpecificEnthalpy h "specific enthalpy flow rate of gas";
+  Gas.AbsolutePressure p "pressure of gas [Pa]";
+  SI.MolarFlowRate n_flow "molar flow rate of gas [mol/s]";
+  Gas.SpecificEnthalpy h "specific enthalpy flow rate of gas [J/kg]";
   Units.MolarFraction X[Gas.nXi]
     "mass fractions of gas";
   annotation (Icon(coordinateSystem(preserveAspectRatio=false), graphics={
