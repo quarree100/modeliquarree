@@ -127,9 +127,9 @@ model ElectrolysisSystem "electrolysis system with all components and heat pump"
     Placement(visible = true, transformation(extent = {{140, 80}, {160, 100}}, rotation = 0), iconTransformation(extent = {{140, 80}, {160, 100}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput out_P_el(final quantity = "Power", final unit = "W", displayUnit = "W", min = 0) "electrical power demand of electrolysis system [W]" annotation(
     Placement(visible = true, transformation(extent = {{140, 100}, {160, 120}}, rotation = 0), iconTransformation(extent = {{140, 100}, {160, 120}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput out_H2(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m³/h", min = 0) "hydrogen production of electrolysis system [Nm3/h]" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_H2(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "hydrogen production of electrolysis system [Nm3/h]" annotation(
     Placement(visible = true, transformation(extent = {{140, 60}, {160, 80}}, rotation = 0), iconTransformation(extent = {{140, 60}, {160, 80}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput out_O(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m³/h", min = 0) "oxygen production of electrolysis system [Nm3/h]" annotation(
+  Modelica.Blocks.Interfaces.RealOutput out_O(final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "oxygen production of electrolysis system [Nm3/h]" annotation(
     Placement(visible = true, transformation(extent = {{140, 40}, {160, 60}}, rotation = 0), iconTransformation(extent = {{140, 40}, {160, 60}}, rotation = 0)));
   Q100_DistrictModel.ElectrolysisSystem.Tools.Components.GasConverter gasConverter_H2(redeclare package Gas = Media.Gases.H2andWaterVapor) annotation(
     Placement(visible = true, transformation(extent = {{60, 60}, {80, 80}}, rotation = 0)));
