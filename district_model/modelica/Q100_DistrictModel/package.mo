@@ -4,8 +4,8 @@
   annotation (
     uses(                                                        BuildingSystems,
     Modelica(version="3.2.3"),
-    ExternData(version="2.6.1"),
-    AixLib(version="0.10.7")),
+    AixLib(version="0.10.7"),
+    ExternData(version="2.5.0")),
     Documentation(info = "<html>
     <p>Q100_DistrictModel dient als package, in welchem alle wichtigen Komponenten und Simulationsmodelle abgelegt werden.</p>
     <p>Erstellt wurde das Modell durch die Consolinno Energy GmbH im Rahmen des Forschungsprojektes EnStadtQuarree100.</p>

@@ -1074,8 +1074,8 @@ package Simulations
         index=1,
         extent={{-6,3},{-6,3}},
         horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_7102_NS, dataBus.u_StorageLoad_scheudle) annotation
-      (Line(points={{-256,205},{-284,205},{-284,172},{-325,172}}, color={0,0,
+    connect(fMU_PhyModel.u_7102_NS, dataBus.u_StorageLoad_scheudle) annotation (
+       Line(points={{-256,205},{-284,205},{-284,172},{-325,172}}, color={0,0,
             127}), Text(
         string="%second",
         index=1,
