@@ -1253,7 +1253,7 @@ are determined from the connections to this bus).
     end DataBus;
   end ExcelReader;
 
-  package UnitController
+    package UnitController
     package HeatPump
       model HeatPump_Controller
         HeatPump_StSp_priority_int heatPump_StSp_priority_int
@@ -1266,42 +1266,154 @@ are determined from the connections to this bus).
           annotation (Placement(transformation(extent={{20,-30},{40,-10}})));
         Modelica.Blocks.Logical.Or or3
           annotation (Placement(transformation(extent={{-20,10},{0,30}})));
-        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext1
-          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext2
-          annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
-        HeatPump_StSp_priority_ext heatPump_StSp_priority_ext3
-          annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
         Modelica.Blocks.Logical.Or or4
           annotation (Placement(transformation(extent={{60,-10},{80,10}})));
+        HeatPump_StSp_excess_power_PV heatPump_StSp_excess_power_PV
+          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        HeatPump_StSp_excess_power_EES heatPump_StSp_excess_power_EES
+          annotation (Placement(transformation(extent={{-60,30},{-40,50}})));
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_SI
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        HeatPump_StSp_CO2_intensity heatPump_StSp_CO2_intensity
+          annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-164,-112},{-140,-88}}),
+              iconTransformation(extent={{-164,-112},{-140,-88}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+            Placement(transformation(extent={{-164,-132},{-140,-108}}),
+              iconTransformation(extent={{-164,-132},{-140,-108}})));
+        Modelica.Blocks.Interfaces.RealInput carbon_intensity
+          "carbon intensity of electrical power" annotation (Placement(
+              transformation(extent={{-164,88},{-140,112}}), iconTransformation(
+                extent={{-164,88},{-140,112}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_carbon_intensity_threshold
+          "carbon intensity threshold" annotation (Placement(transformation(
+                extent={{-164,68},{-140,92}}), iconTransformation(extent={{-164,
+                  68},{-140,92}})));
+        Modelica.Blocks.Interfaces.RealInput tp_TES_unload
+          "Temperature heat storage " annotation (Placement(transformation(
+                extent={{-164,8},{-140,32}}), iconTransformation(extent={{-164,
+                  8},{-140,32}})));
+        Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
+          "Temperature heating grid" annotation (Placement(transformation(
+                extent={{-164,-12},{-140,12}}), iconTransformation(extent={{
+                  -164,-12},{-140,12}})));
+        Modelica.Blocks.Interfaces.RealInput SOC_EES
+          "state of charge - electrical storage" annotation (Placement(
+              transformation(extent={{-164,48},{-140,72}}), iconTransformation(
+                extent={{-164,48},{-140,72}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_storage_el_SOC_threshold
+          "Electrical storage charge status threshold" annotation (Placement(
+              transformation(extent={{-164,28},{-140,52}}), iconTransformation(
+                extent={{-164,28},{-140,52}})));
+        Modelica.Blocks.Interfaces.RealInput P_el_renergy
+          "electrical power - renewable energy (PV, BHKW)" annotation (
+            Placement(transformation(extent={{-164,-32},{-140,-8}}),
+              iconTransformation(extent={{-164,-32},{-140,-8}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_P_el_HP_min
+          annotation (Placement(transformation(extent={{-164,-52},{-140,-28}}),
+              iconTransformation(extent={{-164,-52},{-140,-28}})));
+        Modelica.Blocks.Interfaces.RealInput tp_TES_load annotation (Placement(
+              transformation(extent={{-164,-72},{-140,-48}}),
+              iconTransformation(extent={{-164,-72},{-140,-48}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_tp_TES_max_set
+          annotation (Placement(transformation(extent={{-164,-92},{-140,-68}}),
+              iconTransformation(extent={{-164,-92},{-140,-68}})));
       equation
-        connect(heatPump_StSp_priority_ext.OS_StSp_priority_ext, or1.u1)
-          annotation (Line(points={{-39,-40},{-28,-40},{-28,-60},{-22,-60}},
+        connect(heatPump_StSp_priority_ext.Heatpump_Specification_StSp_priority_ext_SI,
+          or1.u1) annotation (Line(points={{-39,-40},{-28,-40},{-28,-60},{-22,-60}},
               color={255,0,255}));
-        connect(heatPump_StSp_priority_int.OS_StSp_priority_int, or1.u2)
-          annotation (Line(points={{-39,-80},{-28,-80},{-28,-68},{-22,-68}},
+        connect(heatPump_StSp_priority_int.Heatpump_Specification_StSp_priority_int_SI,
+          or1.u2) annotation (Line(points={{-39,-80},{-28,-80},{-28,-68},{-22,-68}},
               color={255,0,255}));
-        connect(heatPump_StSp_priority_ext1.OS_StSp_priority_ext, or3.u2)
-          annotation (Line(points={{-39,0},{-28,0},{-28,12},{-22,12}}, color={
-                255,0,255}));
-        connect(heatPump_StSp_priority_ext2.OS_StSp_priority_ext, or3.u1)
-          annotation (Line(points={{-39,40},{-28,40},{-28,20},{-22,20}}, color=
-                {255,0,255}));
         connect(or3.y, or2.u1) annotation (Line(points={{1,20},{12,20},{12,-20},
                 {18,-20}}, color={255,0,255}));
         connect(or1.y, or2.u2) annotation (Line(points={{1,-60},{12,-60},{12,
                 -28},{18,-28}}, color={255,0,255}));
-        connect(heatPump_StSp_priority_ext3.OS_StSp_priority_ext, or4.u1)
-          annotation (Line(points={{-39,80},{52,80},{52,0},{58,0}}, color={255,
-                0,255}));
         connect(or2.y, or4.u2) annotation (Line(points={{41,-20},{52,-20},{52,
                 -8},{58,-8}}, color={255,0,255}));
-        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
-              coordinateSystem(preserveAspectRatio=false)));
+        connect(heatPump_StSp_excess_power_PV.Heatpump_Specification_StSp_excess_power_PV_SI,
+          or3.u2) annotation (Line(points={{-39,0},{-30,0},{-30,12},{-22,12}},
+              color={255,0,255}));
+        connect(heatPump_StSp_excess_power_EES.Heatpump_Specification_StSp_excess_power_EES_SI,
+          or3.u1) annotation (Line(points={{-39,40},{-30,40},{-30,20},{-22,20}},
+              color={255,0,255}));
+        connect(or4.y, Heatpump_Specification_SI)
+          annotation (Line(points={{81,0},{110,0}}, color={255,0,255}));
+        connect(heatPump_StSp_CO2_intensity.Heatpump_Specification_StSp_CO2_intensity_SI,
+          or4.u1) annotation (Line(points={{-39,80},{52,80},{52,0},{58,0}},
+              color={255,0,255}));
+        connect(heatPump_StSp_priority_int.signal_HP_prio_int,
+          signal_HP_prio_int) annotation (Line(points={{-62,-80},{-78,-80},{-78,
+                -100},{-152,-100}}, color={0,0,127}));
+        connect(heatPump_StSp_priority_ext.signal_HP_prio_ext,
+          signal_HP_prio_ext) annotation (Line(points={{-62,-45},{-70,-45},{-70,
+                -120},{-152,-120}}, color={0,0,127}));
+        connect(heatPump_StSp_priority_ext.signal_HP_prio_int,
+          signal_HP_prio_int) annotation (Line(points={{-62,-35},{-78,-35},{-78,
+                -100},{-152,-100}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.signal_HP_prio_int,
+          signal_HP_prio_int) annotation (Line(points={{-62,-6},{-78,-6},{-78,
+                -100},{-152,-100}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.signal_HP_prio_int,
+          signal_HP_prio_int) annotation (Line(points={{-62,34},{-78,34},{-78,
+                -100},{-152,-100}}, color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.signal_HP_prio_int,
+          signal_HP_prio_int) annotation (Line(points={{-62,74},{-78,74},{-78,
+                -100},{-152,-100}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.signal_HP_prio_ext,
+          signal_HP_prio_ext) annotation (Line(points={{-62,31},{-70,31},{-70,
+                -120},{-152,-120}}, color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.signal_HP_prio_ext,
+          signal_HP_prio_ext) annotation (Line(points={{-62,71},{-70,71},{-70,
+                -120},{-152,-120}}, color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.carbon_intensity, carbon_intensity)
+          annotation (Line(points={{-62,89},{-62,90},{-106,90},{-106,100},{-152,
+                100}}, color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.Heatpump_Constants_carbon_intensity_threshold,
+          Heatpump_Constants_carbon_intensity_threshold) annotation (Line(
+              points={{-62,86},{-106,86},{-106,80},{-152,80}}, color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.tp_TES_unload, tp_TES_unload)
+          annotation (Line(points={{-62,82},{-102,82},{-102,20},{-152,20}},
+              color={0,0,127}));
+        connect(heatPump_StSp_CO2_intensity.tp_DH_FF_set, tp_DH_FF_set)
+          annotation (Line(points={{-62,78},{-98,78},{-98,0},{-152,0}}, color={
+                0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.tp_DH_FF_set, tp_DH_FF_set)
+          annotation (Line(points={{-62,38},{-98,38},{-98,0},{-152,0}}, color={
+                0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.tp_TES_unload, tp_TES_unload)
+          annotation (Line(points={{-62,42},{-102,42},{-102,20},{-152,20}},
+              color={0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.Heatpump_Constants_storage_el_SOC_threshold,
+          Heatpump_Constants_storage_el_SOC_threshold) annotation (Line(points=
+                {{-62,46},{-106,46},{-106,40},{-152,40}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_EES.SOC_EES, SOC_EES) annotation (
+            Line(points={{-62,49},{-62,48},{-106,48},{-106,60},{-152,60}},
+              color={0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.P_el_renergy, P_el_renergy)
+          annotation (Line(points={{-62,9},{-94,9},{-94,-20},{-152,-20}}, color=
+               {0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.Heatpump_Constants_P_el_HP_min,
+          Heatpump_Constants_P_el_HP_min) annotation (Line(points={{-62,6},{-90,
+                6},{-90,-40},{-152,-40}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.tp_TES_load, tp_TES_load)
+          annotation (Line(points={{-62,2},{-86,2},{-86,-60},{-152,-60}}, color=
+               {0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.Heatpump_Constants_tp_TES_max_set,
+          Heatpump_Constants_tp_TES_max_set) annotation (Line(points={{-62,-2},
+                {-82,-2},{-82,-80},{-152,-80}}, color={0,0,127}));
+        connect(heatPump_StSp_excess_power_PV.signal_HP_prio_ext,
+          signal_HP_prio_ext) annotation (Line(points={{-62,-9},{-62,-10},{-70,
+                -10},{-70,-120},{-152,-120}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{
+                  -140,-140},{100,120}})),                             Diagram(
+              coordinateSystem(preserveAspectRatio=false, extent={{-140,-140},{
+                  100,120}})));
       end HeatPump_Controller;
 
       model HeatPump_StSp_priority_int
-        Modelica.Blocks.Interfaces.BooleanOutput OS_StSp_priority_int
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_StSp_priority_int_SI
           annotation (Placement(transformation(extent={{100,-10},{120,10}})));
         Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
           annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
@@ -1313,7 +1425,7 @@ are determined from the connections to this bus).
           signal_HP_prio_int)
           annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
         connect(stSp_priority_int_OR_HP_prio_int.OS_HP_prio_int,
-          OS_StSp_priority_int)
+          Heatpump_Specification_StSp_priority_int_SI)
           annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)));
@@ -1338,7 +1450,8 @@ are determined from the connections to this bus).
       end OR_Heatpump_StSp_priority_int;
 
       model HeatPump_StSp_priority_ext
-        Modelica.Blocks.Interfaces.BooleanOutput OS_StSp_priority_ext
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_StSp_priority_ext_SI
+          "Q100_Funktionsbeschreibung.Heatpump.Specification.SS_priority_ext._SI_virtual"
           annotation (Placement(transformation(extent={{100,-10},{120,10}})));
         Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
           annotation (Placement(transformation(extent={{-140,30},{-100,70}})));
@@ -1365,7 +1478,7 @@ are determined from the connections to this bus).
         connect(stSp_priority_ext_OR_HP_prio_ext.OS_HP_prio_ext, and1.u2)
           annotation (Line(points={{-39,-50},{32,-50},{32,-8},{38,-8}}, color={
                 255,0,255}));
-        connect(and1.y, OS_StSp_priority_ext)
+        connect(and1.y, Heatpump_Specification_StSp_priority_ext_SI)
           annotation (Line(points={{61,0},{110,0}}, color={255,0,255}));
         annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
               coordinateSystem(preserveAspectRatio=false)));
@@ -1404,8 +1517,469 @@ are determined from the connections to this bus).
               Diagram(coordinateSystem(preserveAspectRatio=false)));
         end StSp_priority_ext_OR_HP_prio_int;
       end OR_Heatpump_StSp_priority_ext;
+
+      model HeatPump_StSp_excess_power_PV
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_StSp_excess_power_PV_SI
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+            Placement(transformation(extent={{-140,-110},{-100,-70}})));
+        Modelica.Blocks.Logical.And and1
+          annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+        OR_Heatpump_StSp_excess_power_PV.StSp_excess_power_PV_OR_HP_prio_ext
+          stSp_excess_power_PV_OR_HP_prio_ext
+          annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
+        OR_Heatpump_StSp_excess_power_PV.StSp_excess_power_PV_OR_HP_prio_int
+          stSp_excess_power_PV_OR_HP_prio_int
+          annotation (Placement(transformation(extent={{-80,-70},{-60,-50}})));
+        Modelica.Blocks.Logical.And and2
+          annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
+        Modelica.Blocks.Logical.And and3
+          annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
+        Modelica.Blocks.Interfaces.RealInput P_el_renergy
+          "electrical power - renewable energy (PV, BHKW)"
+          annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_P_el_HP_min
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+        Modelica.Blocks.Interfaces.RealInput tp_TES_load
+          annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_tp_TES_max_set
+          annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
+        OR_Heatpump_StSp_excess_power_PV.StSp_excess_power_PV_OR_excess_power
+          stSp_excess_power_PV_OR_excess_power
+          annotation (Placement(transformation(extent={{-80,70},{-60,90}})));
+        OR_Heatpump_StSp_excess_power_PV.StSp_excess_power_PV_OR_tp_TES_max
+          stSp_excess_power_PV_OR_tp_TES_max
+          annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+      equation
+        connect(and1.y, Heatpump_Specification_StSp_excess_power_PV_SI)
+          annotation (Line(points={{61,0},{110,0}}, color={255,0,255}));
+        connect(stSp_excess_power_PV_OR_HP_prio_ext.signal_HP_prio_ext,
+          signal_HP_prio_ext)
+          annotation (Line(points={{-82,-90},{-120,-90}}, color={0,0,127}));
+        connect(signal_HP_prio_int, stSp_excess_power_PV_OR_HP_prio_int.signal_HP_prio_int)
+          annotation (Line(points={{-120,-60},{-82,-60}}, color={0,0,127}));
+        connect(stSp_excess_power_PV_OR_HP_prio_int.OS_HP_prio_int, and2.u1)
+          annotation (Line(points={{-59,-60},{-48,-60},{-48,-70},{-42,-70}},
+              color={255,0,255}));
+        connect(stSp_excess_power_PV_OR_HP_prio_ext.OS_HP_prio_ext, and2.u2)
+          annotation (Line(points={{-59,-90},{-48,-90},{-48,-78},{-42,-78}},
+              color={255,0,255}));
+        connect(and2.y, and1.u2) annotation (Line(points={{-19,-70},{32,-70},{
+                32,-8},{38,-8}}, color={255,0,255}));
+        connect(and3.y, and1.u1) annotation (Line(points={{-19,40},{32,40},{32,
+                0},{38,0}}, color={255,0,255}));
+        connect(stSp_excess_power_PV_OR_excess_power.P_el_renergy, P_el_renergy)
+          annotation (Line(points={{-82,85},{-90,85},{-90,90},{-120,90}}, color=
+               {0,0,127}));
+        connect(stSp_excess_power_PV_OR_excess_power.Heatpump_Constants_P_el_HP_min,
+          Heatpump_Constants_P_el_HP_min) annotation (Line(points={{-82,75},{
+                -90,75},{-90,60},{-120,60}}, color={0,0,127}));
+        connect(stSp_excess_power_PV_OR_tp_TES_max.Heatpump_Constants_tp_TES_max_set,
+          Heatpump_Constants_tp_TES_max_set) annotation (Line(points={{-82,-5},
+                {-90,-5},{-90,-20},{-120,-20}}, color={0,0,127}));
+        connect(stSp_excess_power_PV_OR_tp_TES_max.tp_TES_load, tp_TES_load)
+          annotation (Line(points={{-82,5},{-90,5},{-90,20},{-120,20}}, color={
+                0,0,127}));
+        connect(stSp_excess_power_PV_OR_tp_TES_max.OS_tp_TES_max, and3.u2)
+          annotation (Line(points={{-59,0},{-50,0},{-50,32},{-42,32}}, color={
+                255,0,255}));
+        connect(stSp_excess_power_PV_OR_excess_power.OS_excess_power, and3.u1)
+          annotation (Line(points={{-59,80},{-50,80},{-50,40},{-42,40}}, color=
+                {255,0,255}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_StSp_excess_power_PV;
+
+      package OR_Heatpump_StSp_excess_power_PV
+        model StSp_excess_power_PV_OR_HP_prio_ext
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_ext
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_ext)
+            annotation (Line(points={{-10,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_ext)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_PV_OR_HP_prio_ext;
+
+        model StSp_excess_power_PV_OR_HP_prio_int
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_int)
+            annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_int)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_PV_OR_HP_prio_int;
+
+        model StSp_excess_power_PV_OR_excess_power
+          Modelica.Blocks.Interfaces.BooleanOutput OS_excess_power
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput P_el_renergy annotation (
+              Placement(transformation(extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_P_el_HP_min
+            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.GreaterEqual greaterEqual
+            annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+        equation
+          connect(greaterEqual.y, OS_excess_power)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          connect(greaterEqual.u1, P_el_renergy) annotation (Line(points={{-10,
+                  0},{-50,0},{-50,50},{-120,50}}, color={0,0,127}));
+          connect(greaterEqual.u2, Heatpump_Constants_P_el_HP_min) annotation (
+              Line(points={{-10,-8},{-50,-8},{-50,-50},{-120,-50}}, color={0,0,
+                  127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_PV_OR_excess_power;
+
+        model StSp_excess_power_PV_OR_tp_TES_max
+          Modelica.Blocks.Interfaces.BooleanOutput OS_tp_TES_max
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput tp_TES_load annotation (
+              Placement(transformation(extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_tp_TES_max_set
+            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.Less less
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(less.y, OS_tp_TES_max)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          connect(less.u1, tp_TES_load) annotation (Line(points={{-12,0},{-50,0},
+                  {-50,50},{-120,50}}, color={0,0,127}));
+          connect(less.u2, Heatpump_Constants_tp_TES_max_set) annotation (Line(
+                points={{-12,-8},{-50,-8},{-50,-50},{-120,-50}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_PV_OR_tp_TES_max;
+      end OR_Heatpump_StSp_excess_power_PV;
+
+      model HeatPump_StSp_excess_power_EES
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_StSp_excess_power_EES_SI
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+            Placement(transformation(extent={{-140,-110},{-100,-70}})));
+        Modelica.Blocks.Logical.And and1
+          annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+        Modelica.Blocks.Logical.And and2
+          annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
+        Modelica.Blocks.Logical.And and3
+          annotation (Placement(transformation(extent={{-40,30},{-20,50}})));
+        Modelica.Blocks.Interfaces.RealInput SOC_EES
+          "state of charge - electrical storage"
+          annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_storage_el_SOC_threshold
+          "Electrical storage charge status threshold"
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+        Modelica.Blocks.Interfaces.RealInput tp_TES_unload
+          "Temperature heat storage "
+          annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+        Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
+          "Temperature heating grid"
+          annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
+        OR_Heatpump_StSp_excess_power_EES.StSp_excess_power_EES_OR_HP_prio_ext
+          stSp_excess_power_EES_OR_HP_prio_ext
+          annotation (Placement(transformation(extent={{-80,-100},{-60,-80}})));
+        OR_Heatpump_StSp_excess_power_EES.StSp_excess_power_EES_OR_HP_prio_int
+          stSp_excess_power_EES_OR_HP_prio_int
+          annotation (Placement(transformation(extent={{-80,-70},{-60,-50}})));
+        OR_Heatpump_StSp_excess_power_EES.StSp_excess_power_EES_OR_SOC_EES
+          stSp_excess_power_EES_OR_SOC_EES
+          "Battery discharge hysteresis: Only start discharging if the charge level is above 20% "
+          annotation (Placement(transformation(extent={{-80,70},{-60,90}})));
+        OR_Heatpump_StSp_excess_power_EES.StSp_excess_power_EES_OR_HP_hysteresis
+          stSp_excess_power_EES_OR_HP_hysteresis
+          "Only allow operation if the heat storage temprature falls below the heating grid temperature "
+          annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+      equation
+        connect(and1.y, Heatpump_Specification_StSp_excess_power_EES_SI)
+          annotation (Line(points={{61,0},{110,0}}, color={255,0,255}));
+        connect(and2.y, and1.u2) annotation (Line(points={{-19,-70},{32,-70},{
+                32,-8},{38,-8}}, color={255,0,255}));
+        connect(and3.y, and1.u1) annotation (Line(points={{-19,40},{32,40},{32,
+                0},{38,0}}, color={255,0,255}));
+        connect(stSp_excess_power_EES_OR_HP_prio_int.signal_HP_prio_int,
+          signal_HP_prio_int)
+          annotation (Line(points={{-82,-60},{-120,-60}}, color={0,0,127}));
+        connect(stSp_excess_power_EES_OR_HP_prio_ext.signal_HP_prio_ext,
+          signal_HP_prio_ext)
+          annotation (Line(points={{-82,-90},{-120,-90}}, color={0,0,127}));
+        connect(and2.u1, stSp_excess_power_EES_OR_HP_prio_int.OS_HP_prio_int)
+          annotation (Line(points={{-42,-70},{-50,-70},{-50,-60},{-59,-60}},
+              color={255,0,255}));
+        connect(and2.u2, stSp_excess_power_EES_OR_HP_prio_ext.OS_HP_prio_ext)
+          annotation (Line(points={{-42,-78},{-50,-78},{-50,-90},{-59,-90}},
+              color={255,0,255}));
+        connect(stSp_excess_power_EES_OR_SOC_EES.SOC_EES, SOC_EES) annotation (
+            Line(points={{-82,85},{-90,85},{-90,90},{-120,90}}, color={0,0,127}));
+        connect(stSp_excess_power_EES_OR_SOC_EES.Heatpump_Constants_storage_el_SOC_threshold,
+          Heatpump_Constants_storage_el_SOC_threshold) annotation (Line(points=
+                {{-82,75},{-90,75},{-90,60},{-120,60}}, color={0,0,127}));
+        connect(stSp_excess_power_EES_OR_SOC_EES.OS_SOC_EES, and3.u1)
+          annotation (Line(points={{-59,80},{-50,80},{-50,40},{-42,40}}, color=
+                {255,0,255}));
+        connect(stSp_excess_power_EES_OR_HP_hysteresis.tp_TES_unload,
+          tp_TES_unload) annotation (Line(points={{-82,5},{-90,5},{-90,20},{
+                -120,20}}, color={0,0,127}));
+        connect(stSp_excess_power_EES_OR_HP_hysteresis.tp_DH_FF_set,
+          tp_DH_FF_set) annotation (Line(points={{-82,-5},{-90,-5},{-90,-20},{
+                -120,-20}}, color={0,0,127}));
+        connect(stSp_excess_power_EES_OR_HP_hysteresis.OS_HP_hysteresis, and3.u2)
+          annotation (Line(points={{-59,0},{-50,0},{-50,32},{-42,32}}, color={
+                255,0,255}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_StSp_excess_power_EES;
+
+      package OR_Heatpump_StSp_excess_power_EES
+        model StSp_excess_power_EES_OR_HP_prio_ext
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_ext
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_ext)
+            annotation (Line(points={{-10,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_ext)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_EES_OR_HP_prio_ext;
+
+        model StSp_excess_power_EES_OR_HP_prio_int
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_int)
+            annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_int)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_EES_OR_HP_prio_int;
+
+        model StSp_excess_power_EES_OR_SOC_EES
+          Modelica.Blocks.Interfaces.BooleanOutput OS_SOC_EES
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput SOC_EES
+            "state of charge - electrical storage" annotation (Placement(
+                transformation(extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_storage_el_SOC_threshold
+            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.Greater greater
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(greater.y, OS_SOC_EES)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          connect(greater.u1, SOC_EES) annotation (Line(points={{-12,0},{-50,0},
+                  {-50,50},{-120,50}}, color={0,0,127}));
+          connect(greater.u2, Heatpump_Constants_storage_el_SOC_threshold)
+            annotation (Line(points={{-12,-8},{-50,-8},{-50,-50},{-120,-50}},
+                color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_EES_OR_SOC_EES;
+
+        model StSp_excess_power_EES_OR_HP_hysteresis
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_hysteresis
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput tp_TES_unload
+            "Temperature heat storage " annotation (Placement(transformation(
+                  extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
+            "Temperature heating grid" annotation (Placement(transformation(
+                  extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.Less less
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(less.y, OS_HP_hysteresis)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          connect(less.u1, tp_TES_unload) annotation (Line(points={{-12,0},{-50,
+                  0},{-50,50},{-120,50}}, color={0,0,127}));
+          connect(less.u2, tp_DH_FF_set) annotation (Line(points={{-12,-8},{-50,
+                  -8},{-50,-50},{-120,-50}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_excess_power_EES_OR_HP_hysteresis;
+      end OR_Heatpump_StSp_excess_power_EES;
+
+      model HeatPump_StSp_CO2_intensity
+        Modelica.Blocks.Interfaces.BooleanOutput Heatpump_Specification_StSp_CO2_intensity_SI
+          annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int
+          annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+        Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+            Placement(transformation(extent={{-140,-110},{-100,-70}})));
+        Modelica.Blocks.Logical.And and1
+          annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+        Modelica.Blocks.Logical.And and2
+          annotation (Placement(transformation(extent={{-10,-80},{10,-60}})));
+        Modelica.Blocks.Logical.And and3
+          annotation (Placement(transformation(extent={{-10,30},{10,50}})));
+        Modelica.Blocks.Interfaces.RealInput carbon_intensity
+          "carbon intensity of electrical power"
+          annotation (Placement(transformation(extent={{-140,70},{-100,110}})));
+        Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_carbon_intensity_threshold
+          "carbon intensity threshold"
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+        Modelica.Blocks.Interfaces.RealInput tp_TES_unload
+          "Temperature heat storage "
+          annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+        Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
+          "Temperature heating grid"
+          annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
+        OR_Heatpump_StSp_Co2_intensity.StSp_CO2_intensity_OR_HP_prio_ext
+          stSp_CO2_intensity_OR_HP_prio_ext
+          annotation (Placement(transformation(extent={{-60,-100},{-40,-80}})));
+        OR_Heatpump_StSp_Co2_intensity.StSp_CO2_intensity_OR_HP_prio_int
+          stSp_CO2_intensity_OR_HP_prio_int
+          annotation (Placement(transformation(extent={{-60,-70},{-40,-50}})));
+        OR_Heatpump_StSp_Co2_intensity.StSp_CO2_intensity_OR_HP_hysteresis
+          stSp_CO2_intensity_OR_HP_hysteresis
+          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        OR_Heatpump_StSp_Co2_intensity.StSp_CO2_intensity_OR_CO2_intensity
+          stSp_CO2_intensity_OR_CO2_intensity
+          "CO2 intensity must be below threshold carbon_intensity"
+          annotation (Placement(transformation(extent={{-60,70},{-40,90}})));
+      equation
+        connect(and1.y, Heatpump_Specification_StSp_CO2_intensity_SI)
+          annotation (Line(points={{61,0},{110,0}}, color={255,0,255}));
+        connect(and2.y, and1.u2) annotation (Line(points={{11,-70},{20,-70},{20,
+                -8},{38,-8}}, color={255,0,255}));
+        connect(and3.y, and1.u1) annotation (Line(points={{11,40},{20,40},{20,0},
+                {38,0}}, color={255,0,255}));
+        connect(signal_HP_prio_int, stSp_CO2_intensity_OR_HP_prio_int.signal_HP_prio_int)
+          annotation (Line(points={{-120,-60},{-62,-60}}, color={0,0,127}));
+        connect(signal_HP_prio_ext, stSp_CO2_intensity_OR_HP_prio_ext.signal_HP_prio_ext)
+          annotation (Line(points={{-120,-90},{-62,-90}}, color={0,0,127}));
+        connect(stSp_CO2_intensity_OR_HP_prio_int.OS_HP_prio_int, and2.u1)
+          annotation (Line(points={{-39,-60},{-20,-60},{-20,-70},{-12,-70}},
+              color={255,0,255}));
+        connect(stSp_CO2_intensity_OR_HP_prio_ext.OS_HP_prio_ext, and2.u2)
+          annotation (Line(points={{-39,-90},{-20,-90},{-20,-78},{-12,-78}},
+              color={255,0,255}));
+        connect(stSp_CO2_intensity_OR_HP_hysteresis.OS_HP_hysteresis, and3.u2)
+          annotation (Line(points={{-39,0},{-20,0},{-20,32},{-12,32}}, color={
+                255,0,255}));
+        connect(stSp_CO2_intensity_OR_HP_hysteresis.tp_DH_FF_set, tp_DH_FF_set)
+          annotation (Line(points={{-62,-5},{-80,-5},{-80,-20},{-120,-20}},
+              color={0,0,127}));
+        connect(stSp_CO2_intensity_OR_HP_hysteresis.tp_TES_unload,
+          tp_TES_unload) annotation (Line(points={{-62,5},{-80,5},{-80,20},{
+                -120,20}}, color={0,0,127}));
+        connect(and3.u1, stSp_CO2_intensity_OR_CO2_intensity.OS_CO2_intensity)
+          annotation (Line(points={{-12,40},{-20,40},{-20,80},{-39,80}}, color=
+                {255,0,255}));
+        connect(stSp_CO2_intensity_OR_CO2_intensity.carbon_intensity,
+          carbon_intensity) annotation (Line(points={{-62,85},{-80,85},{-80,90},
+                {-120,90}}, color={0,0,127}));
+        connect(stSp_CO2_intensity_OR_CO2_intensity.Heatpump_Constants_carbon_intensity_threshold,
+          Heatpump_Constants_carbon_intensity_threshold) annotation (Line(
+              points={{-62,75},{-80,75},{-80,60},{-120,60}}, color={0,0,127}));
+        annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+              coordinateSystem(preserveAspectRatio=false)));
+      end HeatPump_StSp_CO2_intensity;
+
+      package OR_Heatpump_StSp_Co2_intensity
+        model StSp_CO2_intensity_OR_HP_prio_ext
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_ext
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_ext annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-8,-10},{12,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_ext)
+            annotation (Line(points={{-10,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_ext)
+            annotation (Line(points={{13,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_CO2_intensity_OR_HP_prio_ext;
+
+        model StSp_CO2_intensity_OR_HP_prio_int
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput signal_HP_prio_int annotation (
+              Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(greaterEqualThreshold.u, signal_HP_prio_int)
+            annotation (Line(points={{-12,0},{-120,0}}, color={0,0,127}));
+          connect(greaterEqualThreshold.y, OS_HP_prio_int)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_CO2_intensity_OR_HP_prio_int;
+
+        model StSp_CO2_intensity_OR_CO2_intensity
+          Modelica.Blocks.Interfaces.BooleanOutput OS_CO2_intensity
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput carbon_intensity annotation (
+              Placement(transformation(extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_carbon_intensity_threshold
+            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.LessEqual lessEqual
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(lessEqual.u2, Heatpump_Constants_carbon_intensity_threshold)
+            annotation (Line(points={{-12,-8},{-50,-8},{-50,-50},{-120,-50}},
+                color={0,0,127}));
+          connect(lessEqual.u1, carbon_intensity) annotation (Line(points={{-12,
+                  0},{-50,0},{-50,50},{-120,50}}, color={0,0,127}));
+          connect(lessEqual.y, OS_CO2_intensity)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_CO2_intensity_OR_CO2_intensity;
+
+        model StSp_CO2_intensity_OR_HP_hysteresis
+          Modelica.Blocks.Interfaces.BooleanOutput OS_HP_hysteresis
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          Modelica.Blocks.Interfaces.RealInput tp_TES_unload
+            "Temperature heat storage " annotation (Placement(transformation(
+                  extent={{-140,30},{-100,70}})));
+          Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
+            "Temperature heating grid" annotation (Placement(transformation(
+                  extent={{-140,-70},{-100,-30}})));
+          Modelica.Blocks.Logical.Less less
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+        equation
+          connect(less.y, OS_HP_hysteresis)
+            annotation (Line(points={{11,0},{110,0}}, color={255,0,255}));
+          connect(less.u1, tp_TES_unload) annotation (Line(points={{-12,0},{-50,
+                  0},{-50,50},{-120,50}}, color={0,0,127}));
+          connect(less.u2, tp_DH_FF_set) annotation (Line(points={{-12,-8},{-50,
+                  -8},{-50,-50},{-120,-50}}, color={0,0,127}));
+          annotation (Icon(coordinateSystem(preserveAspectRatio=false)),
+              Diagram(coordinateSystem(preserveAspectRatio=false)));
+        end StSp_CO2_intensity_OR_HP_hysteresis;
+      end OR_Heatpump_StSp_Co2_intensity;
     end HeatPump;
-  end UnitController;
+    end UnitController;
+
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
