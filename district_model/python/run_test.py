@@ -25,76 +25,177 @@ import sys
 import unittest
 import logging
 import pandas as pd
-from OMPython import ModelicaSystem
+from OMPython import ModelicaSystem  # requires >=3.2.0
+
+# Import from other file in the same repository
+sys.path.append("../../HP_testbench")
+import hptestbench
 
 # Define the logging function
 logger = logging.getLogger(__name__)
 
 
-def run_modelica_system(
-        model='Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
-        ):
-    """Create a ``ModelicaSystem`` object and run the simulation."""
-    # Create a subdirectory for the simulation
-    cwd = os.getcwd()
-    sim_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                           'sim_'+sys.platform)  # separate windows and linux
+class Tester():
+    """Define functions for testing modelica simulations."""
 
-    # Define some paths
-    file = os.path.abspath(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                     '../modelica/Q100_DistrictModel/package.mo'))
+    def __init__(self,
+                 model='Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+                 ):
+        """Prepare all the settings."""
+        self.model = model  # Set model name
+        self.data = pd.DataFrame()  # Prepare empty DataFrame for results
+        # Store current working directory to change back to it later
+        self.cwd = os.getcwd()
+        # separate windows and linux
+        self.sim_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                    'sim_'+sys.platform,
+                                    model.replace('.', '_'))
+        # set default resulting FMU filename
+        self.filename_fmu = os.path.join(self.sim_dir, self.model+'.fmu')
+        # Define some paths
+        self.file = os.path.abspath(
+            os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                         '../modelica/Q100_DistrictModel/package.mo'))
 
-    if model == 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP':
-        heatloss = 'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
-    elif model == 'Q100_DistrictModel.Simulations.Gesamt_Sim':
-        heatloss = 'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
-    elif model == 'Q100_DistrictModel.FMUs.FMU_PhyModel':
-        heatloss = 'heatStorageVariablePorts_central.Heat_loss'
-    else:
-        raise ValueError("Model {} not defined".format(model))
+        # Define the output value that should be tested, depending on the model
+        if model == 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP':
+            self.value = \
+                'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
+        elif model == 'Q100_DistrictModel.Simulations.Gesamt_Sim':
+            self.value = \
+                'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
+        elif model == 'Q100_DistrictModel.FMUs.FMU_PhyModel':
+            self.value = 'heatStorageVariablePorts_central.Heat_loss'
+        elif model == 'Q100_DistrictModel.ElectrolysisSystem.Quarree100':
+            self.value = 'comp_electrolysisSystem.out_H2'
+        else:
+            raise ValueError("Model {} not defined".format(model))
 
-    # Change to a simulation directory
-    if os.path.exists(sim_dir) is False:
-        os.makedirs(sim_dir)
-    os.chdir(sim_dir)
+        # Prepare a simulation directory
+        if os.path.exists(self.sim_dir) is False:
+            os.makedirs(self.sim_dir)
 
-    # Setup the Modelica session and load the module, use "new frontend"
-    mod = ModelicaSystem(fileName=file.replace("\\", "/"),
-                         modelName=model,
-                         commandLineOptions='-d=newInst')
+    def run_modelica_system(self):
+        """Create a ``ModelicaSystem`` object and run the simulation.
 
-    # Adapt the path of all the input files
-    # input_path = os.path.join(os.path.dirname(os.path.abspath(file)), 'input/')
-    # cmd = '''setComponentModifierValue(
-    #          Q100_DistrictModel.Simulations.SIM_RI_Schema,
-    #          inputData.Pfad,
-    #          $Code(="{}"))'''.format(input_path.replace("\\", "/"))
-    # mod.sendExpression(cmd)
+        Change to a simulation directory for the simulation.
+        """
+        # Change to a simulation directory
+        os.chdir(self.sim_dir)
+        # Setup the Modelica session and load the module, use "new frontend"
+        mod = ModelicaSystem(fileName=self.file.replace("\\", "/"),
+                             modelName=self.model,
+                             commandLineOptions='-d=newInst')
 
-    # Rebuild the model afterwards, for the changes to take effect
-    mod.buildModel()
-
-    try:
         mod.setSimulationOptions(["stopTime=86400", "stepSize=900"])
-    except Exception:  # for older versions of OMPython
-        mod.setSimulationOptions(stopTime=86400, stepSize=900)
 
-    # Run simulations
-    mod.simulate()
+        try:
+            # Run simulations
+            mod.simulate()
 
-    solution_list = ['time', heatloss]
-    solution_data = mod.getSolutions(solution_list)
+            # Get list of simulation variables for which results are available
+            solution_vars = mod.getSolutions()
 
-    # Create DataFrame from results
-    data = pd.DataFrame(data=solution_data.T, columns=solution_list)
-    print(data)
+            # Compare existing and required solutions
+            solution_list = ['time', self.value]
+            for item in solution_list:
+                if item not in solution_vars:
+                    raise ValueError('Item "{}" is not among the solutions '
+                                     'of model "{}".'.format(item, self.model))
 
-    # Evaluate some variable just to see if the simulation finished:
-    condition = data[heatloss].mean() < 0
+            solution_data = mod.getSolutions(solution_list)
 
-    os.chdir(cwd)  # Change back to original current working directory
+            # Create DataFrame from results
+            self.data = pd.DataFrame(data=solution_data.T,
+                                     columns=solution_list)
+        except Exception:
+            # Change back to original working directory
+            os.chdir(self.cwd)
+            raise
+        else:
+            # Change back to original working directory
+            os.chdir(self.cwd)
 
+        return self.data
+
+    def convert_fmu(self):
+        """Convert the prepared model to an FMU."""
+        # Change to a simulation directory
+        os.chdir(self.sim_dir)
+
+        # Set up Modelica session and load the module, use "new frontend"
+        mod = ModelicaSystem(fileName=self.file.replace("\\", "/"),
+                             modelName=self.model,
+                             commandLineOptions='-d=newInst')
+        # Convert model to FMU 'modelName.fmu' in current working directory
+        filename_fmu = mod.convertMo2Fmu()
+        if self.filename_fmu != filename_fmu:
+            logger.info('Unexpected new FMU filename "%s", expected "%s"',
+                        filename_fmu, self.filename_fmu)
+            self.filename_fmu = filename_fmu
+
+        # Alternative: Try to get Windows and Linux FMU at the same time.
+        # The platforms argument does not seem to have an effect.
+        # platforms = '{"x86_64-linux-gnu", "x86_64-w64-mingw32"}'
+        # platforms = '{"x86_64-w64-mingw32"}'  # creates no FMU
+        # platforms = '{"static"}'  # same as "mod.convertMo2Fmu()"
+        # expr = ('buildModelFMU({}, version="2.0", fmuType="me_cs",'
+        #         'platforms={})'.format(model, platforms))
+        # filename_fmu = mod.getconn.sendExpression(expr)
+        # print(expr, filename_fmu)
+
+        # Change back to original working directory
+        os.chdir(self.cwd)
+
+        return self.filename_fmu
+
+    def run_fmu(self):
+        """Run the test with the previously defined FMU file."""
+        # Change to a simulation directory
+        os.chdir(self.sim_dir)
+        # Define list of wanted solutions
+        solutions = [self.value]
+        try:
+            # Run FMU simulation
+            self.data = hptestbench.run_FMU(
+                self.filename_fmu, solutions, stepSize=900, stopTime=86400,
+                fmu_log_level=7)
+        except Exception:
+            # Change back to original working directory
+            os.chdir(self.cwd)
+            raise
+        else:
+            # Change back to original working directory
+            os.chdir(self.cwd)
+
+        return self.data
+
+    def test_result(self):
+        """Test the simulation result for some condition.
+
+        Test condition: Mean of the given variable must not be zero.
+        """
+        logger.info('Description of resulting data:\n%s\n',
+                    self.data.describe().to_string())
+
+        condition = self.data[self.value].mean() != 0
+        return condition
+
+
+def test_model(model, fmi=False, skip_fmu_conversion=False):
+    """Test a given model, either with OpenModelica or via FMI."""
+    setup()
+    logger.info('Test model %s', model)
+
+    tester = Tester(model)
+    if fmi:  # Use functional mock-up interface
+        if not skip_fmu_conversion:
+            tester.convert_fmu()
+        tester.run_fmu()
+
+    else:  # Use OpenModelica
+        tester.run_modelica_system()
+    condition = tester.test_result()
     return condition
 
 
@@ -116,13 +217,29 @@ class TestMethods(unittest.TestCase):
 
     def test_complete_sim(self):
         """Run OpenModelica simulation with the complete simulation."""
-        self.assertTrue(run_modelica_system(
-            model='Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'))
+        model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+        self.assertTrue(test_model(model))
 
-    def test_fmu_physical_model(self):
+    def test_physical_model(self):
         """Run OpenModelica simulation with the physical model."""
-        self.assertTrue(run_modelica_system(
-            model='Q100_DistrictModel.FMUs.FMU_PhyModel'))
+        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
+        self.assertTrue(test_model(model))
+
+    def test_physical_model_fmu(self):
+        """Run FMU simulation with the physical model."""
+        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
+        condition = test_model(model, fmi=True,
+                               # skip_fmu_conversion=True,  # for debugging
+                               )
+        self.assertTrue(condition)
+
+    def test_electrolysis_fmu(self):
+        """Run FMU simulation with the standalone electrolysis system."""
+        model = 'Q100_DistrictModel.ElectrolysisSystem.Quarree100'
+        condition = test_model(model, fmi=True,
+                               # skip_fmu_conversion=True,  # for debugging
+                               )
+        self.assertTrue(condition)
 
 
 if __name__ == '__main__':
