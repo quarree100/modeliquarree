@@ -2,8 +2,7 @@
   extends Modelica.Icons.Package;
 
   annotation (
-    uses(                                                        BuildingSystems,
-    Modelica(version="3.2.3"),
+    uses(Modelica(version = "3.2.3"),                            BuildingSystems,
     AixLib(version="0.10.7"),
     ExternData(version="2.5.0")),
     Documentation(info = "<html>

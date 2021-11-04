@@ -32,17 +32,8 @@ package Simulations
       Placement(visible = true, transformation(origin = {650, 660}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Valves.ThreeWayValve threeWayValve annotation (
       Placement(visible = true, transformation(origin = {620, 560}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-    Modelica.Blocks.Continuous.LimPID PID(
-      Ti=1,
-      controllerType=.Modelica.Blocks.Types.SimpleController.PID,
-      initType=.Modelica.Blocks.Types.Init.InitialOutput,
-      k=0.0001,
-      yMax=1,
-      yMin=0,
-      y_start=0.8) annotation (Placement(visible=true, transformation(
-          origin={690,520},
-          extent={{-10,-10},{10,10}},
-          rotation=180)));
+    Modelica.Blocks.Continuous.LimPID PID(Ti = 1, controllerType = .Modelica.Blocks.Types.SimpleController.PID, initType = .Modelica.Blocks.Types.InitPID.InitialOutput, k = 0.0001, limitsAtInit = true, yMax = 1, yMin = 0, y_start = 0.8) annotation (
+      Placement(visible = true, transformation(origin = {690, 520}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
     Modelica.Blocks.Sources.Constant const3(k = 70 + 273.15) annotation (
       Placement(visible = true, transformation(origin = {730, 520}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Gain gain(k = 2.77777 * 1E-10) annotation (
@@ -51,17 +42,8 @@ package Simulations
       Placement(visible = true, transformation(origin = {170, -700}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Continuous.Integrator integrator_cost_Spot annotation (
       Placement(visible = true, transformation(origin = {210, -700}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Continuous.LimPID PID_Pump(
-      Ti=0.1,
-      controllerType=.Modelica.Blocks.Types.SimpleController.PI,
-      initType=.Modelica.Blocks.Types.Init.InitialOutput,
-      k=0.01,
-      yMax=100,
-      yMin=0,
-      y_start=1) annotation (Placement(visible=true, transformation(
-          origin={726,696},
-          extent={{-10,-10},{10,10}},
-          rotation=180)));
+    Modelica.Blocks.Continuous.LimPID PID_Pump(Ti = 0.1, controllerType = .Modelica.Blocks.Types.SimpleController.PI, initType = .Modelica.Blocks.Types.InitPID.InitialOutput, k = 0.01, limitsAtInit = true, yMax = 100, yMin = 0, y_start = 1) annotation (
+      Placement(visible = true, transformation(origin = {726, 696}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
     Modelica.Blocks.Sources.Ramp ramp(duration = 0, height = 40) annotation (
       Placement(visible = true, transformation(origin = {690, 730}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Pumps.Pump pump_Demand annotation (
@@ -298,13 +280,8 @@ package Simulations
       Placement(visible = true, transformation(origin = {-590, 430}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Q100_DistrictModel.Components.bus2SOBoolean_SO bus2SOBoolean_SO4 annotation (
       Placement(visible = true, transformation(origin = {-570, 504}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-    Modelica.Blocks.Sources.Sine sineGeo_T_amb(
-      amplitude=15,
-      f=1/(3600*24*365*2),
-      offset=3 + 273.15) annotation (Placement(visible=true, transformation(
-          origin={-970,160},
-          extent={{-10,-10},{10,10}},
-          rotation=0)));
+    Modelica.Blocks.Sources.Sine sineGeo_T_amb(amplitude = 15, freqHz = 1 / (3600 * 24 * 365 * 2), offset = 3 + 273.15) annotation (
+      Placement(visible = true, transformation(origin = {-970, 160}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_HeatStorage_unload annotation (
       Placement(visible = true, transformation(origin = {68, 720}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     AixLib.FastHVAC.Components.HeatExchangers.DHWHeatExchanger HeatExchanger(A_HE = 20, T0 = 343.15, T_inlet_DHW = 343.15, T_set_DHW_ideal = 343.15) annotation (
@@ -746,16 +723,16 @@ package Simulations
       Placement(transformation(extent={{-340,70},{-320,90}})));
     Modelica.Blocks.Sources.Constant WP(k=0.1) annotation (
       Placement(transformation(extent={{-502,260},{-482,280}})));
-    FMUs.FMU_PhyModel fMU_PhyModel annotation (
-      Placement(transformation(extent={{-254,62},{6,262}})));
+    Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (
+      Placement(visible = true, transformation(extent = {{-254, 64}, {6, 264}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant Speicherbeladung(k = 1) annotation (
       Placement(transformation(extent={{-534,196},{-514,216}})));
     Modelica.Blocks.Sources.Constant Speicherentladung(k = 1) annotation (
       Placement(transformation(extent={{-500,180},{-480,200}})));
-    Modelica.Blocks.Sources.BooleanConstant WP_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-502,230},{-482,250}})));
-    Modelica.Blocks.Sources.BooleanConstant Heatpump_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-340,100},{-320,120}})));
+    Modelica.Blocks.Sources.BooleanConstant WP1_disturb(k=true)
+      annotation (Placement(transformation(extent={{-502,230},{-482,250}})));
+    Modelica.Blocks.Sources.BooleanConstant Boiler_disturb(k=true)
+      annotation (Placement(transformation(extent={{-340,100},{-320,120}})));
     Modelica.Blocks.Math.Add add2 annotation (
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-470,420})));
     Modelica.Blocks.Math.Add add3 annotation (
@@ -774,7 +751,7 @@ package Simulations
     Modelica.Blocks.Math.Gain gain8(k=2203638.5)
                                            annotation (
       Placement(visible = true, transformation(origin={-280,510},     extent = {{-10, -10}, {10, 10}}, rotation=270)));
-    Modelica.Blocks.Sources.BooleanConstant BHKW_Error_Tino(k=true)
+    Modelica.Blocks.Sources.BooleanConstant BHKW_disturb(k=true)
       annotation (Placement(transformation(extent={{-420,160},{-400,180}})));
     Modelica.Blocks.Sources.Constant BHKW(k=0.5)
       annotation (Placement(transformation(extent={{-420,130},{-400,150}})));
@@ -798,30 +775,45 @@ package Simulations
       Placement(transformation(extent={{-346,580},{-326,600}})));
     Data.E_th_TWW_GHD e_th_TWW_GHD annotation (
       Placement(transformation(extent={{-314,540},{-294,560}})));
+    Modelica.Blocks.Sources.BooleanConstant WP2_disturb(k=true)
+      annotation (Placement(transformation(extent={{-382,216},{-362,236}})));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant(k = true) annotation (
+      Placement(visible = true, transformation(extent = {{-300, 268}, {-280, 288}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const(k = 0.1) annotation (
+      Placement(visible = true, transformation(extent = {{-300, 214}, {-280, 234}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const1(k = 70) annotation (
+      Placement(visible = true, transformation(extent = {{-280, 70}, {-260, 90}}, rotation = 0)));
+    Modelica.Blocks.Sources.Constant Lastprofile(k=0)
+      annotation (Placement(transformation(extent={{-418,244},{-398,264}})));
   equation
-    connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
-      Line(points={{-319,80},{-300,80},{-300,162},{-256,162}},            color = {0, 0, 127}));
-    connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
-      Line(points={{-481,270},{-436,270},{-436,212},{-256,212}},          color = {0, 0, 127}));
-    connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
-      Line(points={{-479,190},{-460,190},{-460,200},{-256,200}},          color = {0, 0, 127}));
-    connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
-      Line(points={{-513,206},{-348,206},{-348,205},{-256,205}},          color = {0, 0, 127}));
-    connect(Heatpump_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_boiler) annotation (
-      Line(points={{-319,110},{-306,110},{-306,166},{-256,166}},          color = {255, 0, 255}));
-    connect(WP_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_heatpump) annotation (
-      Line(points={{-481,240},{-440,240},{-440,208},{-256,208}},          color = {255, 0, 255}));
+  connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
+      Line(points={{-319,80},{-300,80},{-300,147.333},{-255.625,147.333}},
+                                                                        color = {0, 0, 127}));
+  connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
+      Line(points={{-481,270},{-436,270},{-436,186.167},{-255.625,186.167}},
+                                                                          color = {0, 0, 127}));
+  connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
+      Line(points={{-479,190},{-460,190},{-460,177.333},{-255.625,177.333}},
+                                                                          color = {0, 0, 127}));
+  connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
+      Line(points={{-513,206},{-348,206},{-348,179.833},{-255.625,179.833}},  color = {0, 0, 127}));
+  connect(Boiler_disturb.y, fMU_PhyModel.u_disturb_boiler) annotation (
+      Line(points={{-319,110},{-306,110},{-306,150.667},{-255.625,150.667}},
+                                                                          color = {255, 0, 255}));
+  connect(WP1_disturb.y, fMU_PhyModel.u_disturb_heatpump2) annotation (
+      Line(points={{-481,240},{-440,240},{-440,182.333},{-255.625,182.333}},
+                                                                          color = {255, 0, 255}));
     connect(add2.y,add4. u2) annotation (
       Line(points={{-470,409},{-470,398},{-386,398},{-386,392}},      color = {0, 0, 127}));
     connect(add3.y,add4. u1) annotation (
       Line(points={{-330,409},{-330,400},{-374,400},{-374,392}},      color = {0, 0, 127}));
-    connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (Line(points={{
-            -380,369},{-380,261},{-256,261}}, color={0,0,127}));
-    connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{-399,140},
-            {-360,140},{-360,191},{-256,191}}, color={0,0,127}));
-    connect(fMU_PhyModel.u_Stoerung_Tino_CHP, BHKW_Error_Tino.y) annotation (
-        Line(points={{-256,195},{-366,195},{-366,170},{-399,170}}, color={255,0,
-            255}));
+  connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
+      Line(points={{-380,369},{-380,260.667},{-255.625,260.667}},
+                                                             color = {0, 0, 127}));
+  connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (
+      Line(points={{-399,140},{-360,140},{-360,171.5},{-255.625,171.5}},  color = {0, 0, 127}));
+  connect(fMU_PhyModel.u_disturb_CHP, BHKW_disturb.y) annotation (
+      Line(points={{-255.625,174.833},{-366,174.833},{-366,170},{-399,170}},  color = {255, 0, 255}));
     connect(combiTimeTable_HeatDemand_RH_Houses.y[1], gain6.u) annotation (Line(
           points={{-439,590},{-420,590},{-420,522}}, color={0,0,127}));
     connect(combiTimeTable_HeatDemand_DHW_Houses.y[1], gain1.u) annotation (Line(
@@ -838,6 +830,23 @@ package Simulations
             460},{-336,432}}, color={0,0,127}));
     connect(gain8.y, add3.u1) annotation (Line(points={{-280,499},{-280,460},{-324,
             460},{-324,432}}, color={0,0,127}));
+  connect(WP2_disturb.y, fMU_PhyModel.u_disturb_heatpump1) annotation (
+      Line(points={{-361,226},{-318,226},{-318,189.833},{-255.625,189.833}},  color = {255, 0, 255}));
+  connect(booleanConstant.y, fMU_PhyModel.u_disturb_electrolysis) annotation (
+      Line(points={{-279,278},{-268,278},{-268,234},{-255.625,234}},      color = {255, 0, 255}));
+  connect(const.y, fMU_PhyModel.u_electrolysis_0_1) annotation (
+      Line(points={{-279,224},{-268,224},{-268,228.167},{-255.625,228.167}},
+                                                color = {0, 0, 127}));
+  connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
+      Line(points={{-259,80},{-252,80},{-252,124},{-255.625,124}},      color = {0, 0, 127}));
+    connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandPower_kW)
+      annotation (Line(points={{-397,254},{-255.625,254}}, color={0,0,127}));
+    connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandEMob_kW)
+      annotation (Line(points={{-397,254},{-390,254},{-390,250},{-255.625,250},
+            {-255.625,250.667}}, color={0,0,127}));
+    connect(Lastprofile.y,fMU_PhyModel.u_loadProfile_ProductionPV_kW)
+      annotation (Line(points={{-397,254},{-390,254},{-390,257.333},{-255.625,
+            257.333}}, color={0,0,127}));
     annotation (
       Diagram(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}}), graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}})),
@@ -850,16 +859,16 @@ package Simulations
       Placement(transformation(extent={{-340,70},{-320,90}})));
     Modelica.Blocks.Sources.Constant WP(k=0.1) annotation (
       Placement(transformation(extent={{-502,260},{-482,280}})));
-    FMUs.FMU_PhyModel fMU_PhyModel annotation (
-      Placement(transformation(extent={{-254,62},{6,262}})));
+    Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (
+      Placement(visible = true, transformation(extent = {{-256, 66}, {4, 266}}, rotation = 0)));
     Modelica.Blocks.Sources.Constant Speicherbeladung(k = 1) annotation (
       Placement(transformation(extent={{-534,196},{-514,216}})));
     Modelica.Blocks.Sources.Constant Speicherentladung(k = 1) annotation (
       Placement(transformation(extent={{-500,180},{-480,200}})));
-    Modelica.Blocks.Sources.BooleanConstant WP_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-502,230},{-482,250}})));
-    Modelica.Blocks.Sources.BooleanConstant Heatpump_Error_Tino(k=true)    annotation (
-      Placement(transformation(extent={{-340,100},{-320,120}})));
+    Modelica.Blocks.Sources.BooleanConstant WP2_disturb(k=true)
+      annotation (Placement(transformation(extent={{-502,230},{-482,250}})));
+    Modelica.Blocks.Sources.BooleanConstant Heatpump_disturb(k=true)
+      annotation (Placement(transformation(extent={{-340,100},{-320,120}})));
     Modelica.Blocks.Sources.Constant E_th_RH_Houses(k = 1374690.5) annotation (
       Placement(transformation(extent={{-680,580},{-660,600}})));
     Modelica.Blocks.Sources.Constant E_th_TWW_Houses(k = 162898.75) annotation (
@@ -884,10 +893,10 @@ package Simulations
       Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 270, origin={-380,380})));
     Modelica.Blocks.Sources.Sine sine(
       amplitude=0.0001,
-      f=1/31536000,
+      freqHz=1/31536000,
       phase=1.5707963267949,
-      offset=0.0001)
-      annotation (Placement(transformation(extent={{-474,530},{-454,550}})));
+      offset=0.0001)                                                                                                       annotation (
+      Placement(transformation(extent={{-474,530},{-454,550}})));
     Modelica.Blocks.Sources.Pulse pulse(
       amplitude=0.0001,
       width=50,
@@ -902,10 +911,10 @@ package Simulations
       Placement(transformation(extent={{-332,490},{-352,510}})));
     Modelica.Blocks.Sources.Sine sine1(
       amplitude=0.0001,
-      f=1/31536000,
+      freqHz=1/31536000,
       phase=1.5707963267949,
-      offset=0.0001)
-      annotation (Placement(transformation(extent={{-330,530},{-310,550}})));
+      offset=0.0001)                                                                                                        annotation (
+      Placement(transformation(extent={{-330,530},{-310,550}})));
     Modelica.Blocks.Math.Gain gain1(k=1)   annotation (
       Placement(visible = true, transformation(origin={-630,560},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Gain gain6(k=1)   annotation (
@@ -914,23 +923,38 @@ package Simulations
       Placement(visible = true, transformation(origin={-630,620},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Blocks.Math.Gain gain8(k=1)   annotation (
       Placement(visible = true, transformation(origin={-630,650},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Sources.BooleanConstant BHKW_Error_Tino(k=true)
+    Modelica.Blocks.Sources.BooleanConstant BHKW_disturb(k=true)
       annotation (Placement(transformation(extent={{-420,160},{-400,180}})));
     Modelica.Blocks.Sources.Constant BHKW(k=0.5)
       annotation (Placement(transformation(extent={{-420,130},{-400,150}})));
+    Modelica.Blocks.Sources.BooleanConstant WP1_disturb(k=true)
+      annotation (Placement(transformation(extent={{-376,216},{-356,236}})));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant(k = true) annotation (
+      Placement(visible = true, transformation(extent = {{-306, 286}, {-286, 306}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const(k = 0.5) annotation (
+      Placement(visible = true, transformation(extent = {{-300, 200}, {-280, 220}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const1(k = 70) annotation (
+      Placement(visible = true, transformation(extent = {{-300, 30}, {-280, 50}}, rotation = 0)));
+    Modelica.Blocks.Sources.Constant Lastprofile(k=0)
+      annotation (Placement(transformation(extent={{-444,302},{-424,322}})));
   equation
-    connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
-      Line(points={{-319,80},{-300,80},{-300,162},{-256,162}},            color = {0, 0, 127}));
-    connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
-      Line(points={{-481,270},{-436,270},{-436,212},{-256,212}},          color = {0, 0, 127}));
-    connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
-      Line(points={{-479,190},{-460,190},{-460,200},{-256,200}},          color = {0, 0, 127}));
-    connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
-      Line(points={{-513,206},{-348,206},{-348,205},{-256,205}},          color = {0, 0, 127}));
-    connect(Heatpump_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_boiler) annotation (
-      Line(points={{-319,110},{-306,110},{-306,166},{-256,166}},          color = {255, 0, 255}));
-    connect(WP_Error_Tino.y, fMU_PhyModel.u_Stoerung_Tino_heatpump) annotation (
-      Line(points={{-481,240},{-440,240},{-440,208},{-256,208}},          color = {255, 0, 255}));
+  connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
+      Line(points={{-319,80},{-300,80},{-300,149.333},{-257.625,149.333}},
+                                                                        color = {0, 0, 127}));
+  connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
+      Line(points={{-481,270},{-436,270},{-436,188.167},{-257.625,188.167}},
+                                                                          color = {0, 0, 127}));
+  connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
+      Line(points={{-479,190},{-460,190},{-460,179.333},{-257.625,179.333}},
+                                                                          color = {0, 0, 127}));
+  connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
+      Line(points={{-513,206},{-348,206},{-348,181.833},{-257.625,181.833}},  color = {0, 0, 127}));
+  connect(Heatpump_disturb.y, fMU_PhyModel.u_disturb_boiler) annotation (
+      Line(points={{-319,110},{-306,110},{-306,152.667},{-257.625,152.667}},
+                                                                          color = {255, 0, 255}));
+  connect(WP2_disturb.y, fMU_PhyModel.u_disturb_heatpump2) annotation (
+      Line(points={{-481,240},{-440,240},{-440,184.333},{-257.625,184.333}},
+                                                                          color = {255, 0, 255}));
     connect(product2.y,add2. u1) annotation (
       Line(points={{-430,449},{-430,440},{-464,440},{-464,432}},      color = {0, 0, 127}));
     connect(product1.y,add2. u2) annotation (
@@ -967,289 +991,95 @@ package Simulations
             {-376,472}}, color={0,0,127}));
     connect(gain8.y, product4.u1) annotation (Line(points={{-619,650},{-284,650},
             {-284,472}}, color={0,0,127}));
-    connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (Line(points={{
-            -380,369},{-380,261},{-256,261}}, color={0,0,127}));
-    connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{-399,140},
-            {-360,140},{-360,191},{-256,191}}, color={0,0,127}));
-    connect(fMU_PhyModel.u_Stoerung_Tino_CHP, BHKW_Error_Tino.y) annotation (
-        Line(points={{-256,195},{-366,195},{-366,170},{-399,170}}, color={255,0,
-            255}));
+  connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
+      Line(points={{-380,369},{-380,262.667},{-257.625,262.667}},
+                                                             color = {0, 0, 127}));
+  connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (
+      Line(points={{-399,140},{-360,140},{-360,173.5},{-257.625,173.5}},  color = {0, 0, 127}));
+  connect(fMU_PhyModel.u_disturb_CHP, BHKW_disturb.y) annotation (
+      Line(points={{-257.625,176.833},{-366,176.833},{-366,170},{-399,170}},  color = {255, 0, 255}));
+  connect(WP1_disturb.y, fMU_PhyModel.u_disturb_heatpump1) annotation (
+      Line(points={{-355,226},{-314,226},{-314,191.833},{-257.625,191.833}},  color = {255, 0, 255}));
+  connect(const.y, fMU_PhyModel.u_electrolysis_0_1) annotation (
+      Line(points={{-279,210},{-270,210},{-270,230.167},{-257.625,230.167}},
+                                                                          color = {0, 0, 127}));
+  connect(booleanConstant.y, fMU_PhyModel.u_disturb_electrolysis) annotation (
+      Line(points={{-285,296},{-270,296},{-270,236},{-257.625,236}},      color = {255, 0, 255}));
+  connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
+      Line(points={{-279,40},{-270,40},{-270,126},{-257.625,126}},      color = {0, 0, 127}));
+    connect(Lastprofile.y,fMU_PhyModel.u_loadProfile_ProductionPV_kW)
+      annotation (Line(points={{-423,312},{-406,312},{-406,259.333},{-257.625,
+            259.333}}, color={0,0,127}));
+    connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandPower_kW)
+      annotation (Line(points={{-423,312},{-406,312},{-406,256},{-257.625,256}},
+          color={0,0,127}));
+    connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandEMob_kW)
+      annotation (Line(points={{-423,312},{-406,312},{-406,252.667},{-257.625,
+            252.667}}, color={0,0,127}));
     annotation (
       Diagram(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}}), graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
       Icon(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}})),
       experiment(StopTime = 31536000, Interval = 900, Tolerance = 0.01, __Dymola_Algorithm = "Dassl"));
   end Gesamt_Sim_noLP;
 
-  model Gesamt_Sim_Excel
+  model Gesamt_Sim_ExcelReadIn
     extends Modelica.Icons.Example;
-    FMUs.FMU_PhyModel fMU_PhyModel annotation (
-      Placement(transformation(extent={{-254,62},{6,262}})));
-
-    Controller_TM controller_TM
-      annotation (Placement(transformation(extent={{-424,70},{-340,136}})));
-    Components.ExcelReader.ExcelReader_ScheudleProfiles
-      excelReader_ScheudleProfiles
-      annotation (Placement(transformation(extent={{-580,94},{-560,114}})));
-    Components.ExcelReader.ExcelReader_LoadProfiles excelReader_LoadProfiles
-      annotation (Placement(transformation(extent={{-580,252},{-560,272}})));
-    Components.ExcelReader.ExcelReader_ErrorScheudle excelReader_ErrorScheudle
-      annotation (Placement(transformation(extent={{-584,194},{-564,214}})));
-    Components.ExcelReader.DataBus dataBus annotation (Placement(transformation(
-            extent={{-336,162},{-314,182}}), iconTransformation(extent={{-618,
-              32},{-598,52}})));
-    Components.ExcelReader.DataBus dataBus1 annotation (Placement(
-          transformation(extent={{-336,192},{-314,214}}), iconTransformation(
-            extent={{-608,78},{-588,98}})));
+    Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (
+      Placement(visible = true, transformation(extent = {{-256, 66}, {4, 266}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const1(k = 70) annotation (
+      Placement(visible = true, transformation(extent={{-400,116},{-380,136}},    rotation = 0)));
+    Modelica.Blocks.Sources.Constant Lastprofile(k=0)
+      annotation (Placement(transformation(extent={{-400,350},{-380,370}})));
+    Excel_ReadIn.ExcelReader_LoadProfiles excelReader_LoadProfiles
+      annotation (Placement(transformation(extent={{-404,312},{-380,342}})));
+    Excel_ReadIn.ExcelReader_ScheudleProfiles excelReader_ScheudleProfiles
+      annotation (Placement(transformation(extent={{-404,278},{-380,304}})));
+    Excel_ReadIn.ExcelReader_ErrorScheudle excelReader_ErrorScheudle
+      annotation (Placement(transformation(extent={{-404,238},{-380,268}})));
   equation
-    connect(excelReader_LoadProfiles.E_th_load, fMU_PhyModel.u_loadProfile_kW)
-      annotation (Line(points={{-559,262},{-256,262},{-256,261}},
-                        color={0,0,127}));
-    connect(excelReader_ScheudleProfiles.datalBus, controller_TM.dataBus1)
-      annotation (Line(
-        points={{-558.6,104.1},{-554,104.1},{-554,104},{-427.92,104}},
-        color={255,204,51},
-        thickness=0.5));
-    connect(controller_TM.dataBus, dataBus) annotation (Line(
-        points={{-336.547,103.65},{-336.547,172},{-325,172}},
-        color={255,204,51},
-        thickness=0.5), Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    connect(fMU_PhyModel.u_heatpump_0_1, dataBus.u_HeatPump_controll)
-      annotation (Line(points={{-256,212},{-300,212},{-300,172},{-325,172}},
-          color={0,0,127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_boiler_0_1, dataBus.u_Boiler_controll) annotation (
-        Line(points={{-256,162},{-300,162},{-300,172},{-325,172}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_CHP_0_1, dataBus.u_CHP_controll) annotation (Line(
-          points={{-256,191},{-300,191},{-300,172},{-325,172}}, color={0,0,127}),
-        Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(excelReader_ErrorScheudle.datalBus, dataBus1) annotation (Line(
-        points={{-562.3,204},{-562.3,203},{-325,203}},
-        color={255,204,51},
-        thickness=0.5), Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    connect(fMU_PhyModel.u_Stoerung_Tino_heatpump, dataBus1.u_HeatPumo_ErrorScheudle)
-      annotation (Line(points={{-256,208},{-316,208},{-316,203},{-325,203}},
-          color={255,0,255}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_Stoerung_Tino_CHP, dataBus1.u_CHP_ErrorScheudle)
-      annotation (Line(points={{-256,195},{-316,195},{-316,203},{-325,203}},
-          color={255,0,255}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_Stoerung_Tino_boiler, dataBus1.u_Boiler_ErrorScheudle)
-      annotation (Line(points={{-256,166},{-316,166},{-316,203},{-325,203}},
-          color={255,0,255}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_7202_NS, dataBus.u_StorageUnload_scheudle)
-      annotation (Line(points={{-256,200},{-276,200},{-276,172},{-325,172}},
-          color={0,0,127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(fMU_PhyModel.u_7102_NS, dataBus.u_StorageLoad_scheudle) annotation (
-       Line(points={{-256,205},{-284,205},{-284,172},{-325,172}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
+  connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
+      Line(points={{-379,126},{-257.625,126}},                          color = {0, 0, 127}));
+    connect(Lastprofile.y,fMU_PhyModel.u_loadProfile_ProductionPV_kW)
+      annotation (Line(points={{-379,360},{-340,360},{-340,259.333},{-257.625,
+            259.333}}, color={0,0,127}));
+    connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandEMob_kW)
+      annotation (Line(points={{-379,360},{-340,360},{-340,256},{-272,256},{
+            -272,252.667},{-257.625,252.667}},
+                       color={0,0,127}));
+    connect(fMU_PhyModel.u_loadProfile_kW, excelReader_LoadProfiles.E_th_load)
+      annotation (Line(points={{-257.625,262.667},{-257.625,276},{-264,276},{
+            -264,330.462},{-378.8,330.462}},
+                              color={0,0,127}));
+    connect(excelReader_LoadProfiles.E_el_load, fMU_PhyModel.u_loadProfile_DemandPower_kW)
+      annotation (Line(points={{-378.8,316.615},{-257.625,316.615},{-257.625,
+            256}}, color={0,0,127}));
+    connect(fMU_PhyModel.u_electrolysis_0_1, excelReader_ScheudleProfiles.u_Electrolyzer_scheudle)
+      annotation (Line(points={{-257.625,230.167},{-318.813,230.167},{-318.813,
+            298.091},{-378.8,298.091}}, color={0,0,127}));
+    connect(fMU_PhyModel.u_heatpump_0_1, excelReader_ScheudleProfiles.u_HeatPump_scheudle)
+      annotation (Line(points={{-257.625,188.167},{-352,188.167},{-352,300},{
+            -372,300},{-372,302.818},{-378.8,302.818}}, color={0,0,127}));
+    connect(fMU_PhyModel.u_7102_NS, excelReader_ScheudleProfiles.u_StorageLoad_scheudle)
+      annotation (Line(points={{-257.625,181.833},{-318.813,181.833},{-318.813,
+            283.909},{-378.8,283.909}}, color={0,0,127}));
+    connect(excelReader_ScheudleProfiles.u_StorageUnload_scheudle, fMU_PhyModel.u_7202_NS)
+      annotation (Line(points={{-378.8,279.182},{-318.4,279.182},{-318.4,
+            179.333},{-257.625,179.333}}, color={0,0,127}));
+    connect(fMU_PhyModel.u_CHP_0_1, excelReader_ScheudleProfiles.u_CHP_scheudle)
+      annotation (Line(points={{-257.625,173.5},{-360,173.5},{-360,293.364},{
+            -378.8,293.364}}, color={0,0,127}));
+    connect(fMU_PhyModel.u_boiler_0_1, excelReader_ScheudleProfiles.u_boiler_scheudle)
+      annotation (Line(points={{-257.625,149.333},{-328,149.333},{-328,288.636},
+            {-378.8,288.636}}, color={0,0,127}));
     annotation (
-      Diagram(coordinateSystem(extent={{-560,-60},{80,400}}),            graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
-      Icon(coordinateSystem(extent={{-560,-60},{80,400}})),
-      experiment(StopTime = 31536000, Interval = 900, Tolerance = 0.01, __Dymola_Algorithm = "Dassl"));
-  end Gesamt_Sim_Excel;
-
-  model Controller_TM "Coltroller for fmu"
-    Modelica.Blocks.Interfaces.RealInput u_TempAmp_extern
-      "Ambient temperature in °C"
-      annotation (Placement(transformation(extent={{-140,260},{-100,300}})));
-    Modelica.Blocks.Interfaces.RealInput u_co2_extern
-      "CO2 intensity of the upstream electricity grid in g/kWh"
-      annotation (Placement(transformation(extent={{-140,220},{-100,260}})));
-    Modelica.Blocks.Interfaces.RealInput u_el_costs_extern
-      "Electricity price intensity of the upstream electricity grid in €/kWh"
-      annotation (Placement(transformation(extent={{-140,180},{-100,220}})));
-    Modelica.Blocks.Interfaces.RealInput u_heatpump1_status
-      "Heat pump one status signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{1600,120},{1560,160}})));
-    Modelica.Blocks.Interfaces.RealInput u_electrolyzer_status
-      "electrolyzer status signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{1600,40},{1560,80}})));
-    Modelica.Blocks.Interfaces.RealInput u_CHP_status
-      "CHP status signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{1600,0},{1560,40}})));
-    Modelica.Blocks.Interfaces.RealInput u_boiler_status
-      "Boiler status signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{1600,-40},{1560,0}})));
-    Modelica.Blocks.Interfaces.RealInput u_Temp_HeatGrid_RF
-      "Return flow temperature of the heat grid in °C"
-      annotation (Placement(transformation(extent={{1600,260},{1560,300}})));
-    Modelica.Blocks.Interfaces.RealInput u_Temp_HeatGrid_FF
-      "Forward flow temperature of the heat grid in °C"
-      annotation (Placement(transformation(extent={{1600,180},{1560,220}})));
-    Modelica.Blocks.Interfaces.RealInput u_heatpump2_status
-      "Heat pump two status signal as 0 (not running) and 1 (running) "
-      annotation (Placement(transformation(extent={{1600,80},{1560,120}})));
-    Modelica.Blocks.Interfaces.RealInput u_mdot_HeatGrid_RF
-      "Return mass flow of the heat grid in kg/s"
-      annotation (Placement(transformation(extent={{1600,220},{1560,260}})));
-    Modelica.Blocks.Interfaces.RealInput u_el_pv_district
-      "photovoltaic production in the district in kW"
-      annotation (Placement(transformation(extent={{1602,-80},{1562,-40}})));
-    Modelica.Blocks.Logical.Switch switch_2102_ZA annotation (
-      Placement(visible = true, transformation(origin={70,-312},      extent={{-10,-10},
-              {10,10}},                                                                                rotation=0)));
-    Modelica.Blocks.Sources.Constant const5(k=0)   annotation (
-      Placement(visible = true, transformation(origin={-30,-196},     extent={{-10,-10},
-              {10,10}},                                                                                rotation = 0)));
-    Modelica.Blocks.Logical.Not not2 annotation (
-      Placement(visible = true, transformation(origin={10,-156},      extent={{-10,-10},
-              {10,10}},                                                                                rotation = 0)));
-    Modelica.Blocks.Sources.BooleanConstant boolean_internalControl(k=false)
-      "True if internal contral false if extrern schedule control" annotation (
-        Placement(visible=true, transformation(
-          origin={-30,-156},
-          extent={{-10,-10},{10,10}},
-          rotation=0)));
-    Modelica.Blocks.Logical.Switch switch_2102_ZA1
-                                                  annotation (
-      Placement(visible = true, transformation(origin={70,-352},      extent={{-10,-10},
-              {10,10}},                                                                                rotation=0)));
-    Modelica.Blocks.Logical.Switch switch_2102_ZA2
-                                                  annotation (
-      Placement(visible = true, transformation(origin={70,-392},      extent={{-10,-10},
-              {10,10}},                                                                                rotation=0)));
-    Modelica.Blocks.Logical.Switch switch_2102_ZA3
-                                                  annotation (
-      Placement(visible = true, transformation(origin={70,-432},      extent={{-10,-10},
-              {10,10}},                                                                                rotation=0)));
-    AixLib.Controls.SetPoints.Table HeatingCurve_DistrictGrid(table=[-20,80; -15,
-          80; 15,65; 20,65])
-      annotation (Placement(transformation(extent={{438,270},{458,290}})));
-    Components.ExcelReader.DataBus dataBus annotation (Placement(transformation(
-            extent={{-290,-384},{-250,-344}}), iconTransformation(extent={{1574,
-              -414},{1694,-280}})));
-    Components.ExcelReader.DataBus dataBus1 annotation (Placement(
-          transformation(extent={{1558,-390},{1598,-350}}), iconTransformation(
-            extent={{-254,-410},{-394,-270}})));
-  equation
-    connect(boolean_internalControl.y, not2.u)
-      annotation (Line(points={{-19,-156},{-2,-156}},
-                                                    color={255,0,255}));
-    connect(const5.y, switch_2102_ZA.u3) annotation (Line(points={{-19,-196},{
-            24,-196},{24,-320},{58,-320}},
-                                     color={0,0,127}));
-    connect(not2.y, switch_2102_ZA.u2) annotation (Line(points={{21,-156},{40,
-            -156},{40,-312},{58,-312}},
-                                     color={255,0,255}));
-    connect(not2.y, switch_2102_ZA1.u2) annotation (Line(points={{21,-156},{40,
-            -156},{40,-352},{58,-352}},
-                                   color={255,0,255}));
-    connect(not2.y, switch_2102_ZA2.u2) annotation (Line(points={{21,-156},{40,
-            -156},{40,-392},{58,-392}},
-                                   color={255,0,255}));
-    connect(not2.y, switch_2102_ZA3.u2) annotation (Line(points={{21,-156},{40,
-            -156},{40,-432},{58,-432}},
-                                     color={255,0,255}));
-    connect(const5.y, switch_2102_ZA1.u3) annotation (Line(points={{-19,-196},{
-            24,-196},{24,-360},{58,-360}},
-                                      color={0,0,127}));
-    connect(const5.y, switch_2102_ZA2.u3) annotation (Line(points={{-19,-196},{
-            24,-196},{24,-400},{58,-400}},
-                                      color={0,0,127}));
-    connect(const5.y, switch_2102_ZA3.u3) annotation (Line(points={{-19,-196},{
-            24,-196},{24,-440},{58,-440}},
-                                        color={0,0,127}));
-    connect(HeatingCurve_DistrictGrid.u, u_TempAmp_extern)
-      annotation (Line(points={{436,280},{-120,280}}, color={0,0,127}));
-    connect(switch_2102_ZA.u1, dataBus.u_HeatPump_scheudle) annotation (Line(
-          points={{58,-304},{-168,-304},{-168,-364},{-270,-364}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(switch_2102_ZA1.u1, dataBus.u_Electrolyzer_scheudle) annotation (
-        Line(points={{58,-344},{-168,-344},{-168,-364},{-270,-364}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(switch_2102_ZA2.u1, dataBus.u_CHP_scheudle) annotation (Line(points=
-           {{58,-384},{-168,-384},{-168,-364},{-270,-364}}, color={0,0,127}),
-        Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(switch_2102_ZA3.u1, dataBus.u_boiler_scheudle) annotation (Line(
-          points={{58,-424},{-168,-424},{-168,-364},{-270,-364}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{-6,3},{-6,3}},
-        horizontalAlignment=TextAlignment.Right));
-    connect(switch_2102_ZA.y, dataBus1.u_HeatPump_controll) annotation (Line(
-          points={{81,-312},{830,-312},{830,-370},{1578,-370}}, color={0,0,127}),
-        Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    connect(switch_2102_ZA1.y, dataBus1.u_Electrolyzer_controll) annotation (
-        Line(points={{81,-352},{830,-352},{830,-370},{1578,-370}}, color={0,0,
-            127}), Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    connect(switch_2102_ZA2.y, dataBus1.u_CHP_controll) annotation (Line(points=
-           {{81,-392},{830,-392},{830,-370},{1578,-370}}, color={0,0,127}),
-        Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    connect(switch_2102_ZA3.y, dataBus1.u_Boiler_controll) annotation (Line(
-          points={{81,-432},{830,-432},{830,-370},{1578,-370}}, color={0,0,127}),
-        Text(
-        string="%second",
-        index=1,
-        extent={{6,3},{6,3}},
-        horizontalAlignment=TextAlignment.Left));
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-240,
-              -1020},{1560,300}})), Diagram(coordinateSystem(
-            preserveAspectRatio=false, extent={{-240,-1020},{1560,300}})));
-  end Controller_TM;
+      Diagram(coordinateSystem(extent={{-680,-60},{80,440}}),            graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
+      Icon(coordinateSystem(extent={{-680,-60},{80,440}})),
+      experiment(
+        StopTime=900,
+        Interval=900,
+        Tolerance=0.01,
+        __Dymola_Algorithm="Dassl"));
+  end Gesamt_Sim_ExcelReadIn;
   annotation (
     uses(Modelica(version = "3.2.3"), AixLib(version = "0.10.7")),
     Documentation(info = "<html>
