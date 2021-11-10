@@ -149,7 +149,7 @@ class Tester():
 
         return self.filename_fmu
 
-    def run_fmu(self):
+    def run_fmu(self, fmi_package='pyfmi'):
         """Run the test with the previously defined FMU file."""
         # Change to a simulation directory
         os.chdir(self.sim_dir)
@@ -157,9 +157,14 @@ class Tester():
         solutions = [self.value]
         try:
             # Run FMU simulation
-            self.data = hptestbench.run_FMU(
-                self.filename_fmu, solutions, stepSize=900, stopTime=86400,
-                fmu_log_level=7)
+            if fmi_package == 'pyfmi':
+                self.data = hptestbench.run_FMU(
+                    self.filename_fmu, solutions, stepSize=900,
+                    stopTime=86400, fmu_log_level=7)
+            elif fmi_package == 'fmpy':
+                self.data = self.run_fmu_fmpy()
+            else:
+                raise ValueError("FMI package {} unknown".format(fmi_package))
         except Exception:
             # Change back to original working directory
             os.chdir(self.cwd)
@@ -168,6 +173,26 @@ class Tester():
             # Change back to original working directory
             os.chdir(self.cwd)
 
+        return self.data
+
+    def run_fmu_fmpy(self, fmi_logging=True):
+        """Run FMU simulation with the package fmpy."""
+        import fmpy
+        self.data = fmpy.simulate_fmu(
+            filename=self.filename_fmu,
+            validate=False,
+            start_time=0,
+            stop_time=86400,
+            # solver=solver,
+            step_size=900,
+            fmi_type='CoSimulation',
+            # output_interval=2e-2,
+            # record_events=events,
+            # start_values={},
+            output=[self.value],
+            fmi_call_logger=(
+                lambda s: print('[FMI] ' + s) if fmi_logging else None)
+            )
         return self.data
 
     def test_result(self):
@@ -182,7 +207,8 @@ class Tester():
         return condition
 
 
-def test_model(model, fmi=False, skip_fmu_conversion=False):
+def test_model(model, fmi=False, skip_fmu_conversion=False,
+               fmi_package='pyfmi'):
     """Test a given model, either with OpenModelica or via FMI."""
     setup()
     logger.info('Test model %s', model)
@@ -191,7 +217,7 @@ def test_model(model, fmi=False, skip_fmu_conversion=False):
     if fmi:  # Use functional mock-up interface
         if not skip_fmu_conversion:
             tester.convert_fmu()
-        tester.run_fmu()
+        tester.run_fmu(fmi_package)
 
     else:  # Use OpenModelica
         tester.run_modelica_system()
@@ -215,29 +241,31 @@ def setup():
 class TestMethods(unittest.TestCase):
     """Definition of test functions."""
 
-    def test_complete_sim(self):
-        """Run OpenModelica simulation with the complete simulation."""
-        model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
-        self.assertTrue(test_model(model))
+    # def test_complete_sim(self):
+    #     """Run OpenModelica simulation with the complete simulation."""
+    #     model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+    #     self.assertTrue(test_model(model))
 
-    def test_physical_model(self):
-        """Run OpenModelica simulation with the physical model."""
-        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
-        self.assertTrue(test_model(model))
+    # def test_physical_model(self):
+    #     """Run OpenModelica simulation with the physical model."""
+    #     model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
+    #     self.assertTrue(test_model(model))
 
-    def test_physical_model_fmu(self):
-        """Run FMU simulation with the physical model."""
-        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
-        condition = test_model(model, fmi=True,
-                               # skip_fmu_conversion=True,  # for debugging
-                               )
-        self.assertTrue(condition)
+    # def test_physical_model_fmu(self):
+    #     """Run FMU simulation with the physical model."""
+    #     model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
+    #     condition = test_model(model, fmi=True,
+    #                            # skip_fmu_conversion=True,  # for debugging
+    #                            )
+    #     self.assertTrue(condition)
 
     def test_electrolysis_fmu(self):
         """Run FMU simulation with the standalone electrolysis system."""
         model = 'Q100_DistrictModel.ElectrolysisSystem.Quarree100'
         condition = test_model(model, fmi=True,
-                               # skip_fmu_conversion=True,  # for debugging
+                                skip_fmu_conversion=True,  # for debugging
+                                # fmi_package='pyfmi',
+                               fmi_package='fmpy',
                                )
         self.assertTrue(condition)
 
