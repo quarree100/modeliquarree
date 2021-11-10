@@ -60,7 +60,7 @@ partial model PartialCell
   Modelica.Blocks.Tables.CombiTable2D table_hydrogen(
     tableOnFile=true,
     tableName="humidity",
-    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/H2_humidity.txt"),
+    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/H2_humidity.txt"),
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.LastTwoPoints,
     verboseExtrapolation=false)
@@ -70,7 +70,7 @@ partial model PartialCell
   Modelica.Blocks.Tables.CombiTable2D table_oxygen(
     tableOnFile=true,
     tableName="humidity",
-    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/O2_humidity.txt"),
+    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/O2_humidity.txt"),
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,
     verboseExtrapolation=false)

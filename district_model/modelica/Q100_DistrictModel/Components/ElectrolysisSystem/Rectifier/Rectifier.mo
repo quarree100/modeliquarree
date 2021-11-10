@@ -22,7 +22,7 @@ model Rectifier "rectifier for input power"
     tableOnFile=true,
     tableName="recEff",
     fileName=ModelicaServices.ExternalReferences.loadResource(
-        "modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/parameter/rectifierEfficiency.txt"),
+        "modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/parameter/rectifierEfficiency.txt"),
     columns=2:2,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative)
                  "table wirth rectifier efficiency depending on load"

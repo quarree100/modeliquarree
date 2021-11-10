@@ -104,7 +104,7 @@ model Cell "detailed model of electrolysis cell"
   Modelica.Blocks.Tables.CombiTable1Ds table_parameter(
     tableOnFile=true,
     tableName="elecData",
-    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/parameter/cell.txt"),
+    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/parameter/cell.txt"),
     columns=2:3,
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,

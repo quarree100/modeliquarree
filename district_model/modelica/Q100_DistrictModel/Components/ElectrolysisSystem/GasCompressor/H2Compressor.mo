@@ -63,7 +63,7 @@ model H2Compressor "partial model for gas compressor"
   Modelica.Blocks.Tables.CombiTable2D table_kappa[2*param_n_compStage](each
     tableOnFile=true,
     each tableName="kappa",
-    each fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/H2_kappa.txt"),
+    each fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/H2_kappa.txt"),
     each smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     each extrapolation=Modelica.Blocks.Types.Extrapolation.LastTwoPoints,
     each verboseExtrapolation=true) "real gas isentropic exponent of hydrogen"
@@ -72,7 +72,7 @@ model H2Compressor "partial model for gas compressor"
   Modelica.Blocks.Tables.CombiTable2D table_z[param_n_compStage](
     each tableOnFile=true,
     each tableName="z",
-    each fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/H2_z.txt"),
+    each fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/H2_z.txt"),
     each smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     each extrapolation=Modelica.Blocks.Types.Extrapolation.LastTwoPoints,
     each verboseExtrapolation=true) "compressibility factor of real gas hydrogen"

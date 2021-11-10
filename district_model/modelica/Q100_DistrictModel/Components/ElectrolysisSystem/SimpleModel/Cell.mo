@@ -20,7 +20,7 @@ model Cell "simple model of electrolysis cell"
     tableOnFile=true,
     tableName="curr_volt_T_Q100",
     fileName=ModelicaServices.ExternalReferences.loadResource(
-        "modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/parameter/CurrentVoltageCharacteristicTemperature.txt"),
+        "modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/parameter/CurrentVoltageCharacteristicTemperature.txt"),
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.LastTwoPoints)
     "current voltage characteristic curve"

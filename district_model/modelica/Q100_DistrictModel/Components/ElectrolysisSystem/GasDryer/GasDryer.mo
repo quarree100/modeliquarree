@@ -97,7 +97,8 @@ model GasDryer "model of continuous gas dryer with MSL Media"
   Modelica.Blocks.Tables.CombiTable2D table_humidity_condenser(
     tableOnFile=true,
     tableName="humidity",
-    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/H2_humidity.txt"),
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/H2_humidity.txt"),
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,
     verboseExtrapolation=true)
@@ -108,7 +109,8 @@ model GasDryer "model of continuous gas dryer with MSL Media"
     u2(start=param_T_ac),
     tableOnFile=true,
     tableName="humidity",
-    fileName=ModelicaServices.ExternalReferences.loadResource("modelica://Q100_DistrictModel/ElectrolysisSystem/Resources/gas_data/H2_humidity_backward.txt"),
+    fileName=ModelicaServices.ExternalReferences.loadResource(
+        "modelica://Q100_DistrictModel/Components/ElectrolysisSystem/Resources/gas_data/H2_humidity_backward.txt"),
     smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     extrapolation=Modelica.Blocks.Types.Extrapolation.HoldLastPoint,
     verboseExtrapolation=true) "table to determine temperature after heater"
