@@ -1,8 +1,0 @@
-#1
-double elecData(6,3)	# first column: temperature [K], second: pass through factor [v], third: exchange current density [A/cm2], source: thesis G. Tjarks 2016
-303.15	0.02803	21.8e-8
-313.15	0.02483	5.71e-8
-323.15	0.02344	4.15e-8
-333.15	0.02232	3.36e-8
-343.15	0.02141	2.95e-8
-353.15	0.02038	1.97e-8
