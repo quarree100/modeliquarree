@@ -1,20 +1,8 @@
 within Q100_DistrictModel.Simulations;
 model Gesamt_Sim_noLP
   extends Modelica.Icons.Example;
-  Modelica.Blocks.Sources.Constant Gaskessel(k = 0) annotation (
-    Placement(transformation(extent={{-340,70},{-320,90}})));
-  Modelica.Blocks.Sources.Constant WP(k=0.1) annotation (
-    Placement(transformation(extent={{-502,260},{-482,280}})));
-  Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (
-    Placement(visible = true, transformation(extent = {{-256, 66}, {4, 266}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant Speicherbeladung(k = 1) annotation (
-    Placement(transformation(extent={{-534,196},{-514,216}})));
-  Modelica.Blocks.Sources.Constant Speicherentladung(k = 1) annotation (
-    Placement(transformation(extent={{-500,180},{-480,200}})));
-  Modelica.Blocks.Sources.BooleanConstant WP2_disturb(k=true)
-    annotation (Placement(transformation(extent={{-502,230},{-482,250}})));
-  Modelica.Blocks.Sources.BooleanConstant Heatpump_disturb(k=true)
-    annotation (Placement(transformation(extent={{-340,100},{-320,120}})));
+  Q100_DistrictModel.FMUs.FMU_PhyModel_sorted fMU_PhyModel annotation (
+    Placement(visible = true, transformation(extent={{-128,66},{132,266}},    rotation = 0)));
   Modelica.Blocks.Sources.Constant E_th_RH_Houses(k = 1374690.5) annotation (
     Placement(transformation(extent={{-680,580},{-660,600}})));
   Modelica.Blocks.Sources.Constant E_th_TWW_Houses(k = 162898.75) annotation (
@@ -69,38 +57,35 @@ model Gesamt_Sim_noLP
     Placement(visible = true, transformation(origin={-630,620},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain gain8(k=1)   annotation (
     Placement(visible = true, transformation(origin={-630,650},     extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.BooleanConstant BHKW_disturb(k=true)
-    annotation (Placement(transformation(extent={{-420,160},{-400,180}})));
-  Modelica.Blocks.Sources.Constant BHKW(k=0.5)
-    annotation (Placement(transformation(extent={{-420,130},{-400,150}})));
-  Modelica.Blocks.Sources.BooleanConstant WP1_disturb(k=true)
-    annotation (Placement(transformation(extent={{-376,216},{-356,236}})));
-Modelica.Blocks.Sources.BooleanConstant booleanConstant(k = true) annotation (
-    Placement(visible = true, transformation(extent = {{-306, 286}, {-286, 306}}, rotation = 0)));
-Modelica.Blocks.Sources.Constant const(k = 0.5) annotation (
-    Placement(visible = true, transformation(extent = {{-300, 200}, {-280, 220}}, rotation = 0)));
-Modelica.Blocks.Sources.Constant const1(k = 70) annotation (
-    Placement(visible = true, transformation(extent = {{-300, 30}, {-280, 50}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant Lastprofile(k=0)
-    annotation (Placement(transformation(extent={{-444,302},{-424,322}})));
+    annotation (Placement(transformation(extent={{-440,302},{-420,322}})));
+  Modelica.Blocks.Sources.Constant HeatStorage_loading(k=1)
+    annotation (Placement(transformation(extent={{-720,194},{-700,214}})));
+  Modelica.Blocks.Sources.Constant HeatStorage_unloading(k=1)
+    annotation (Placement(transformation(extent={{-720,160},{-700,180}})));
+  Modelica.Blocks.Sources.Constant HeatPump_inputsignal(k=0.1)
+    annotation (Placement(transformation(extent={{-520,230},{-500,250}})));
+  Modelica.Blocks.Sources.Constant HeatPump1_disturb(k=1)
+    annotation (Placement(transformation(extent={{-520,200},{-500,220}})));
+  Modelica.Blocks.Sources.Constant HeatPump2_disturb(k=1)
+    annotation (Placement(transformation(extent={{-520,260},{-500,280}})));
+  Modelica.Blocks.Sources.Constant CHP_inputsignal(k=0.5)
+    annotation (Placement(transformation(extent={{-420,70},{-400,90}})));
+  Modelica.Blocks.Sources.Constant CHP_disturb(k=1)
+    annotation (Placement(transformation(extent={{-420,100},{-400,120}})));
+  Modelica.Blocks.Sources.Constant Boiler_inputsignal(k=0)
+    annotation (Placement(transformation(extent={{-300,70},{-280,90}})));
+  Modelica.Blocks.Sources.Constant Boiler_disturb(k=1)
+    annotation (Placement(transformation(extent={{-300,100},{-280,120}})));
+Modelica.Blocks.Sources.Constant const1(k=70)   annotation (
+    Placement(visible = true, transformation(extent={{-180,18},{-160,38}},      rotation = 0)));
+Modelica.Blocks.Sources.Constant Electrolysis_inputsignal(k=0.1) annotation (
+      Placement(visible=true, transformation(extent={{-320,196},{-300,216}},
+          rotation=0)));
+Modelica.Blocks.Sources.Constant Electrolysis_disturb(k=1) annotation (
+      Placement(visible=true, transformation(extent={{-320,224},{-300,244}},
+          rotation=0)));
 equation
-connect(Gaskessel.y, fMU_PhyModel.u_boiler_0_1) annotation (
-    Line(points={{-319,80},{-300,80},{-300,149.333},{-257.625,149.333}},
-                                                                      color = {0, 0, 127}));
-connect(WP.y, fMU_PhyModel.u_heatpump_0_1) annotation (
-    Line(points={{-481,270},{-436,270},{-436,188.167},{-257.625,188.167}},
-                                                                        color = {0, 0, 127}));
-connect(Speicherentladung.y, fMU_PhyModel.u_7202_NS) annotation (
-    Line(points={{-479,190},{-460,190},{-460,179.333},{-257.625,179.333}},
-                                                                        color = {0, 0, 127}));
-connect(Speicherbeladung.y, fMU_PhyModel.u_7102_NS) annotation (
-    Line(points={{-513,206},{-348,206},{-348,181.833},{-257.625,181.833}},  color = {0, 0, 127}));
-connect(Heatpump_disturb.y, fMU_PhyModel.u_disturb_boiler) annotation (
-    Line(points={{-319,110},{-306,110},{-306,152.667},{-257.625,152.667}},
-                                                                        color = {255, 0, 255}));
-connect(WP2_disturb.y, fMU_PhyModel.u_disturb_heatpump2) annotation (
-    Line(points={{-481,240},{-440,240},{-440,184.333},{-257.625,184.333}},
-                                                                        color = {255, 0, 255}));
   connect(product2.y,add2. u1) annotation (
     Line(points={{-430,449},{-430,440},{-464,440},{-464,432}},      color = {0, 0, 127}));
   connect(product1.y,add2. u2) annotation (
@@ -138,30 +123,52 @@ connect(WP2_disturb.y, fMU_PhyModel.u_disturb_heatpump2) annotation (
   connect(gain8.y, product4.u1) annotation (Line(points={{-619,650},{-284,650},
           {-284,472}}, color={0,0,127}));
 connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
-    Line(points={{-380,369},{-380,262.667},{-257.625,262.667}},
+    Line(points={{-380,369},{-380,262.667},{-129.625,262.667}},
                                                            color = {0, 0, 127}));
-connect(BHKW.y, fMU_PhyModel.u_CHP_0_1) annotation (
-    Line(points={{-399,140},{-360,140},{-360,173.5},{-257.625,173.5}},  color = {0, 0, 127}));
-connect(fMU_PhyModel.u_disturb_CHP, BHKW_disturb.y) annotation (
-    Line(points={{-257.625,176.833},{-366,176.833},{-366,170},{-399,170}},  color = {255, 0, 255}));
-connect(WP1_disturb.y, fMU_PhyModel.u_disturb_heatpump1) annotation (
-    Line(points={{-355,226},{-314,226},{-314,191.833},{-257.625,191.833}},  color = {255, 0, 255}));
-connect(const.y, fMU_PhyModel.u_electrolysis_0_1) annotation (
-    Line(points={{-279,210},{-270,210},{-270,230.167},{-257.625,230.167}},
-                                                                        color = {0, 0, 127}));
-connect(booleanConstant.y, fMU_PhyModel.u_disturb_electrolysis) annotation (
-    Line(points={{-285,296},{-270,296},{-270,236},{-257.625,236}},      color = {255, 0, 255}));
-connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
-    Line(points={{-279,40},{-270,40},{-270,126},{-257.625,126}},      color = {0, 0, 127}));
   connect(Lastprofile.y,fMU_PhyModel.u_loadProfile_ProductionPV_kW)
-    annotation (Line(points={{-423,312},{-406,312},{-406,259.333},{-257.625,
+    annotation (Line(points={{-419,312},{-406,312},{-406,259.333},{-129.625,
           259.333}}, color={0,0,127}));
   connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandPower_kW)
-    annotation (Line(points={{-423,312},{-406,312},{-406,256},{-257.625,256}},
+    annotation (Line(points={{-419,312},{-406,312},{-406,256},{-129.625,256}},
         color={0,0,127}));
   connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandEMob_kW)
-    annotation (Line(points={{-423,312},{-406,312},{-406,252.667},{-257.625,
+    annotation (Line(points={{-419,312},{-406,312},{-406,252.667},{-129.625,
           252.667}}, color={0,0,127}));
+  connect(Electrolysis_inputsignal.y, fMU_PhyModel.u_electrolysis_0_1)
+    annotation (Line(points={{-299,206},{-280,206},{-280,230.167},{-129.625,
+          230.167}}, color={0,0,127}));
+  connect(Electrolysis_disturb.y, fMU_PhyModel.u_disturb_electrolysis)
+    annotation (Line(points={{-299,234},{-278,234},{-278,236},{-129.625,236}},
+        color={0,0,127}));
+  connect(fMU_PhyModel.u_disturb_heatpump1, HeatPump2_disturb.y) annotation (
+      Line(points={{-129.625,191.833},{-460,191.833},{-460,270},{-499,270}},
+        color={0,0,127}));
+  connect(fMU_PhyModel.u_heatpump_0_1, HeatPump_inputsignal.y) annotation (Line(
+        points={{-129.625,188.167},{-464,188.167},{-464,240},{-499,240}}, color
+        ={0,0,127}));
+  connect(fMU_PhyModel.u_disturb_heatpump2, HeatPump1_disturb.y) annotation (
+      Line(points={{-129.625,184.333},{-468,184.333},{-468,210},{-499,210}},
+        color={0,0,127}));
+  connect(fMU_PhyModel.u_7102_NS, HeatStorage_loading.y) annotation (Line(
+        points={{-129.625,181.833},{-129.625,182},{-680,182},{-680,204},{-699,
+          204}}, color={0,0,127}));
+  connect(fMU_PhyModel.u_7202_NS, HeatStorage_unloading.y) annotation (Line(
+        points={{-129.625,179.333},{-680,179.333},{-680,170},{-699,170}}, color
+        ={0,0,127}));
+  connect(fMU_PhyModel.u_disturb_CHP, CHP_disturb.y) annotation (Line(points={{
+          -129.625,176.833},{-390,176.833},{-390,110},{-399,110}}, color={0,0,
+          127}));
+  connect(CHP_inputsignal.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{
+          -399,80},{-386,80},{-386,173.5},{-129.625,173.5}}, color={0,0,127}));
+  connect(fMU_PhyModel.u_disturb_boiler, Boiler_disturb.y) annotation (Line(
+        points={{-129.625,152.667},{-270,152.667},{-270,110},{-279,110}}, color
+        ={0,0,127}));
+  connect(fMU_PhyModel.u_boiler_0_1, Boiler_inputsignal.y) annotation (Line(
+        points={{-129.625,149.333},{-260,149.333},{-260,80},{-279,80}}, color={
+          0,0,127}));
+  connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
+      Line(points={{-159,28},{-154,28},{-154,126},{-129.625,126}}, color={0,0,
+          127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}}), graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent = {{-1600, -1000}, {1000, 1000}})),
