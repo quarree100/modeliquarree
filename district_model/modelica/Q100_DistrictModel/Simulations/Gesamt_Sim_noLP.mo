@@ -144,8 +144,8 @@ connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
       Line(points={{-129.625,191.833},{-460,191.833},{-460,270},{-499,270}},
         color={0,0,127}));
   connect(fMU_PhyModel.u_heatpump_0_1, HeatPump_inputsignal.y) annotation (Line(
-        points={{-129.625,188.167},{-464,188.167},{-464,240},{-499,240}}, color
-        ={0,0,127}));
+        points={{-129.625,188.167},{-464,188.167},{-464,240},{-499,240}}, color=
+         {0,0,127}));
   connect(fMU_PhyModel.u_disturb_heatpump2, HeatPump1_disturb.y) annotation (
       Line(points={{-129.625,184.333},{-468,184.333},{-468,210},{-499,210}},
         color={0,0,127}));
@@ -153,16 +153,16 @@ connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
         points={{-129.625,181.833},{-129.625,182},{-680,182},{-680,204},{-699,
           204}}, color={0,0,127}));
   connect(fMU_PhyModel.u_7202_NS, HeatStorage_unloading.y) annotation (Line(
-        points={{-129.625,179.333},{-680,179.333},{-680,170},{-699,170}}, color
-        ={0,0,127}));
+        points={{-129.625,179.333},{-680,179.333},{-680,170},{-699,170}}, color=
+         {0,0,127}));
   connect(fMU_PhyModel.u_disturb_CHP, CHP_disturb.y) annotation (Line(points={{
           -129.625,176.833},{-390,176.833},{-390,110},{-399,110}}, color={0,0,
           127}));
   connect(CHP_inputsignal.y, fMU_PhyModel.u_CHP_0_1) annotation (Line(points={{
           -399,80},{-386,80},{-386,173.5},{-129.625,173.5}}, color={0,0,127}));
   connect(fMU_PhyModel.u_disturb_boiler, Boiler_disturb.y) annotation (Line(
-        points={{-129.625,152.667},{-270,152.667},{-270,110},{-279,110}}, color
-        ={0,0,127}));
+        points={{-129.625,152.667},{-270,152.667},{-270,110},{-279,110}}, color=
+         {0,0,127}));
   connect(fMU_PhyModel.u_boiler_0_1, Boiler_inputsignal.y) annotation (Line(
         points={{-129.625,149.333},{-260,149.333},{-260,80},{-279,80}}, color={
           0,0,127}));

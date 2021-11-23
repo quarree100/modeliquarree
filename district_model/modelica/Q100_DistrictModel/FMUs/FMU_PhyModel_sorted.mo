@@ -1341,8 +1341,8 @@ equation
   connect(dynamicPipe_HeatStorage_unload_FF82.enthalpyPort_b1, heatPump1.enthalpyPort_a1) annotation (
     Line(points={{-1894.2,860},{-1885,860},{-1885,642}},        color = {176, 0, 0}));
   connect(heatPump1.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF81.enthalpyPort_a1) annotation (
-    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},{
-          -1912.2,800}},                                                                                  color = {176, 0, 0}));
+    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},
+          {-1912.2,800}},                                                                                 color = {176, 0, 0}));
   connect(calc_mdot_production3.u_dotQ, gain6.y) annotation (
     Line(points = {{-1740, 602}, {-1740, 609}}, color = {0, 0, 127}));
   connect(add2.y, calc_mdot_production3.u_TemperatureOutput) annotation (
