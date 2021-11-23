@@ -31,9 +31,12 @@ from OMPython import ModelicaSystem
 logger = logging.getLogger(__name__)
 
 
-def run_ModelicaSystem():
+def run_modelica_system(
+        model='Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+        ):
     """Create a ``ModelicaSystem`` object and run the simulation."""
     # Create a subdirectory for the simulation
+    cwd = os.getcwd()
     sim_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                            'sim_'+sys.platform)  # separate windows and linux
 
@@ -41,12 +44,19 @@ def run_ModelicaSystem():
     file = os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(__file__)),
                      '../modelica/Q100_DistrictModel/package.mo'))
-    model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
-    input_path = os.path.join(os.path.dirname(os.path.abspath(file)), 'input/')
+
+    if model == 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP':
+        heatloss = 'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
+    elif model == 'Q100_DistrictModel.Simulations.Gesamt_Sim':
+        heatloss = 'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
+    elif model == 'Q100_DistrictModel.FMUs.FMU_PhyModel':
+        heatloss = 'heatStorageVariablePorts_central.Heat_loss'
+    else:
+        raise ValueError("Model {} not defined".format(model))
 
     # Change to a simulation directory
     if os.path.exists(sim_dir) is False:
-        os.mkdir(sim_dir)
+        os.makedirs(sim_dir)
     os.chdir(sim_dir)
 
     # Setup the Modelica session and load the module, use "new frontend"
@@ -55,6 +65,7 @@ def run_ModelicaSystem():
                          commandLineOptions='-d=newInst')
 
     # Adapt the path of all the input files
+    # input_path = os.path.join(os.path.dirname(os.path.abspath(file)), 'input/')
     # cmd = '''setComponentModifierValue(
     #          Q100_DistrictModel.Simulations.SIM_RI_Schema,
     #          inputData.Pfad,
@@ -66,13 +77,13 @@ def run_ModelicaSystem():
 
     try:
         mod.setSimulationOptions(["stopTime=86400", "stepSize=900"])
-    except Exception:
+    except Exception:  # for older versions of OMPython
         mod.setSimulationOptions(stopTime=86400, stepSize=900)
 
     # Run simulations
     mod.simulate()
 
-    solution_list = ['time', 'heatStorageVariablePorts_central.Heat_loss']
+    solution_list = ['time', heatloss]
     solution_data = mod.getSolutions(solution_list)
 
     # Create DataFrame from results
@@ -80,7 +91,10 @@ def run_ModelicaSystem():
     print(data)
 
     # Evaluate some variable just to see if the simulation finished:
-    condition = data['heatStorageVariablePorts_central.Heat_loss'].mean() < 0
+    condition = data[heatloss].mean() < 0
+
+    os.chdir(cwd)  # Change back to original current working directory
+
     return condition
 
 
@@ -100,9 +114,15 @@ def setup():
 class TestMethods(unittest.TestCase):
     """Definition of test functions."""
 
-    def test(self):
-        """Run an OpenModelica simulation."""
-        self.assertTrue(run_ModelicaSystem())
+    def test_complete_sim(self):
+        """Run OpenModelica simulation with the complete simulation."""
+        self.assertTrue(run_modelica_system(
+            model='Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'))
+
+    def test_fmu_physical_model(self):
+        """Run OpenModelica simulation with the physical model."""
+        self.assertTrue(run_modelica_system(
+            model='Q100_DistrictModel.FMUs.FMU_PhyModel'))
 
 
 if __name__ == '__main__':

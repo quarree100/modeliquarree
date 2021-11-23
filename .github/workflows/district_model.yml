@@ -12,8 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: [3.7]
-        aixlib: [development_jnettels]
+        python: [3.7, 3.8, 3.9]
+        aixlib: [0.10.7]
+        modelica: [release, stable, nightly]
 
     steps:
     - name: Checkout
@@ -36,9 +37,9 @@ jobs:
 
         # Add sources for packaged openmodelica
         # for latest version in "release" channel do:
-        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` ${{ matrix.modelica }}"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
         # To install specific older versions, do:
-        # for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list   
+        # for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
         # You will also need to import the GPG key used to sign the releases:
         wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
         # To verify that your key is installed correctly
@@ -54,15 +55,12 @@ jobs:
         sudo apt install omlib-modelica-devicedrivers-1.8.2
         #sudo apt install omlib-aixlib-0.9.1 # works, but only with some releases, not the required one
 
-    - name: Install latest AixLib
+    - name: Install AixLib
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
-        cd /usr/lib/omlibrary/  # cd to OpenModelica library
-        # wget -q https://github.com/RWTH-EBC/AixLib/archive/master.tar.gz -O - | sudo tar xzf -
-        wget -q https://github.com/jnettels/AixLib/archive/${{ matrix.aixlib }}.tar.gz -O - | sudo tar xzf -
-        sudo mv AixLib-${{ matrix.aixlib }}/AixLib/ 'AixLib'
-        sudo rm -r AixLib-${{ matrix.aixlib }}
-        cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
+        wget -q https://github.com/jnettels/AixLib/archive/v${{ matrix.aixlib }}.tar.gz -O - | sudo tar xzf - -C /usr/lib/omlibrary/
+        sudo mv /usr/lib/omlibrary/AixLib-${{ matrix.aixlib }}/AixLib/ '/usr/lib/omlibrary/AixLib ${{ matrix.aixlib }}'
+        sudo rm -r /usr/lib/omlibrary/AixLib-${{ matrix.aixlib }}
 
     - name: Install latest BuildingSystems
       if: runner.os == 'Linux'  # Only required on Linux
