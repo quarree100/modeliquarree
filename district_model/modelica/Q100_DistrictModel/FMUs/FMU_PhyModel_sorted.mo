@@ -166,16 +166,6 @@ model FMU_PhyModel_sorted
     Placement(transformation(extent = {{-2240, 1340}, {-2200, 1380}})));
   Modelica.Blocks.Interfaces.RealInput u_temperature_heatingGrid_set(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0, max = 100) "Wärmenetz Solltemperatur" annotation (
     Placement(visible = true, transformation(extent = {{-2238, -170}, {-2198, -130}}, rotation = 0), iconTransformation(extent = {{-2240, -300}, {-2200, -260}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.BooleanInput u_disturb_CHP "BHKW externe Störung [Boolean]" annotation (
-    Placement(transformation(extent = {{-2240, 310}, {-2200, 350}})));
-  Modelica.Blocks.Interfaces.BooleanInput u_disturb_boiler "Gaskessel externe Störung [Boolean]" annotation (
-    Placement(transformation(extent = {{-2240, 20}, {-2200, 60}})));
-  Modelica.Blocks.Interfaces.BooleanInput u_disturb_electrolysis "Elektrolyseur externe Störung [Boolean]" annotation (
-    Placement(transformation(extent = {{-2240, 1020}, {-2200, 1060}})));
-  Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump1 "Wärmepumpe 1 externe Störung [Boolean]" annotation (
-    Placement(transformation(extent = {{-2240, 490}, {-2200, 530}})));
-  Modelica.Blocks.Interfaces.BooleanInput u_disturb_heatpump2 "Wärmepumpe 2 externe Störung [Boolean]" annotation (
-    Placement(transformation(extent = {{-2240, 400}, {-2200, 440}})));
   Components.RealOutput_JW y_1302_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_1302_TRC.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur" annotation (
     Placement(transformation(extent = {{-1536, 1066}, {-1548, 1078}})));
   Components.RealOutput_JW y_1304_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_1304_TRC.T - 273.15 "HT-Wärmepumpe Vorlauftemperatur Steuerung Mischventil" annotation (
@@ -304,25 +294,25 @@ model FMU_PhyModel_sorted
     Placement(visible = true, transformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0), iconTransformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0)));
   Components.RealOutput_JW y_heatpump2_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump2.innerCycle.PerformanceDataHPHeating.QCon / 1000 "Wärmepumpe 2 Wärmeleistung" annotation (
     Placement(transformation(extent = {{-1526, 636}, {-1518, 644}})));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = electrolysisSystem.inp_hp_on "Elektrolyseur Betriebsmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = not switch_1101_OA.u2 "Elektrolyseur Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1100}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = not switch_1101_OA.u2 "Elektrolyseur Störmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = electrolysisSystem.inp_hp_on "Elektrolyseur Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1086}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Components.BooleanOutput_JW y_2101_OA_1 = greaterThreshold_2101_OA_1.y "Wärmepumpe 1 Betriebsmeldung [Boolean]" annotation (
+  Components.BooleanOutput_JW y_2101_OA_1 = not switch_2102_ZA_1.u2 "Wärmepumpe 1 Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1860, 624}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1332, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_2101_OA_2 = greaterThreshold_2101_OA_2.y "Wärmepumpe 2 Betriebsmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_2101_OA_2 = not switch_2102_ZA_2.u2 "Wärmepumpe 2 Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1522, 624}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1332, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Components.BooleanOutput_JW y_2102_ZA_1 = not switch_2102_ZA_1.u2 "Wärmepumpe 1 Störmeldung [Boolean]" annotation (
+  Components.BooleanOutput_JW y_2102_ZA_1 = greaterThreshold_2101_OA_1.y "Wärmepumpe 1 Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1860, 616}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_2102_ZA_2 = not switch_2102_ZA_2.u2 "Wärmepumpe 2 Störmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_2102_ZA_2 = greaterThreshold_2101_OA_2.y "Wärmepumpe 2 Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1522, 616}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Components.BooleanOutput_JW y_4201_OA = CHP.onOff "BHKW Betriebsmeldung [Boolean]" annotation (
+  Components.BooleanOutput_JW y_4201_OA = not switch_4202_OA.u2 "BHKW Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1580, 196}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1362, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Components.BooleanOutput_JW y_4202_ZA = not switch_4202_OA.u2 "BHKW Störmeldung [Boolean]" annotation (
+  Components.BooleanOutput_JW y_4202_ZA = CHP.onOff "BHKW Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1580, 182}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_5203_OA = boiler.onOff_boiler "Gaskessel Betriebsmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_5203_OA = not logicalSwitch_5204_ZA.u2 "Gaskessel Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1358, -110}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1362, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_5204_ZA = not logicalSwitch_5204_ZA.u2 "Gaskessel Störmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_5204_ZA = boiler.onOff_boiler "Gaskessel Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1358, -124}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const9(k = 20) annotation (
     Placement(visible = true, transformation(origin = {-1450, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -808,6 +798,31 @@ Modelica.Blocks.Sources.Constant ambientTemperature(k = 20) "Replace this with c
     Placement(visible = true, transformation(origin = {-1920, 1064}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Blocks.Interfaces.RealOutput y_6204_FRC( final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "Normal volume flow hydrogen [Nm³/h]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1146}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1854, 1150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+Modelica.Blocks.Interfaces.RealInput u_disturb_electrolysis(min=0, max=1)
+    "Elektrolyseur Ansteuerung"
+    annotation (Placement(transformation(extent={{-2240,1020},{-2200,1060}})));
+  Modelica.Blocks.Interfaces.RealInput u_disturb_heatpump1(min=0, max=1)
+    "Wärmepumpe Ansteuerung"
+    annotation (Placement(transformation(extent={{-2240,490},{-2200,530}})));
+  Modelica.Blocks.Math.RealToBoolean realToBoolean3 annotation (
+    Placement(visible = true, transformation(origin={-2168,510},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput u_disturb_heatpump2(min=0, max=1)
+    "Wärmespeicher Beladung"
+    annotation (Placement(transformation(extent={{-2240,400},{-2200,440}})));
+  Modelica.Blocks.Math.RealToBoolean realToBoolean4 annotation (
+    Placement(visible = true, transformation(origin={-2166,420},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput u_disturb_CHP(min=0, max=1)
+    "Wärmespeicher Beladung"
+    annotation (Placement(transformation(extent={{-2240,310},{-2200,350}})));
+  Modelica.Blocks.Math.RealToBoolean realToBoolean5 annotation (
+    Placement(visible = true, transformation(origin={-2170,330},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput u_disturb_boiler(min=0, max=1)
+    "Gaskessel Ansteuerung"
+    annotation (Placement(transformation(extent={{-2240,20},{-2200,60}})));
+  Modelica.Blocks.Math.RealToBoolean realToBoolean6 annotation (
+    Placement(visible = true, transformation(origin={-2162,40},      extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Math.RealToBoolean realToBoolean1 annotation (
+    Placement(visible = true, transformation(origin={-2180,1040},    extent = {{-10, 10}, {10, -10}}, rotation = 0)));
 equation
   connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation (
     Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}, thickness = 1));
@@ -1362,18 +1377,12 @@ equation
     Line(points = {{-2220, 390}, {-722, 390}, {-722, 600}, {-702, 600}}, color = {0, 0, 127}));
   connect(u_7202_NS, min.u2) annotation (
     Line(points = {{-2220, 360}, {-664, 360}, {-664, 380}, {-642, 380}}, color = {0, 0, 127}));
-  connect(u_disturb_CHP, not5.u) annotation (
-    Line(points = {{-2220, 330}, {-1582, 330}}, color = {255, 0, 255}));
   connect(u_CHP_0_1, switch_4202_OA.u3) annotation (
     Line(points = {{-2220, 290}, {-1542, 290}, {-1542, 282}}, color = {0, 0, 127}));
-  connect(u_disturb_boiler, not3.u) annotation (
-    Line(points = {{-2220, 40}, {-1362, 40}}, color = {255, 0, 255}));
   connect(u_boiler_0_1, max.u1) annotation (
     Line(points = {{-2220, 0}, {-1410, 0}, {-1410, -48}, {-1402, -48}}, color = {0, 0, 127}));
   connect(u_heatpump_0_1, switch_2102_ZA_2.u3) annotation (
     Line(points = {{-2220, 466}, {-1546, 466}, {-1546, 468}}, color = {0, 0, 127}));
-  connect(u_disturb_heatpump2, not2.u) annotation (
-    Line(points = {{-2220, 420}, {-2142, 420}}, color = {255, 0, 255}));
   connect(greaterThreshold_2101_OA_2.u, switch_2102_ZA_2.y) annotation (
     Line(points = {{-1524, 540}, {-1538, 540}, {-1538, 491}}, color = {0, 0, 127}));
   connect(hysteresis2.u, gain7.y) annotation (
@@ -1421,8 +1430,6 @@ equation
     Line(points={{-1556.2,860},{-1548,860},{-1548,642},{-1547,642}},          color = {176, 0, 0}));
   connect(u_heatpump_0_1, switch_2102_ZA_1.u3) annotation (
     Line(points = {{-2220, 466}, {-1930, 466}, {-1930, 502}, {-1920, 502}}, color = {0, 0, 127}));
-  connect(u_disturb_heatpump1, not7.u) annotation (
-    Line(points = {{-2220, 510}, {-2181, 510}, {-2181, 510}, {-2142, 510}}, color = {255, 0, 255}));
   connect(temperature_1316_TRC.enthalpyPort_a, dynamicPipe_HeatStorage_unload_FF56.enthalpyPort_b1) annotation (
     Line(points = {{-1181.2, 1059.9}, {-1169.6, 1059.9}, {-1169.6, 1060}, {-1159.8, 1060}}, color = {0, 128, 255}, thickness = 1));
   connect(dynamicPipe_HeatStorage_unload_FF88.enthalpyPort_a1, temperature_1316_TRC.enthalpyPort_b) annotation (
@@ -1461,8 +1468,6 @@ equation
     Line(points = {{-1948, 1020}, {-1941, 1020}}, color = {0, 0, 127}));
   connect(not9.y, or4.u1) annotation (
     Line(points = {{-2139, 1040}, {-2112, 1040}}, color = {255, 0, 255}));
-  connect(u_disturb_electrolysis, not9.u) annotation (
-    Line(points = {{-2220, 1040}, {-2162, 1040}}, color = {255, 0, 255}));
   connect(u_electrolysis_0_1, switch_1101_OA.u3) annotation (
     Line(points = {{-2220, 970}, {-2040, 970}, {-2040, 1032}, {-2030, 1032}}, color = {0, 0, 127}));
   connect(realToBoolean2.u, switch_1101_OA.y) annotation (
@@ -1584,6 +1589,26 @@ connect(ambientTemperature.y, electrolysisSystem.inp_T_air) annotation (
     Line(points={{-1909,1064},{-1833,1064},{-1833,1101}},        color = {0, 0, 127}));
 connect(electrolysisSystem.out_H2, y_6204_FRC) annotation (
     Line(points = {{-1803, 1103}, {-1793, 1103}, {-1793, 1140}, {-1800, 1140}, {-1800, 1145}, {-1854, 1145}, {-1854, 1146}}, color = {0, 0, 127}));
+  connect(u_disturb_boiler, realToBoolean6.u)
+    annotation (Line(points={{-2220,40},{-2174,40}}, color={0,0,127}));
+  connect(realToBoolean6.y, not3.u)
+    annotation (Line(points={{-2151,40},{-1362,40}}, color={255,0,255}));
+  connect(u_disturb_CHP, realToBoolean5.u) annotation (Line(points={{-2220,330},
+          {-2202,330},{-2202,330},{-2182,330}}, color={0,0,127}));
+  connect(realToBoolean5.y, not5.u)
+    annotation (Line(points={{-2159,330},{-1582,330}}, color={255,0,255}));
+  connect(u_disturb_heatpump2, realToBoolean4.u)
+    annotation (Line(points={{-2220,420},{-2178,420}}, color={0,0,127}));
+  connect(realToBoolean4.y, not2.u)
+    annotation (Line(points={{-2155,420},{-2142,420}}, color={255,0,255}));
+  connect(u_disturb_heatpump1, realToBoolean3.u)
+    annotation (Line(points={{-2220,510},{-2180,510}}, color={0,0,127}));
+  connect(realToBoolean3.y, not7.u)
+    annotation (Line(points={{-2157,510},{-2142,510}}, color={255,0,255}));
+  connect(not9.u, realToBoolean1.y)
+    annotation (Line(points={{-2162,1040},{-2169,1040}}, color={255,0,255}));
+  connect(u_disturb_electrolysis, realToBoolean1.u)
+    annotation (Line(points={{-2220,1040},{-2192,1040}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics={  Line(origin = {688, 380}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),
