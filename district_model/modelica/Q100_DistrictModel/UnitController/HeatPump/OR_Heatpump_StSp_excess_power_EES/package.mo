@@ -1,0 +1,6 @@
+within Q100_DistrictModel.UnitController.HeatPump;
+package OR_Heatpump_StSp_excess_power_EES
+
+
+
+end OR_Heatpump_StSp_excess_power_EES;
