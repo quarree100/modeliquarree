@@ -1,7 +1,8 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
 model ExcelReader_LoadProfiles "Excel XLSX file read in"
+  import ModelicaServices;
   extends Modelica.Icons.Record;
-  parameter String sheetName="Sheet1" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+  parameter String sheetName="LoadProfiles" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
   parameter String firstCell="A2" "First upper left cell of data set (without header)";
   parameter Integer endRow = 35040 "Number of rows in data set (without header)";
   parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
@@ -19,8 +20,8 @@ model ExcelReader_LoadProfiles "Excel XLSX file read in"
   Modelica.Blocks.Math.Add add4 annotation (
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={50,0})));
   parameter ExternData.XLSXFile dataSource(fileName=
-        Modelica.Utilities.Files.loadResource(
-        "C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-3.3/3.3.1 Energiebedarfsprofile/Kataster_v45/Stage_3/Quarree100_load_15_Modelica.xlsx"))
+        ModelicaServices.ExternalReferences.loadResource(
+        "modelica://Q100_DistrictModel/input/ExcelReader_input.xlsx"))
     "XLSX file" annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,

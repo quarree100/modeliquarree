@@ -1,10 +1,10 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
 model ExcelReader_ErrorScheudle "Excel XLSX file read in"
   extends Modelica.Icons.Record;
-  parameter String sheetName="error_signal" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+  parameter String sheetName="ErrorSignal" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
   parameter String firstCell="A2" "First upper left cell of data set (without header)";
   parameter Integer endRow = 8760 "Number of rows in data set (without header)";
-  parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
+  parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
   parameter Integer h = 4 "Column number of heat pump 1 profil in error data set (without time columne)";
   parameter Integer i = 5 "Column number of heat pump 2 profil in error data set (without time columne)";
   parameter Integer j = 3 "Column number of electrolysis profil in error data set (without time columne)";
@@ -14,7 +14,7 @@ model ExcelReader_ErrorScheudle "Excel XLSX file read in"
   parameter Integer n = 8 "Column number of storage unload profil in error data set (without time columne)";
 
   parameter ExternData.XLSXFile dataSource(fileName=
-        Modelica.Utilities.Files.loadResource("C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-1.3/Versorgungssystem Sim oemof/Kataster_v45_Variante-3A/export_modelica/Failsignal.xlsx"))
+        Modelica.Utilities.Files.loadResource("modelica://Q100_DistrictModel/input/ExcelReader_input.xlsx"))
     "XLSX file" annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,
