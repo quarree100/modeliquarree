@@ -4,7 +4,7 @@ model ExcelReader_ErrorScheudle "Excel XLSX file read in"
   parameter String sheetName="error_signal" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
   parameter String firstCell="A2" "First upper left cell of data set (without header)";
   parameter Integer endRow = 8760 "Number of rows in data set (without header)";
-  parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
+  parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
   parameter Integer h = 4 "Column number of heat pump 1 profil in error data set (without time columne)";
   parameter Integer i = 5 "Column number of heat pump 2 profil in error data set (without time columne)";
   parameter Integer j = 3 "Column number of electrolysis profil in error data set (without time columne)";
@@ -55,8 +55,8 @@ equation
         points={{-63.2,-10},{96,-10},{96,-30},{110,-30}}, color={0,0,127}));
   connect(combiTimeTable.y[m], u_StorageLoad_ErrorScheudle) annotation (Line(
         points={{-63.2,-10},{96,-10},{96,-70},{110,-70}}, color={0,0,127}));
-  connect(combiTimeTable.y[n], u_StorageUnload_ErrorScheudle) annotation (
-      Line(points={{-63.2,-10},{96,-10},{96,-110},{110,-110}}, color={0,0,127}));
+  connect(combiTimeTable.y[n], u_StorageUnload_ErrorScheudle) annotation (Line(
+        points={{-63.2,-10},{96,-10},{96,-110},{110,-110}}, color={0,0,127}));
   annotation(experiment(
       StopTime=21600,
       Interval=3600,

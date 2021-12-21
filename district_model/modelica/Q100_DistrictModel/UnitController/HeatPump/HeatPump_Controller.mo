@@ -2,7 +2,8 @@ within Q100_DistrictModel.UnitController.HeatPump;
 model HeatPump_Controller
   HeatPump_StSp_priority_int heatPump_StSp_priority_int
     annotation (Placement(transformation(extent={{-60,-90},{-40,-70}})));
-  HeatPump_StSp_priority_ext heatPump_StSp_priority_ext
+  HeatPump_StSp_priority_ext heatPump_StSp_priority_ext(
+      stSp_priority_ext_OR_HP_prio_ext(greaterThreshold(threshold=0.001)))
     annotation (Placement(transformation(extent={{-60,-50},{-40,-30}})));
   Modelica.Blocks.Logical.Or or1
     annotation (Placement(transformation(extent={{130,-70},{150,-50}})));

@@ -1,6 +1,7 @@
 within Q100_DistrictModel.UnitController.HeatPump.OR_Heatpump_StSp_priority_int;
 model StSp_priority_int_OR_HP_prio_int
-  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold annotation (
+  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0.001)
+                                                            annotation (
     Placement(visible = true, transformation(origin={2,0},          extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.BooleanOutput OS_HP_prio_int
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
