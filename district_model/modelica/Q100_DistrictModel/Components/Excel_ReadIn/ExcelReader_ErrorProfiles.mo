@@ -1,5 +1,5 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
-model ExcelReader_ErrorScheudle "Excel XLSX file read in"
+model ExcelReader_ErrorProfiles "Excel XLSX file read in"
   extends Modelica.Icons.Record;
   parameter String sheetName="ErrorSignal" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
   parameter String firstCell="A2" "First upper left cell of data set (without header)";
@@ -64,4 +64,4 @@ equation
     Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"),
     Diagram(coordinateSystem(extent={{-100,-120},{100,140}})),
     Icon(coordinateSystem(extent={{-100,-120},{100,140}})));
-end ExcelReader_ErrorScheudle;
+end ExcelReader_ErrorProfiles;
