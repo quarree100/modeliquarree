@@ -4,3 +4,6 @@ ExcelReader_LoadProfiles
 DataBus
 ExcelReader_ScheudleProfiles_Bus
 ExcelReader_ErrorScheudle_Bus
+CSVReader_ErrorProfiles
+CSVReader_ScheudleProfiles
+CSV_LoadProfiles
