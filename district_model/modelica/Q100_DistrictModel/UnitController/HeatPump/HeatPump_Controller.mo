@@ -90,7 +90,7 @@ model HeatPump_Controller
     InputSignalCheck inputSignalCheck3(d=300)
       annotation (Placement(transformation(extent={{-126,-46},{-114,-34}})));
     Modelica.Blocks.Interfaces.RealOutput Heatpump_Specification_Value
-      "utilization factor between 0 and 1"
+    "utilization factor between 0 and 1"
       annotation (Placement(transformation(extent={{300,-20},{320,0}})));
   Modelica.Blocks.Logical.Switch switch4 annotation (Placement(visible=true,
           transformation(

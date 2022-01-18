@@ -27,11 +27,11 @@ model busbar_1consumer
     Placement(visible = true, transformation(origin = {30, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(gain1.y, y_GridLoad) annotation (
-    Line(points = {{42, 20}, {72, 20}, {72, 0}, {210, 0}, {210, 0}}, color = {0, 0, 127}));
+    Line(points={{41,20},{72,20},{72,0},{210,0},{210,0}},            color = {0, 0, 127}));
   connect(gain1.y, add3.u2) annotation (
-    Line(points = {{42, 20}, {72, 20}, {72, 34}, {98, 34}}, color = {0, 0, 127}));
+    Line(points={{41,20},{72,20},{72,34},{98,34}},          color = {0, 0, 127}));
   connect(switch11.y, gain1.u) annotation (
-    Line(points = {{2, 20}, {18, 20}, {18, 22}, {18, 22}, {18, 20}}, color = {0, 0, 127}));
+    Line(points={{1,20},{18,20},{18,22},{18,22},{18,20}},            color = {0, 0, 127}));
   connect(add3.y, y_DirectConsumption) annotation (
     Line(points = {{121, 40}, {210, 40}}, color = {0, 0, 127}));
   connect(u_Demand, add3.u1) annotation (
@@ -45,17 +45,19 @@ equation
   connect(add1.y, switch11.u3) annotation (
     Line(points = {{-99, -20}, {-92, -20}, {-92, 12}, {-22, 12}}, color = {0, 0, 127}));
   connect(add1.y, greaterThreshold1.u) annotation (
-    Line(points = {{-99, -20}, {-83, -20}, {-83, -18}, {-84, -18}, {-84, -20}, {-83, -20}}, color = {0, 0, 127}));
+    Line(points={{-99,-20},{-83,-20},{-83,-18},{-84,-18},{-84,-20},{-82,-20}},              color = {0, 0, 127}));
   connect(const.y, switch1.u3) annotation (
-    Line(points = {{-98, 80}, {-32, 80}, {-32, -32}, {-22, -32}, {-22, -32}}, color = {0, 0, 127}));
+    Line(points={{-99,80},{-32,80},{-32,-32},{-22,-32},{-22,-32}},            color = {0, 0, 127}));
   connect(const.y, switch11.u1) annotation (
-    Line(points = {{-98, 80}, {-32, 80}, {-32, 28}, {-22, 28}, {-22, 28}}, color = {0, 0, 127}));
+    Line(points={{-99,80},{-32,80},{-32,28},{-22,28},{-22,28}},            color = {0, 0, 127}));
   connect(greaterThreshold1.y, switch11.u2) annotation (
-    Line(points = {{-59, -20}, {-39, -20}, {-39, 20}, {-21, 20}, {-21, 20}, {-23, 20}, {-23, 20}}, color = {255, 0, 255}));
+    Line(points={{-59,-20},{-39,-20},{-39,20},{-21,20},{-21,20},{-22,20},{-22,
+          20}},                                                                                    color = {255, 0, 255}));
   connect(switch1.y, y_FeedIn) annotation (
     Line(points = {{1, -40}, {210, -40}}, color = {0, 0, 127}));
   connect(greaterThreshold1.y, switch1.u2) annotation (
-    Line(points = {{-59, -20}, {-39, -20}, {-39, -40}, {-21, -40}, {-21, -39}, {-23, -39}, {-23, -40}}, color = {255, 0, 255}));
+    Line(points={{-59,-20},{-39,-20},{-39,-40},{-21,-40},{-21,-39},{-22,-39},{
+          -22,-40}},                                                                                    color = {255, 0, 255}));
   annotation (
     experiment(StartTime = 0, StopTime = 345600, Tolerance = 1e-06, Interval = 900),
     __OpenModelica_simulationFlags(lv = "LOG_STATS", outputFormat = "mat", s = "dassl"),
