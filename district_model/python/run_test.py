@@ -58,15 +58,13 @@ class Tester():
                          '../modelica/Q100_DistrictModel/package.mo'))
 
         # Define the output value that should be tested, depending on the model
-        if model == 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP':
+        if 'Q100_DistrictModel.Simulations.Gesamt_Sim' in model:
             self.value = \
                 'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
-        elif model == 'Q100_DistrictModel.Simulations.Gesamt_Sim':
-            self.value = \
-                'fMU_PhyModel.heatStorageVariablePorts_central.Heat_loss'
-        elif model == 'Q100_DistrictModel.FMUs.FMU_PhyModel':
+        elif 'Q100_DistrictModel.FMUs.FMU_PhyModel' in model:
             self.value = 'heatStorageVariablePorts_central.Heat_loss'
-        elif model == 'Q100_DistrictModel.ElectrolysisSystem.Quarree100':
+        elif (model ==
+              'Q100_DistrictModel.Components.ElectrolysisSystem.Quarree100'):
             self.value = 'comp_electrolysisSystem.out_H2'
         else:
             raise ValueError("Model {} not defined".format(model))
@@ -128,12 +126,11 @@ class Tester():
                              modelName=self.model,
                              commandLineOptions='-d=newInst')
         # Convert model to FMU 'modelName.fmu' in current working directory
-        filename_fmu = mod.convertMo2Fmu()
+        filename_fmu = os.path.abspath(mod.convertMo2Fmu())
         if self.filename_fmu != filename_fmu:
             logger.info('Unexpected new FMU filename "%s", expected "%s"',
                         filename_fmu, self.filename_fmu)
             self.filename_fmu = filename_fmu
-
         # Alternative: Try to get Windows and Linux FMU at the same time.
         # The platforms argument does not seem to have an effect.
         # platforms = '{"x86_64-linux-gnu", "x86_64-w64-mingw32"}'
@@ -150,7 +147,16 @@ class Tester():
         return self.filename_fmu
 
     def run_fmu(self, fmi_package='pyfmi'):
-        """Run the test with the previously defined FMU file."""
+        """Run the test with the previously defined FMU file.
+
+        Args:
+            fmi_package (str, optional): Use 'pyfmi' or 'fmpy'.
+            Defaults to 'pyfmi'.
+
+        Returns:
+            data (DataFrame): A DataFrame with simulation results.
+
+        """
         # Change to a simulation directory
         os.chdir(self.sim_dir)
         # Define list of wanted solutions
@@ -211,7 +217,11 @@ def test_model(model, fmi=False, skip_fmu_conversion=False,
                fmi_package='pyfmi'):
     """Test a given model, either with OpenModelica or via FMI."""
     setup()
-    logger.info('Test model %s', model)
+    if fmi:
+        model_txt = 'Test model {} with {}'.format(model, fmi_package)
+    else:
+        model_txt = 'Test model {}'.format(model)
+    logger.info(model_txt)
 
     tester = Tester(model)
     if fmi:  # Use functional mock-up interface
@@ -222,6 +232,10 @@ def test_model(model, fmi=False, skip_fmu_conversion=False,
     else:  # Use OpenModelica
         tester.run_modelica_system()
     condition = tester.test_result()
+    if condition:
+        logger.info('%s successful', model_txt)
+    else:
+        logger.info('%s not successful', model_txt)
     return condition
 
 
@@ -241,33 +255,53 @@ def setup():
 class TestMethods(unittest.TestCase):
     """Definition of test functions."""
 
-    # def test_complete_sim(self):
-    #     """Run OpenModelica simulation with the complete simulation."""
-    #     model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+    def test_complete_sim(self):
+        """Run OpenModelica with the complete simulation."""
+        model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_noLP'
+        self.assertTrue(test_model(model))
+
+    # def test_complete_sim_excel(self):
+    #     """Run OpenModelica with the complete simulation using Excel."""
+    #     model = 'Q100_DistrictModel.Simulations.Gesamt_Sim_ExcelReadIn'
     #     self.assertTrue(test_model(model))
 
     # def test_physical_model(self):
-    #     """Run OpenModelica simulation with the physical model."""
+    #     """Run OpenModelica with the physical model."""
     #     model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
     #     self.assertTrue(test_model(model))
+
+    def test_sorted_physical_model(self):
+        """Run OpenModelica with the sorted physical model."""
+        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel_sorted'
+        self.assertTrue(test_model(model))
 
     # def test_physical_model_fmu(self):
     #     """Run FMU simulation with the physical model."""
     #     model = 'Q100_DistrictModel.FMUs.FMU_PhyModel'
-    #     condition = test_model(model, fmi=True,
-    #                            # skip_fmu_conversion=True,  # for debugging
-    #                            )
+    #     condition = test_model(model, fmi=True)
     #     self.assertTrue(condition)
 
-    def test_electrolysis_fmu(self):
-        """Run FMU simulation with the standalone electrolysis system."""
-        model = 'Q100_DistrictModel.ElectrolysisSystem.Quarree100'
-        condition = test_model(model, fmi=True,
-                                skip_fmu_conversion=True,  # for debugging
-                                # fmi_package='pyfmi',
-                               fmi_package='fmpy',
-                               )
+    def test_sorted_physical_model_fmu(self):
+        """Run FMU simulation with the sorted physical model."""
+        model = 'Q100_DistrictModel.FMUs.FMU_PhyModel_sorted'
+        condition = test_model(model, fmi=True)
         self.assertTrue(condition)
+
+    # def test_electrolysis(self):
+    #     """Run FMU simulation with the standalone electrolysis system."""
+    #     model = 'Q100_DistrictModel.Components.ElectrolysisSystem.Quarree100'
+    #     condition = test_model(model)
+    #     self.assertTrue(condition)
+
+    # def test_electrolysis_fmu(self):
+    #     """Run FMU simulation with the standalone electrolysis system."""
+    #     model = 'Q100_DistrictModel.Components.ElectrolysisSystem.Quarree100'
+    #     condition = test_model(model, fmi=True,
+    #                             # skip_fmu_conversion=True,  # for debugging
+    #                             fmi_package='pyfmi',
+    #                             # fmi_package='fmpy',
+    #                             )
+    #     self.assertTrue(condition)
 
 
 if __name__ == '__main__':
