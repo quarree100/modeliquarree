@@ -15,7 +15,7 @@ jobs:
         python: [3.7, 3.8, 3.9]
         aixlib: [0.10.7]
         externdata: [2.5.0]
-        modelica: [release, stable, nightly]
+        modelica: [1.16.2, release, stable, nightly]
 
     steps:
     - name: Checkout
@@ -30,22 +30,28 @@ jobs:
       run: |
         conda install pandas matplotlib conda-build
 
+    - name: Prepare numbered OpenModelica version (add package sources)
+      if: "!contains('release stable nightly', matrix.modelica)"
+      run: |
+        # To install specific older versions, do:
+        for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/${{ matrix.modelica }}/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+    
+    - name: Prepare named OpenModelica version (add package sources)
+      if: contains('release stable nightly', matrix.modelica)
+      run: |
+        # For latest version in "release" channel do:
+        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` ${{ matrix.modelica }}"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+    
     - name: Install OpenModelica
       if: runner.os == 'Linux'  # This only works on Linux
       run: |
         # Installation instructions based on:
         # https://www.openmodelica.org/download/download-linux
-
-        # Add sources for packaged openmodelica
-        # for latest version in "release" channel do:
-        for deb in deb deb-src; do echo "$deb http://build.openmodelica.org/apt `lsb_release -cs` ${{ matrix.modelica }}"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
-        # To install specific older versions, do:
-        # for deb in deb; do echo "$deb https://build.openmodelica.org/omc/builds/linux/releases/1.14.2/ `lsb_release -cs` release"; done | sudo tee /etc/apt/sources.list.d/openmodelica.list
+        # Add sources for packaged openmodelica (see step above)
         # You will also need to import the GPG key used to sign the releases:
         wget -q http://build.openmodelica.org/apt/openmodelica.asc -O - | sudo apt-key add -
         # To verify that your key is installed correctly
         apt-key fingerprint
-
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
