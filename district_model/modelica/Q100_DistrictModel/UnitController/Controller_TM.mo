@@ -204,6 +204,11 @@ model Controller_TM "Coltroller for fmu"
     annotation (Placement(transformation(extent={{364,-366},{376,-354}})));
   MultiMax multiMax
     annotation (Placement(transformation(extent={{-518,-670},{-506,-658}})));
+  Components.busbar_4consumer busbar_4consumer
+    annotation (Placement(transformation(extent={{1364,-72},{1344,-52}})));
+  Modelica.Blocks.Interfaces.RealInput P_el_demand_emobility
+    "electrical demand in the district in kW"
+    annotation (Placement(transformation(extent={{1600,-70},{1560,-30}})));
 equation
   connect(const5.y, switch_HP_extrernSchedule.u3) annotation (Line(points={{-59,
           -560},{0,-560},{0,-318},{58,-318}},                          color={0,
@@ -391,6 +396,23 @@ equation
   connect(electrolysis_Controller.Electrolysis_Specification_SI,
     pre_Electrolysis.u)
     annotation (Line(points={{347,-360},{362.8,-360}}, color={255,0,255}));
+  connect(P_el_CHP_district, busbar_4consumer.u_ProductionCHP)
+    annotation (Line(points={{1580,0},{1360,0},{1360,-50}}, color={0,0,127}));
+  connect(P_el_pv_district, busbar_4consumer.uProductionPV) annotation (Line(
+        points={{1580,40},{1528,40},{1528,-24},{1354,-24},{1354,-50}}, color={0,
+          0,127}));
+  connect(P_el_demand_district, busbar_4consumer.u_DemandHouses) annotation (
+      Line(points={{1580,-80},{1430,-80},{1430,-64},{1366,-64},{1366,-65}},
+        color={0,0,127}));
+  connect(add_HP_Pel1.y, busbar_4consumer.u_DemandHeatPump) annotation (Line(
+        points={{1181,-280},{1290,-280},{1290,-94},{1400,-94},{1400,-59},{1366,
+          -59}}, color={0,0,127}));
+  connect(electrolysis_Controller.Electrolysis_Specification_Value,
+    busbar_4consumer.u_DemandElectrolyser) annotation (Line(points={{347,-349},
+          {884,-349},{884,-350},{1420,-350},{1420,-54},{1366,-54}}, color={0,0,
+          127}));
+  connect(busbar_4consumer.u_EMob, P_el_demand_emobility) annotation (Line(
+        points={{1366,-70},{1500,-70},{1500,-50},{1580,-50}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-240,
             -1020},{1560,300}})), Diagram(coordinateSystem(
           preserveAspectRatio=false, extent={{-240,-1020},{1560,300}})));
