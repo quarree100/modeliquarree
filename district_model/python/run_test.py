@@ -28,7 +28,7 @@ import pandas as pd
 from OMPython import ModelicaSystem  # requires >=3.2.0
 
 # Import from other file in the same repository
-sys.path.append("../../HP_testbench")
+sys.path.append(os.path.join(os.path.dirname(__file__), "../../HP_testbench"))
 import hptestbench
 
 # Define the logging function
