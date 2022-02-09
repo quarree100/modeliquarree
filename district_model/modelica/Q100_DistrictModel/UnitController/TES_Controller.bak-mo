@@ -1,0 +1,32 @@
+within Q100_DistrictModel.UnitController;
+model TES_Controller
+  Modelica.Blocks.Interfaces.RealInput P_th_DH_demand annotation (Placement(
+        transformation(extent={{-104,60},{-94,70}}), iconTransformation(extent=
+            {{-104,60},{-94,70}})));
+  Modelica.Blocks.Interfaces.RealInput P_th_DH_supply annotation (Placement(
+        transformation(extent={{-104,44},{-94,54}}), iconTransformation(extent=
+            {{-104,44},{-94,54}})));
+  Modelica.Blocks.Interfaces.RealInput status_storage_th annotation (Placement(
+        transformation(extent={{-104,28},{-94,38}}), iconTransformation(extent=
+            {{-104,28},{-94,38}})));
+  Modelica.Blocks.Interfaces.RealInput tp_DH_FF annotation (Placement(
+        transformation(extent={{-104,14},{-94,24}}), iconTransformation(extent=
+            {{-104,14},{-94,24}})));
+  Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set annotation (Placement(
+        transformation(extent={{-104,0},{-94,10}}), iconTransformation(extent={
+            {-104,0},{-94,10}})));
+  Modelica.Blocks.Interfaces.RealInput tp_DH_RF annotation (Placement(
+        transformation(extent={{-104,-14},{-94,-4}}), iconTransformation(extent
+          ={{-104,-14},{-94,-4}})));
+  Modelica.Blocks.Interfaces.RealInput tp_TES_load annotation (Placement(
+        transformation(extent={{-104,-28},{-92,-16}}), iconTransformation(
+          extent={{-104,-28},{-92,-16}})));
+  Modelica.Blocks.Interfaces.RealInput tp_TES_max_set annotation (Placement(
+        transformation(extent={{-104,-42},{-92,-30}}), iconTransformation(
+          extent={{-104,-42},{-92,-30}})));
+  Modelica.Blocks.Interfaces.RealInput tp_TES_unload annotation (Placement(
+        transformation(extent={{-104,-56},{-92,-44}}), iconTransformation(
+          extent={{-104,-56},{-92,-44}})));
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
+        coordinateSystem(preserveAspectRatio=false)));
+end TES_Controller;

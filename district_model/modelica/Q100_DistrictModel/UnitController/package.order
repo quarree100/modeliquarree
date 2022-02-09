@@ -4,3 +4,6 @@ InputSignalCheck
 MultiMax
 Hysteresis_var
 Electrolysis
+TES
+CHP
+Boiler
