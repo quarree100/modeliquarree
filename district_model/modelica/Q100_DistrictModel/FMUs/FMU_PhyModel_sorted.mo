@@ -294,9 +294,9 @@ model FMU_PhyModel_sorted
     Placement(visible = true, transformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0), iconTransformation(extent = {{-1526, 628}, {-1518, 636}}, rotation = 0)));
   Components.RealOutput_JW y_heatpump2_dotQ(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) = heatPump2.innerCycle.PerformanceDataHPHeating.QCon / 1000 "Wärmepumpe 2 Wärmeleistung" annotation (
     Placement(transformation(extent = {{-1526, 636}, {-1518, 644}})));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = not switch_1101_OA.u2 "Elektrolyseur Störmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_1101_OA = Electrolyseur.onOff "Elektrolyseur Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1100}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = electrolysisSystem.inp_hp_on "Elektrolyseur Betriebsmeldung [Boolean]" annotation (
+  Q100_DistrictModel.Components.BooleanOutput_JW y_1102_ZA = not switch_1101_OA.u2 "Elektrolyseur Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1086}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1342, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Components.BooleanOutput_JW y_2101_OA_1 = not switch_2102_ZA_1.u2 "Wärmepumpe 1 Störmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1860, 624}, extent = {{-4, -4}, {4, 4}}, rotation = 0), iconTransformation(origin = {-1332, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -776,19 +776,8 @@ model FMU_PhyModel_sorted
     Placement(transformation(extent = {{-2160, 1310}, {-2140, 1330}})));
   Components.exeptionHandling_no_division_zero exeptionHandling_no_division_zero4 annotation (
     Placement(transformation(extent = {{-2160, 1230}, {-2140, 1250}})));
-  Q100_DistrictModel.Components.ElectrolysisSystem.Model.ElectrolysisSystem
-    electrolysisSystem(
-    redeclare model CellModel =
-        Q100_DistrictModel.Components.ElectrolysisSystem.DetailedModel.Cell,
-    param_outputPumpMassFlow=true,
-    param_stack_P_el_max=250e3,
-    param_stack_p_op_anode=1400000,
-    param_stack_p_op_cathode=3000000) annotation (Placement(visible=true,
-        transformation(
-        origin={-1818,1096},
-        extent={{-16,-16},{16,16}},
-        rotation=0)));
-Modelica.Blocks.Math.Gain gain11(k = electrolysisSystem.param_stack_P_el_max)  "Multiply incoming relative el power with electrolyser nominal power" annotation (
+Modelica.Blocks.Math.Gain gain11(k=1)
+    "Multiply incoming relative el power with electrolyser nominal power \"electrolysisSystem.param_stack_P_el_max\""                                annotation (
     Placement(visible = true, transformation(origin = {-1930, 1098}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Blocks.Math.Gain gain12(k = 1 / 1000)  "convert W to kW" annotation (
     Placement(visible = true, transformation(origin = {-1735, 1129}, extent = {{-5, -5}, {5, 5}}, rotation = 180)));
@@ -796,7 +785,7 @@ Modelica.Blocks.Math.Gain gain13(k = 1 / 1000) annotation (
     Placement(visible = true, transformation(origin = {-1735, 1143}, extent = {{-5, -5}, {5, 5}}, rotation = 180)));
 Modelica.Blocks.Sources.Constant ambientTemperature(k = 20) "Replace this with connection to actual weather data" annotation (
     Placement(visible = true, transformation(origin = {-1920, 1064}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-Modelica.Blocks.Interfaces.RealOutput y_6204_FRC( final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "Normal volume flow hydrogen [Nm³/h]" annotation (
+    Modelica.Blocks.Interfaces.RealOutput y_6204_FRC( final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "Normal volume flow hydrogen [Nm³/h]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1146}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1854, 1150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Blocks.Interfaces.RealInput u_disturb_electrolysis(min=0, max=1)
     "Elektrolyseur Ansteuerung"
@@ -823,6 +812,16 @@ Modelica.Blocks.Interfaces.RealInput u_disturb_electrolysis(min=0, max=1)
     Placement(visible = true, transformation(origin={-2162,40},      extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Blocks.Math.RealToBoolean realToBoolean1 annotation (
     Placement(visible = true, transformation(origin={-2180,1040},    extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  AixLib.FastHVAC.Components.HeatGenerators.CHP.CHP_PT1 Electrolyseur(
+    selectable=false,
+    eta_el=1.67,
+    eta_th=0.28,
+    capP_el=300000)
+    annotation (Placement(transformation(extent={{-1828,1074},{-1808,1094}})));
+  Components.calc_mdot_production calc_mdot_production4
+    annotation (Placement(transformation(extent={{-1518,1086},{-1498,1106}})));
+  Modelica.Blocks.Sources.Constant const2(k=95 + 273.15)
+    annotation (Placement(transformation(extent={{-1562,1092},{-1542,1112}})));
 equation
   connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation (
     Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}, thickness = 1));
@@ -1341,8 +1340,8 @@ equation
   connect(dynamicPipe_HeatStorage_unload_FF82.enthalpyPort_b1, heatPump1.enthalpyPort_a1) annotation (
     Line(points={{-1894.2,860},{-1885,860},{-1885,642}},        color = {176, 0, 0}));
   connect(heatPump1.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF81.enthalpyPort_a1) annotation (
-    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},
-          {-1912.2,800}},                                                                                 color = {176, 0, 0}));
+    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},{
+          -1912.2,800}},                                                                                  color = {176, 0, 0}));
   connect(calc_mdot_production3.u_dotQ, gain6.y) annotation (
     Line(points = {{-1740, 602}, {-1740, 609}}, color = {0, 0, 127}));
   connect(add2.y, calc_mdot_production3.u_TemperatureOutput) annotation (
@@ -1565,30 +1564,12 @@ equation
     Line(points = {{464, 1072}, {546, 1072}}, color = {0, 0, 127}));
   connect(busbar_4consumer1.y_LoadToBattery, y_GridLoad) annotation (
     Line(points = {{464, 1084}, {566, 1084}}, color = {0, 0, 127}));
-connect(realToBoolean2.y, electrolysisSystem.inp_hp_on) annotation (
-    Line(points={{-1993,1160},{-1813,1160},{-1813,1079}},        color = {255, 0, 255}));
   connect(switch_1101_OA.y, gain11.u) annotation (
     Line(points={{-2007,1040},{-1942,1040},{-1942,1098}},        color = {0, 0, 127}));
-connect(gain11.y, electrolysisSystem.inp_P_av) annotation (
-    Line(points={{-1919,1098},{-1833,1098},{-1833,1105}},        color = {0, 0, 127}));
-connect(dynamicPipe_HeatStorage_unload_FF89.enthalpyPort_b1, electrolysisSystem.port_inlet_cooling) annotation (
-    Line(points={{-1601.8,1060},{-1830,1060},{-1830,1082}},      color = {0, 128, 255}, thickness = 1));
-connect(electrolysisSystem.port_outlet_cooling, dynamicPipe_HeatStorage_unload_FF83.enthalpyPort_a1) annotation (
-    Line(points={{-1806,1082},{-1599.8,1082},{-1599.8,1160}},    color = {176, 0, 0}, thickness = 1));
-connect(electrolysisSystem.out_hp_cond_mflow, pump_1305_up.dotm_setValue) annotation (
-    Line(points = {{-1823, 1079}, {-1492, 1079}, {-1492, 1068}}, color = {0, 0, 127}));
-connect(electrolysisSystem.out_P_el, gain12.u) annotation (
-    Line(points = {{-1803, 1107}, {-1729, 1107}, {-1729, 1129}}, color = {0, 0, 127}));
 connect(gain12.y, y_Elektrolyseur_Pel) annotation (
     Line(points = {{-1740.5, 1129}, {-1781, 1129}, {-1781, 1130}, {-1854, 1130}}, color = {0, 0, 127}));
-connect(electrolysisSystem.out_P_th, gain13.u) annotation (
-    Line(points = {{-1803, 1105}, {-1725, 1105}, {-1725, 1143}, {-1729, 1143}}, color = {0, 0, 127}));
 connect(gain13.y, y_Elektrolyseur_dotQ) annotation (
     Line(points = {{-1740.5, 1143}, {-1761.5, 1143}, {-1761.5, 1116}, {-1854, 1116}}, color = {0, 0, 127}));
-connect(ambientTemperature.y, electrolysisSystem.inp_T_air) annotation (
-    Line(points={{-1909,1064},{-1833,1064},{-1833,1101}},        color = {0, 0, 127}));
-connect(electrolysisSystem.out_H2, y_6204_FRC) annotation (
-    Line(points = {{-1803, 1103}, {-1793, 1103}, {-1793, 1140}, {-1800, 1140}, {-1800, 1145}, {-1854, 1145}, {-1854, 1146}}, color = {0, 0, 127}));
   connect(u_disturb_boiler, realToBoolean6.u)
     annotation (Line(points={{-2220,40},{-2174,40}}, color={0,0,127}));
   connect(realToBoolean6.y, not3.u)
@@ -1609,6 +1590,38 @@ connect(electrolysisSystem.out_H2, y_6204_FRC) annotation (
     annotation (Line(points={{-2162,1040},{-2169,1040}}, color={255,0,255}));
   connect(u_disturb_electrolysis, realToBoolean1.u)
     annotation (Line(points={{-2220,1040},{-2192,1040}}, color={0,0,127}));
+  connect(const2.y, calc_mdot_production4.u_TemperatureOutput)
+    annotation (Line(points={{-1541,1102},{-1520,1101.8}}, color={0,0,127}));
+  connect(temperature_1302_TRC.T, calc_mdot_production4.u_TemperatureInput)
+    annotation (Line(points={{-1529,1071},{-1529,-1232},{-1520,-1232},{-1520,1090}},
+        color={0,0,127}));
+  connect(calc_mdot_production4.y_mdot, pump_1305_up.dotm_setValue) annotation (
+     Line(points={{-1497,1096},{-1492,1096},{-1492,1068}}, color={0,0,127}));
+  connect(Electrolyseur.Capacity[2], calc_mdot_production4.u_dotQ) annotation (
+      Line(points={{-1807.8,1089.6},{-1744,1089.6},{-1744,1108},{-1508,1108}},
+        color={0,0,127}));
+  connect(dynamicPipe_HeatStorage_unload_FF89.enthalpyPort_b1, Electrolyseur.enthalpyPort_a)
+    annotation (Line(points={{-1601.8,1060},{-1744,1060},{-1744,1024},{-1828,
+          1024},{-1828,1084}},        color={176,0,0}));
+  connect(Electrolyseur.enthalpyPort_b, dynamicPipe_HeatStorage_unload_FF83.enthalpyPort_a1)
+    annotation (Line(points={{-1808,1084},{-1696,1084},{-1696,1120},{-1616,1120},
+          {-1616,1200},{-1599.8,1200},{-1599.8,1160}},
+                           color={176,0,0}));
+  connect(switch_1101_OA.y, Electrolyseur.P_elRel) annotation (Line(points={{-2007,
+          1040},{-1968,1040},{-1968,1120},{-1888,1120},{-1888,1056},{-1813,1056},
+          {-1813,1093.2}},                color={0,0,127}));
+  connect(realToBoolean2.y, Electrolyseur.onOff) annotation (Line(points={{-1993,
+          1160},{-2032,1160},{-2032,1120},{-1888,1120},{-1888,1056},{-1822,1056},
+          {-1822,1093.2}},
+        color={255,0,255}));
+  connect(Electrolyseur.Capacity[1], gain12.u) annotation (Line(points={{-1807.8,
+          1088.93},{-1807.8,1104},{-1729,1104},{-1729,1129}},
+                                                  color={0,0,127}));
+  connect(Electrolyseur.Capacity[2], gain13.u) annotation (Line(points={{-1807.8,
+          1089.6},{-1729,1089.6},{-1729,1143}},                           color=
+         {0,0,127}));
+  connect(gain13.y, y_6204_FRC) annotation (Line(points={{-1740.5,1143},{
+          -1740.5,1146},{-1854,1146}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics={  Line(origin = {688, 380}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),
