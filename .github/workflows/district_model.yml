@@ -56,9 +56,9 @@ jobs:
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
-        sudo mkdir -p /usr/lib/omlibrary  # Make sure this folder exists for the following steps
+        # sudo mkdir -p /usr/lib/omlibrary  # Make sure this folder exists for the following steps
         # Install optional Modelica libraries (most have not been tested with OpenModelica)
-        # for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
+        for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
         # sudo apt install omlib-modelica-synchronous-0.92.1
         # sudo apt install omlib-ncdatareader2-2.4.0
         # sudo apt install omlib-modelica-devicedrivers-1.8.2
