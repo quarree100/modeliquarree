@@ -15,7 +15,7 @@ jobs:
         python: [3.8, 3.9]
         aixlib: [0.10.7]
         externdata: [2.5.0]
-        modelica: [1.16.2, release, stable, nightly]
+        modelica: [1.16.2, release, stable]  # "nightly" can be tested, too
 
     steps:
     - name: Checkout
@@ -56,12 +56,11 @@ jobs:
         # Then update and install OpenModelica
         sudo apt update
         sudo apt install openmodelica
-        # sudo mkdir -p /usr/lib/omlibrary  # Make sure this folder exists for the following steps
         # Install optional Modelica libraries (most have not been tested with OpenModelica)
-        for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
-        # sudo apt install omlib-modelica-synchronous-0.92.1
-        # sudo apt install omlib-ncdatareader2-2.4.0
-        # sudo apt install omlib-modelica-devicedrivers-1.8.2
+        # for PKG in `apt-cache search "omlib-.*" | cut -d" " -f1`; do sudo apt-get install -y "$PKG"; done
+        sudo apt install omlib-modelica-synchronous-0.92.1
+        sudo apt install omlib-ncdatareader2-2.4.0
+        sudo apt install omlib-modelica-devicedrivers-1.8.2
         # sudo apt install omlib-aixlib-0.9.1 # works, but only with some releases, not the required one
 
     - name: Install AixLib
