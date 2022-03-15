@@ -1,5 +1,5 @@
 ﻿within Q100_DistrictModel.UnitController;
-model Controller_TM "Coltroller for fmu"
+model Controller "Coltroller for fmu"
   Modelica.Blocks.Interfaces.RealInput u_TempAmp_extern
     "Ambient temperature in °C"
     annotation (Placement(transformation(extent={{-264,268},{-240,292}}),
@@ -12,15 +12,9 @@ model Controller_TM "Coltroller for fmu"
     "Electricity price intensity of the upstream electricity grid in €/kWh"
     annotation (Placement(transformation(extent={{-264,188},{-240,212}}),
         iconTransformation(extent={{-264,188},{-240,212}})));
-  Modelica.Blocks.Interfaces.RealInput u_T_HeatGrid_RF_actual
-    "Return flow temperature of the heat grid in °C"
-    annotation (Placement(transformation(extent={{1600,230},{1560,270}})));
   Modelica.Blocks.Interfaces.RealInput u_T_HeatGrid_FF_actual
     "Forward flow temperature of the heat grid in °C"
     annotation (Placement(transformation(extent={{1600,150},{1560,190}})));
-  Modelica.Blocks.Interfaces.RealInput u_mdot_HeatGrid_RF_actual
-    "Return mass flow of the heat grid in kg/s"
-    annotation (Placement(transformation(extent={{1600,190},{1560,230}})));
   Modelica.Blocks.Interfaces.RealInput P_el_pv_district
     "photovoltaic production in the district in kW"
     annotation (Placement(transformation(extent={{1600,20},{1560,60}})));
@@ -32,12 +26,6 @@ model Controller_TM "Coltroller for fmu"
   Modelica.Blocks.Sources.Constant const5(k=-1)  annotation (
     Placement(visible = true, transformation(origin={-70,-560},     extent={{-10,-10},
             {10,10}},                                                                                rotation = 0)));
-  Modelica.Blocks.Sources.BooleanConstant boolean_extrernSchedule(k=false)
-    "True if extrern schedule should be used"                    annotation (
-      Placement(visible=true, transformation(
-        origin={-70,-480},
-        extent={{-10,-10},{10,10}},
-        rotation=0)));
   Modelica.Blocks.Logical.Switch switch_Electrolyzer_extrernSchedule
     annotation (Placement(visible=true, transformation(
         origin={70,-350},
@@ -87,14 +75,14 @@ model Controller_TM "Coltroller for fmu"
     "state of charge - electrical storage (in %)"
     annotation (Placement(transformation(extent={{1600,-140},{1560,-100}})));
   Modelica.Blocks.Interfaces.RealInput P_inst_el_HP1 annotation (Placement(
-        transformation(extent={{-264,68},{-240,92}}), iconTransformation(extent=
-           {{-164,-52},{-140,-28}})));
+        transformation(extent={{-264,68},{-240,92}}), iconTransformation(extent={{-266,
+            -14},{-242,10}})));
   Modelica.Blocks.Interfaces.RealInput P_inst_el_HP2 annotation (Placement(
-        transformation(extent={{-264,28},{-240,52}}), iconTransformation(extent=
-           {{-164,-52},{-140,-28}})));
+        transformation(extent={{-264,30},{-240,54}}), iconTransformation(extent={{-264,30},
+            {-240,54}})));
   Modelica.Blocks.Interfaces.RealInput P_inst_el_Electrolyzer annotation (
       Placement(transformation(extent={{-264,-12},{-240,12}}),
-        iconTransformation(extent={{-164,-52},{-140,-28}})));
+        iconTransformation(extent={{-262,68},{-238,92}})));
   Modelica.Blocks.Interfaces.RealInput    u_heatpump1_OA
     "Heat pump one status signal as 0 (not running) and 1 (running) "
     annotation (Placement(transformation(extent={{-264,-52},{-240,-28}}),
@@ -189,9 +177,6 @@ model Controller_TM "Coltroller for fmu"
   Modelica.Blocks.Interfaces.RealInput u_T_TES_unload
     "Forward flow temperature of the heat grid in °C"
     annotation (Placement(transformation(extent={{1600,110},{1560,150}})));
-  Modelica.Blocks.Interfaces.RealInput u_el_EES
-    "state of use - electrical storage (-1=unloading; 0=nothing; 1=loading)"
-    annotation (Placement(transformation(extent={{1600,-180},{1560,-140}})));
   Modelica.Blocks.Interfaces.RealInput P_el_demand_district
     "electrical demand in the district in kW"
     annotation (Placement(transformation(extent={{1600,-100},{1560,-60}})));
@@ -202,13 +187,25 @@ model Controller_TM "Coltroller for fmu"
   Modelica.Blocks.Logical.Pre pre_Electrolysis
     "Previous state of the Electrolysis"
     annotation (Placement(transformation(extent={{364,-366},{376,-354}})));
-  MultiMax multiMax
-    annotation (Placement(transformation(extent={{-518,-670},{-506,-658}})));
   Components.busbar_4consumer busbar_4consumer
     annotation (Placement(transformation(extent={{1364,-72},{1344,-52}})));
   Modelica.Blocks.Interfaces.RealInput P_el_demand_emobility
     "electrical demand in the district in kW"
     annotation (Placement(transformation(extent={{1600,-70},{1560,-30}})));
+  CHP.CHP_controller cHP_controller
+    annotation (Placement(transformation(extent={{302,-426},{346,-394}})));
+  Modelica.Blocks.Logical.Pre pre_CHP "Previous state of the Electrolysis"
+    annotation (Placement(transformation(extent={{364,-422},{376,-410}})));
+  Boiler.Boiler_Controller boiler_Controller
+    annotation (Placement(transformation(extent={{302,-472},{346,-440}})));
+  Modelica.Blocks.Logical.Pre pre_CHP1 "Previous state of the Electrolysis"
+    annotation (Placement(transformation(extent={{364,-474},{376,-462}})));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal
+    annotation (Placement(transformation(extent={{256,-470},{268,-458}})));
+  MultiMin multiMin(nu=5)
+    annotation (Placement(transformation(extent={{-160,-460},{-140,-440}})));
+  Modelica.Blocks.Logical.GreaterThreshold greaterThreshold2(threshold=-0.0001)
+    annotation (Placement(transformation(extent={{-120,-460},{-100,-440}})));
 equation
   connect(const5.y, switch_HP_extrernSchedule.u3) annotation (Line(points={{-59,
           -560},{0,-560},{0,-318},{58,-318}},                          color={0,
@@ -216,22 +213,11 @@ equation
   connect(const5.y, switch_Electrolyzer_extrernSchedule.u3) annotation (Line(
         points={{-59,-560},{0,-560},{0,-358},{58,-358}},   color={0,0,127}));
   connect(const5.y, switch_CHP__extrernSchedule.u3) annotation (Line(points={{-59,
-          -560},{40,-560},{40,-398},{58,-398}},     color={0,0,127}));
+          -560},{0,-560},{0,-398},{58,-398}},       color={0,0,127}));
   connect(const5.y, switch_Boiler__extrernSchedule.u3) annotation (Line(points={{-59,
           -560},{0,-560},{0,-438},{58,-438}},         color={0,0,127}));
   connect(HeatingCurve_DistrictGrid.u, u_TempAmp_extern)
     annotation (Line(points={{436,280},{-252,280}}, color={0,0,127}));
-  connect(boolean_extrernSchedule.y, switch_HP_extrernSchedule.u2) annotation (
-      Line(points={{-59,-480},{20,-480},{20,-310},{58,-310}},  color={255,0,255}));
-  connect(boolean_extrernSchedule.y, switch_Electrolyzer_extrernSchedule.u2)
-    annotation (Line(points={{-59,-480},{20,-480},{20,-350},{58,-350}}, color={
-          255,0,255}));
-  connect(boolean_extrernSchedule.y, switch_CHP__extrernSchedule.u2)
-    annotation (Line(points={{-59,-480},{20,-480},{20,-390},{58,-390}}, color={
-          255,0,255}));
-  connect(boolean_extrernSchedule.y, switch_Boiler__extrernSchedule.u2)
-    annotation (Line(points={{-59,-480},{20,-480},{20,-430},{58,-430}}, color={
-          255,0,255}));
   connect(switch_HP_extrernSchedule.y, heatPump_Controller.signal_HP_prio_ext)
     annotation (Line(points={{81,-310},{300.8,-310}},  color={0,0,127}));
   connect(switch_HP_extrernSchedule.u1, u_HeatPump_scheudle)
@@ -248,10 +234,6 @@ equation
                                                      color={0,0,127}));
   connect(u_HP2_controll, u_HP2_controll)
     annotation (Line(points={{1570,-320},{1570,-320}}, color={0,0,127}));
-  connect(switch_CHP__extrernSchedule.y, u_CHP_controll)
-    annotation (Line(points={{81,-390},{1570,-390}}, color={0,0,127}));
-  connect(switch_Boiler__extrernSchedule.y, u_Boiler_controll)
-    annotation (Line(points={{81,-430},{1570,-430}}, color={0,0,127}));
   connect(u_co2_extern, heatPump_Controller.carbon_intensity) annotation (
       Line(points={{-252,240},{168,240},{168,-232},{270,-232},{270,-288},{300.8,
           -288}},                                               color={0,0,
@@ -263,7 +245,7 @@ equation
   connect(switch__HP1_InternControll.u1, P_inst_el_HP1) annotation (Line(points=
          {{58,-2},{-36,-2},{-36,80},{-252,80}}, color={0,0,127}));
   connect(switch__HP2_InternControll2.u1, P_inst_el_HP2) annotation (Line(
-        points={{58,-42},{-76,-42},{-76,40},{-252,40}}, color={0,0,127}));
+        points={{58,-42},{-76,-42},{-76,42},{-252,42}}, color={0,0,127}));
   connect(const1.y, switch__HP2_InternControll2.u3) annotation (Line(points={{-59,
           -520},{0,-520},{0,-58},{58,-58}},     color={0,0,127}));
   connect(switch__HP1_InternControll.y, add_HP_Pel.u1)
@@ -324,8 +306,8 @@ equation
           1139.5,-290},{1139.5,-286},{1158,-286}}, color={0,0,127}));
   connect(P_inst_el_HP1, product1.u1) annotation (Line(points={{-252,80},{1098,
           80},{1098,-264}}, color={0,0,127}));
-  connect(P_inst_el_HP2, product2.u2) annotation (Line(points={{-252,40},{1090,
-          40},{1090,-296},{1098,-296}}, color={0,0,127}));
+  connect(P_inst_el_HP2, product2.u2) annotation (Line(points={{-252,42},{1090,
+          42},{1090,-296},{1098,-296}}, color={0,0,127}));
   connect(add_HP_Pel1.y, feedback.u2) annotation (Line(points={{1181,-280},{
           1290,-280},{1290,-18}}, color={0,0,127}));
   connect(heatPump_Controller.Heatpump_Constants_carbon_intensity_threshold,
@@ -413,7 +395,72 @@ equation
           127}));
   connect(busbar_4consumer.u_EMob, P_el_demand_emobility) annotation (Line(
         points={{1366,-70},{1500,-70},{1500,-50},{1580,-50}}, color={0,0,127}));
+  connect(switch_CHP__extrernSchedule.y, cHP_controller.signal_CHP_prio_ext)
+    annotation (Line(points={{81,-390},{190,-390},{190,-406.8},{300.68,-406.8}},
+        color={0,0,127}));
+  connect(u_CHP_OA, cHP_controller.signal_CHP_prio_int) annotation (Line(points=
+         {{-252,-160},{288,-160},{288,-400.4},{300.68,-400.4}}, color={0,0,127}));
+  connect(HeatingCurve_DistrictGrid.y, cHP_controller.T_DH_FF_set) annotation (
+      Line(points={{459,280},{480,280},{480,-254},{298,-254},{298,-413.2},{
+          300.68,-413.2}}, color={0,0,127}));
+  connect(u_T_TES_load, cHP_controller.T_TES_FF) annotation (Line(points={{1580,
+          90},{288,90},{288,-419.6},{300.68,-419.6}}, color={0,0,127}));
+  connect(cHP_controller.CHP_Specification_Value, u_CHP_controll) annotation (
+      Line(points={{347.32,-410},{1536,-410},{1536,-390},{1570,-390}}, color={0,
+          0,127}));
+  connect(cHP_controller.CHP_Specification_SI, pre_CHP.u) annotation (Line(
+        points={{347.32,-416.4},{362.8,-416}}, color={255,0,255}));
+  connect(HeatingCurve_DistrictGrid.y, boiler_Controller.T_DH_FF_set)
+    annotation (Line(points={{459,280},{480,280},{480,-254},{296,-254},{296,
+          -459.2},{300.24,-459.2}}, color={0,0,127}));
+  connect(u_CHP_OA, boiler_Controller.u_chp_oa) annotation (Line(points={{-252,
+          -160},{288,-160},{288,-472},{300.24,-472}}, color={0,0,127}));
+  connect(u_T_HeatGrid_FF_actual, boiler_Controller.T_DH_FF) annotation (Line(
+        points={{1580,170},{420,170},{420,-438},{294,-438},{294,-452},{300.24,
+          -452},{300.24,-452.8}}, color={0,0,127}));
+  connect(boiler_Controller.Boiler_Specification_SI, pre_CHP1.u) annotation (
+      Line(points={{347.32,-468.8},{355.06,-468.8},{355.06,-468},{362.8,-468}},
+        color={255,0,255}));
+  connect(boiler_Controller.Boiler_Specification_Value, u_Boiler_controll)
+    annotation (Line(points={{347.32,-456},{1480,-456},{1480,-430},{1570,-430}},
+        color={0,0,127}));
+  connect(switch_Boiler__extrernSchedule.y, boiler_Controller.signal_Boiler_prio_ext)
+    annotation (Line(points={{81,-430},{288,-430},{288,-446.4},{300.24,-446.4}},
+        color={0,0,127}));
+  connect(u_boiler_OA, boiler_Controller.signal_Boiler_prio_int) annotation (
+      Line(points={{-252,-200},{288,-200},{288,-440.64},{300.24,-440.64}},
+        color={0,0,127}));
+  connect(booleanToReal.y, boiler_Controller.staus_chp) annotation (Line(points=
+         {{268.6,-464},{268.6,-465.6},{300.24,-465.6}}, color={0,0,127}));
+  connect(pre_CHP.y, booleanToReal.u) annotation (Line(points={{376.6,-416},{
+          382,-416},{382,-428},{248,-428},{248,-464},{254.8,-464}}, color={255,
+          0,255}));
+  connect(u_heatpump1_OA, multiMin.u[1]) annotation (Line(points={{-252,-40},{
+          -188,-40},{-188,-456},{-184,-456},{-184,-444.4},{-160,-444.4}}, color=
+         {0,0,127}));
+  connect(u_heatpump2_OA, multiMin.u[2]) annotation (Line(points={{-252,-80},{
+          -196,-80},{-196,-456},{-184,-456},{-184,-447.2},{-160,-447.2}}, color=
+         {0,0,127}));
+  connect(u_electrolyzer_OA, multiMin.u[3]) annotation (Line(points={{-252,-120},
+          {-202,-120},{-202,-450},{-160,-450}}, color={0,0,127}));
+  connect(u_CHP_OA, multiMin.u[4]) annotation (Line(points={{-252,-160},{-206,
+          -160},{-206,-452},{-170,-452},{-170,-452.8},{-160,-452.8}}, color={0,
+          0,127}));
+  connect(u_boiler_OA, multiMin.u[5]) annotation (Line(points={{-252,-200},{
+          -212,-200},{-212,-456},{-184,-456},{-184,-455.6},{-160,-455.6}},
+        color={0,0,127}));
+  connect(multiMin.y, greaterThreshold2.u)
+    annotation (Line(points={{-138.3,-450},{-122,-450}}, color={0,0,127}));
+  connect(greaterThreshold2.y, switch_HP_extrernSchedule.u2) annotation (Line(
+        points={{-99,-450},{16,-450},{16,-310},{58,-310}}, color={255,0,255}));
+  connect(greaterThreshold2.y, switch_Electrolyzer_extrernSchedule.u2)
+    annotation (Line(points={{-99,-450},{16,-450},{16,-350},{58,-350}}, color={
+          255,0,255}));
+  connect(greaterThreshold2.y, switch_CHP__extrernSchedule.u2) annotation (Line(
+        points={{-99,-450},{16,-450},{16,-390},{58,-390}}, color={255,0,255}));
+  connect(greaterThreshold2.y, switch_Boiler__extrernSchedule.u2) annotation (
+      Line(points={{-99,-450},{16,-450},{16,-430},{58,-430}}, color={255,0,255}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-240,
             -1020},{1560,300}})), Diagram(coordinateSystem(
           preserveAspectRatio=false, extent={{-240,-1020},{1560,300}})));
-end Controller_TM;
+end Controller;

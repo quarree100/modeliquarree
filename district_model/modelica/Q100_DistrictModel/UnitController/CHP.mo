@@ -2,72 +2,69 @@ within Q100_DistrictModel.UnitController;
 package CHP
   model CHP_controller
     Modelica.Blocks.Interfaces.RealInput T_DH_FF_set annotation (Placement(
-          transformation(extent={{-112,-42},{-100,-30}}),iconTransformation(
-            extent={{-106,68},{-94,80}})));
+          transformation(extent={{-112,-26},{-100,-14}}),iconTransformation(
+            extent={{-112,-26},{-100,-14}})));
     Modelica.Blocks.Interfaces.RealInput T_TES_FF annotation (Placement(
-          transformation(extent={{-112,-70},{-100,-58}}),iconTransformation(
-            extent={{-106,68},{-94,80}})));
+          transformation(extent={{-112,-66},{-100,-54}}),iconTransformation(
+            extent={{-112,-66},{-100,-54}})));
     CHP_StSp_auto cHP_StSp_auto
       "True wenn Betrieb vom StSp_Auto gefordert wird"
-      annotation (Placement(transformation(extent={{-56,42},{-36,62}})));
+      annotation (Placement(transformation(extent={{-60,40},{-40,60}})));
     CHP_StSp_prio_ext cHP_StSp_prio_ext
       "True wenn Betrieb vom StSp_prio_ext gefordert wird"
-      annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
+      annotation (Placement(transformation(extent={{-60,0},{-40,20}})));
     CHP_StSp_prio_int cHP_StSp_prio_int
       "True wenn Betrieb vom StSp_prio_int gefordert wird"
-      annotation (Placement(transformation(extent={{-56,-60},{-36,-40}})));
+      annotation (Placement(transformation(extent={{-60,-60},{-40,-40}})));
     Modelica.Blocks.Interfaces.RealInput signal_CHP_prio_ext annotation (
-        Placement(transformation(extent={{-112,64},{-100,76}}),
-          iconTransformation(extent={{-112,64},{-100,76}})));
+        Placement(transformation(extent={{-112,14},{-100,26}}),
+          iconTransformation(extent={{-112,14},{-100,26}})));
     Modelica.Blocks.Interfaces.RealInput signal_CHP_prio_int annotation (
-        Placement(transformation(extent={{-112,32},{-100,44}}),
-          iconTransformation(extent={{-112,32},{-100,44}})));
+        Placement(transformation(extent={{-112,54},{-100,66}}),
+          iconTransformation(extent={{-112,54},{-100,66}})));
     Modelica.Blocks.Logical.Or or1
       annotation (Placement(transformation(extent={{-20,24},{0,44}})));
     Modelica.Blocks.Logical.Or or2
-      annotation (Placement(transformation(extent={{-6,-10},{14,10}})));
-    Modelica.Blocks.Logical.Switch switch1
-      annotation (Placement(transformation(extent={{68,-4},{76,4}})));
-    Modelica.Blocks.Sources.Constant const(k=1)
-      annotation (Placement(transformation(extent={{48,4},{56,12}})));
-    Modelica.Blocks.Sources.Constant const1(k=0)
-      annotation (Placement(transformation(extent={{48,-14},{56,-6}})));
-    Modelica.Blocks.Interfaces.RealOutput status_chp
+      annotation (Placement(transformation(extent={{20,-10},{40,10}})));
+    Modelica.Blocks.Interfaces.RealOutput CHP_Specification_Value
       "1 wenn in Betrieb, 0 wenn nicht" annotation (Placement(transformation(
             extent={{100,-6},{112,6}}), iconTransformation(extent={{100,-6},{
               112,6}})));
+    Modelica.Blocks.Interfaces.BooleanOutput CHP_Specification_SI annotation (
+        Placement(transformation(extent={{100,-46},{112,-34}}),
+          iconTransformation(extent={{100,-46},{112,-34}})));
+    Modelica.Blocks.Math.BooleanToReal booleanToReal
+      annotation (Placement(transformation(extent={{60,-10},{80,10}})));
   equation
     connect(T_DH_FF_set, cHP_StSp_auto.T_DH_FF_set) annotation (Line(points={{-106,
-            -36},{-82,-36},{-82,49.4},{-56.6,49.4}},    color={0,0,127}));
+            -20},{-80,-20},{-80,47.4},{-60.6,47.4}},    color={0,0,127}));
     connect(T_TES_FF, cHP_StSp_auto.T_TES_FF) annotation (Line(points={{-106,
-            -64},{-74,-64},{-74,47},{-56.6,47}},
+            -60},{-76,-60},{-76,45},{-60.6,45}},
                                                color={0,0,127}));
     connect(signal_CHP_prio_ext, cHP_StSp_auto.signal_CHP_prio_ext) annotation (
-       Line(points={{-106,70},{-60,70},{-60,59},{-56,59}}, color={0,0,127}));
+       Line(points={{-106,20},{-66,20},{-66,57},{-60,57}}, color={0,0,127}));
     connect(signal_CHP_prio_int, cHP_StSp_auto.signal_CHP_prio_int) annotation (
-       Line(points={{-106,38},{-68,38},{-68,55.8},{-56,55.8}}, color={0,0,127}));
+       Line(points={{-106,60},{-72,60},{-72,53.8},{-60,53.8}}, color={0,0,127}));
     connect(signal_CHP_prio_ext, cHP_StSp_prio_ext.signal_CHP_prio_ext)
-      annotation (Line(points={{-106,70},{-60,70},{-60,13},{-56,13}}, color={0,
+      annotation (Line(points={{-106,20},{-66,20},{-66,17},{-60,17}}, color={0,
             0,127}));
     connect(signal_CHP_prio_int, cHP_StSp_prio_int.signal_CHP_prio_int)
-      annotation (Line(points={{-106,38},{-68,38},{-68,-46.2},{-56,-46.2}},
+      annotation (Line(points={{-106,60},{-72,60},{-72,-46.2},{-60,-46.2}},
           color={0,0,127}));
-    connect(cHP_StSp_prio_int.StSp_prio_int_SI, or2.u2) annotation (Line(points
-          ={{-35,-50},{-14,-50},{-14,-8},{-8,-8}}, color={255,0,255}));
-    connect(cHP_StSp_prio_ext.StSp_prio_ext_SI, or1.u2) annotation (Line(points
-          ={{-35,6},{-28,6},{-28,26},{-22,26}}, color={255,0,255}));
-    connect(cHP_StSp_auto.StSp_Auto_SI, or1.u1) annotation (Line(points={{-35,
-            52},{-28,52},{-28,34},{-22,34}}, color={255,0,255}));
-    connect(or1.y, or2.u1) annotation (Line(points={{1,34},{6,34},{6,18},{-14,
-            18},{-14,0},{-8,0}}, color={255,0,255}));
-    connect(switch1.y, status_chp)
-      annotation (Line(points={{76.4,0},{106,0}}, color={0,0,127}));
-    connect(const.y, switch1.u1) annotation (Line(points={{56.4,8},{60,8},{60,4},
-            {67.2,4},{67.2,3.2}}, color={0,0,127}));
-    connect(const1.y, switch1.u3) annotation (Line(points={{56.4,-10},{60,-10},
-            {60,-4},{67.2,-4},{67.2,-3.2}}, color={0,0,127}));
-    connect(or2.y, switch1.u2)
-      annotation (Line(points={{15,0},{67.2,0}}, color={255,0,255}));
+    connect(cHP_StSp_prio_int.StSp_prio_int_SI, or2.u2) annotation (Line(points={{-39,-50},
+            {12,-50},{12,-8},{18,-8}},             color={255,0,255}));
+    connect(cHP_StSp_prio_ext.StSp_prio_ext_SI, or1.u2) annotation (Line(points={{-39,10},
+            {-28,10},{-28,26},{-22,26}},        color={255,0,255}));
+    connect(cHP_StSp_auto.StSp_Auto_SI, or1.u1) annotation (Line(points={{-39,50},
+            {-28,50},{-28,34},{-22,34}},     color={255,0,255}));
+    connect(or1.y, or2.u1) annotation (Line(points={{1,34},{12,34},{12,0},{18,0}},
+                                 color={255,0,255}));
+    connect(or2.y, CHP_Specification_SI) annotation (Line(points={{41,0},{44,0},
+            {44,-40},{106,-40}}, color={255,0,255}));
+    connect(booleanToReal.y, CHP_Specification_Value)
+      annotation (Line(points={{81,0},{106,0}}, color={0,0,127}));
+    connect(or2.y, booleanToReal.u)
+      annotation (Line(points={{41,0},{58,0}}, color={255,0,255}));
     annotation (Icon(coordinateSystem(preserveAspectRatio=false)), Diagram(
           coordinateSystem(preserveAspectRatio=false)));
   end CHP_controller;
@@ -93,11 +90,11 @@ package CHP
     Modelica.Blocks.Interfaces.RealInput signal_CHP_prio_int annotation (
         Placement(transformation(extent={{-112,24},{-100,36}}),
           iconTransformation(extent={{-106,32},{-94,44}})));
-    Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold(threshold
-        =-0.001)
+    Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold(threshold=
+         -0.001)
       annotation (Placement(transformation(extent={{-68,52},{-48,72}})));
-    Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold1(threshold
-        =-0.001)
+    Modelica.Blocks.Logical.GreaterEqualThreshold greaterEqualThreshold1(threshold=
+         -0.001)
       annotation (Placement(transformation(extent={{-68,20},{-48,40}})));
   equation
     connect(T_DH_FF_set, less.u2) annotation (Line(points={{-106,-26},{-32,-26},

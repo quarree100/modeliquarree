@@ -1,5 +1,5 @@
 HeatPump
-Controller_TM
+Controller
 InputSignalCheck
 MultiMax
 Hysteresis_var
@@ -7,3 +7,4 @@ Electrolysis
 TES
 CHP
 Boiler
+MultiMin

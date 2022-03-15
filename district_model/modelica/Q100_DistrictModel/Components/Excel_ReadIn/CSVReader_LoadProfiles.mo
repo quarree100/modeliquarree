@@ -1,6 +1,5 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
 model CSVReader_LoadProfiles "CSV file read in"
-  extends Modelica.Icons.Record;
   parameter Integer firstCell[2]={2,1} "First upper left cell of data set (without header)";
   parameter Integer endRow = 35040 "Number of rows in data set (without header)";
   parameter Integer endColumne = 9 "Number of columns in data set (with time columne)";
@@ -51,8 +50,8 @@ model CSVReader_LoadProfiles "CSV file read in"
         extent={{-10,-10},{10,10}},
         rotation=0,
         origin={-30,60})));
-  Modelica.Blocks.Interfaces.RealOutput E_th_load annotation (Placement(transformation(extent={{100,-10},
-            {120,10}})));
+  Modelica.Blocks.Interfaces.RealOutput E_th_load annotation (Placement(transformation(extent={{100,40},
+            {120,60}}), iconTransformation(extent={{100,40},{120,60}})));
   Modelica.Blocks.Math.Add add1 annotation (
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation=0,     origin={10,-120})));
   Modelica.Blocks.Math.Gain E_el_GHD(k=1) annotation (Placement(transformation(
@@ -64,7 +63,8 @@ model CSVReader_LoadProfiles "CSV file read in"
         rotation=0,
         origin={-30,-140})));
   Modelica.Blocks.Interfaces.RealOutput E_el_load
-    annotation (Placement(transformation(extent={{100,-130},{120,-110}})));
+    annotation (Placement(transformation(extent={{100,-60},{120,-40}}),
+        iconTransformation(extent={{100,-60},{120,-40}})));
 equation
   connect(combiTimeTable.y[k], E_th_RH_HH.u) annotation (Line(points={{-61.2,0},
           {-50,0},{-50,60},{-42,60}}, color={0,0,127}));
@@ -87,7 +87,8 @@ equation
   connect(add3.y, add4.u1)
     annotation (Line(points={{21,40},{30,40},{30,6},{38,6}}, color={0,0,127}));
   connect(add4.y, E_th_load)
-    annotation (Line(points={{61,0},{110,0}}, color={0,0,127}));
+    annotation (Line(points={{61,0},{86,0},{86,50},{110,50}},
+                                              color={0,0,127}));
   connect(combiTimeTable.y[o], E_el_GHD.u) annotation (Line(points={{-61.2,0},{-50,
           0},{-50,-100},{-42,-100}}, color={0,0,127}));
   connect(combiTimeTable.y[p], E_el_HH.u) annotation (Line(points={{-61.2,0},{-50,
@@ -97,9 +98,36 @@ equation
   connect(E_el_HH.y, add1.u2) annotation (Line(points={{-19,-140},{-10,-140},{-10,
           -126},{-2,-126}}, color={0,0,127}));
   connect(add1.y, E_el_load)
-    annotation (Line(points={{21,-120},{110,-120}}, color={0,0,127}));
+    annotation (Line(points={{21,-120},{66,-120},{66,-50},{110,-50}},
+                                                    color={0,0,127}));
   annotation(experiment(StopTime=1),
     Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"),
-    Diagram(coordinateSystem(extent={{-100,-160},{100,100}})),
-    Icon(coordinateSystem(extent={{-100,-160},{100,100}})));
+    Diagram(coordinateSystem(extent={{-100,-100},{100,100}})),
+    Icon(coordinateSystem(extent={{-100,-100},{100,100}}), graphics={
+                                Rectangle(
+        extent={{-100,-100},{100,100}},
+        lineColor={0,0,127},
+        fillColor={255,255,255},
+        fillPattern=FillPattern.Solid), Text(
+        extent={{-68,100},{100,62}},
+        textString="%name",
+        lineColor={0,0,255}),
+    Polygon(lineColor={192,192,192},
+      fillColor={192,192,192},
+      fillPattern=FillPattern.Solid,
+      points={{-80,90},{-88,68},{-72,68},{-80,90}}),
+    Line(points={{-80,68},{-80,-80}},
+      color={192,192,192}),
+    Line(points={{-90,-70},{82,-70}},
+      color={192,192,192}),
+    Polygon(lineColor={192,192,192},
+      fillColor={192,192,192},
+      fillPattern=FillPattern.Solid,
+      points={{90,-70},{68,-62},{68,-78},{90,-70}}),
+    Rectangle(lineColor={255,255,255},
+      fillColor={255,215,136},
+      fillPattern=FillPattern.Solid,
+      extent={{-48,-60},{2,60}}),
+    Line(points={{-48,-60},{-48,60},{52,60},{52,-60},{-48,-60},{-48,-30},{52,
+              -30},{52,0},{-48,0},{-48,30},{52,30},{52,60},{2,60},{2,-61}})}));
 end CSVReader_LoadProfiles;
