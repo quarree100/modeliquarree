@@ -449,7 +449,12 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
     # Create DataFrame from results
     data = pd.DataFrame()
     for solution in solution_list:
-        data[solution] = res[solution]
+        try:
+            data[solution] = res[solution]
+        except Exception:
+            logger.error('Item "{}" is not among the solutions '
+                         'of file "{}".'.format(solution, fileName))
+            raise
 
     return data
 
