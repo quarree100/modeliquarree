@@ -12,10 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python: [3.7, 3.8, 3.9]
+        python: [3.8, 3.9]
         aixlib: [0.10.7]
         externdata: [2.5.0]
-        modelica: [1.16.2, release, stable, nightly]
+        modelica: [1.16.2, release, stable]  # "nightly" testing fails
 
     steps:
     - name: Checkout
