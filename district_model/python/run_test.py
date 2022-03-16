@@ -31,6 +31,11 @@ from OMPython import ModelicaSystem  # requires >=3.2.0
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../HP_testbench"))
 import hptestbench
 
+# Add the dymola license to the path variables
+os.environ['DYMOLA_RUNTIME_LICENSE'] = os.path.join(
+    os.path.expanduser('~'),
+    'appdata/roaming/dassaultsystemes/dymola/dymola.lic')
+
 # Define the logging function
 logger = logging.getLogger(__name__)
 
@@ -239,6 +244,21 @@ def test_model(model, fmi=False, skip_fmu_conversion=False,
     return condition
 
 
+def test_fmu_file(filename_fmu, model='Q100_DistrictModel.FMUs.FMU_PhyModel',
+                  fmi_package='pyfmi'):
+    """Run the given model, but overwrite the FMU file path."""
+    model_txt = 'Test model {} with {}'.format(model, fmi_package)
+    tester = Tester(model)
+    tester.filename_fmu = filename_fmu
+    tester.run_fmu(fmi_package)
+    condition = tester.test_result()
+    if condition:
+        logger.info('%s successful', model_txt)
+    else:
+        logger.info('%s not successful', model_txt)
+    return condition
+
+
 def setup():
     """Set up logger."""
     # Define the logging function
@@ -301,6 +321,14 @@ class TestMethods(unittest.TestCase):
     #                             fmi_package='pyfmi',
     #                             # fmi_package='fmpy',
     #                             )
+    #     self.assertTrue(condition)
+
+    # def test_custom_fmu_file(self):
+    #     """Test an existing FMU for any of the predefined models."""
+    #     test_fmu_file
+    #     model = 'Q100_DistrictModel.FMUs.FMU_PhyModel_sorted'
+    #     filename_fmu = r"some/path/to/FMU.fmu"
+    #     condition = test_fmu_file(filename_fmu, model)
     #     self.assertTrue(condition)
 
 
