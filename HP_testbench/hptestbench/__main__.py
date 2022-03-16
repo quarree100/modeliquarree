@@ -108,7 +108,7 @@ class testbench(object):
         # We have to create a selection of all the results we want to read
         # from the simulation. They are grouped by types of units, to
         # allow unit conversions in post_processing()
-        self.solutions = dict(
+        self.solutions_dict = dict(
                 # Convert K to °C
                 temperatures=['heatPump_IO.T_evap_in',
                               'heatPump_IO.T_evap_out',
@@ -121,6 +121,10 @@ class testbench(object):
                        'heatPump_IO.P_el',
                        ],
                 )
+
+        # Create a flat list of all solution columns
+        self.solutions_list = (
+            [i for li in self.solutions_dict.values() for i in li])
 
         # These paramters will be replaced in the selected models
         self.parameters = {
@@ -211,19 +215,19 @@ class testbench(object):
     def test_with_modelica(self, make_FMU=False):
         """Run direct simulation with modelica model."""
         self.data = run_ModelicaSystem(self.fileName, self.modelName,
-                                       self.solutions, self.stepSize,
+                                       self.solutions_list, self.stepSize,
                                        self.stopTime, self.parameters,
                                        make_FMU=make_FMU,
                                        HP_dict=self.HP_dict)
 
     def test_with_FMU(self):
         """Run direct simulation with FMU created from modelica model."""
-        self.data = run_FMU(self.FMU_path, self.solutions,
+        self.data = run_FMU(self.FMU_path, self.solutions_list,
                             self.stepSize, self.stopTime, self.parameters)
 
     def evaluate(self, plot_show=True):
         """Combine post-processing, printing and plotting."""
-        data = post_processing(self.data, self.solutions, self.stepSize)
+        data = post_processing(self.data, self.solutions_dict, self.stepSize)
 
         logger.info('Resulting DataFrame:')
         if logger.isEnabledFor(logging.INFO):
@@ -250,7 +254,7 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
         modelName (str): Name of the model
 
-        solutions (dict): Dict of all solutions (column names) to load
+        solutions (list): List of all solutions (column names) to load
         from the results
 
         stepSize (int): Simulation step in seconds
@@ -336,13 +340,12 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
     # List required evaluation values:
     solution_list = ['time']
-    for items in solutions.values():
-        for item in items:
-            if item not in solution_vars:
-                logger.error('Skipping requested column "{}", since it'
-                             ' is not among the solutions'.format(item))
-            else:
-                solution_list.append(item)
+    for item in solutions:
+        if item not in solution_vars:
+            logger.error('Skipping requested column "{}", since it'
+                         ' is not among the solutions'.format(item))
+        else:
+            solution_list.append(item)
 
     # Read the results from your harddrive (this can take quite a long time)
     solution_data = mod.getSolutions(solution_list)
@@ -365,7 +368,7 @@ def run_ModelicaSystem(fileName, modelName, solutions, stepSize=1,
 
 
 def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
-            parameters=dict(), make_FMU=False):
+            parameters=dict(), make_FMU=False, fmu_log_level=0):
     """Perform the simulation with an FMU by using the PyFMI package.
 
     This is using the "Model Exchange" method.
@@ -373,7 +376,7 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
     Args:
         fileName (str): Name (including path) of a *.fmu file with the model
 
-        solutions (dict): Dict of all solutions (column names) to load
+        solutions (list): List of all solutions (column names) to load
         from the results
 
         stepSize (int): Simulation step in seconds
@@ -391,7 +394,7 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
 
     .. code::
 
-        conda install pyfmi
+        conda install -c conda-forge pyfmi
 
     In order to create the FMU in the first place, we can use OMPython
     with the implementation in the local function ``make_fmu()``.
@@ -413,14 +416,21 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
     """
     import pyfmi
 
-    try:
-        mod = pyfmi.load_fmu(fileName)
-    except pyfmi.fmi.FMUException:
+    if not os.path.exists(fileName):
         logger.error('FMU file missing: {}'.format(fileName))
+    try:
+        mod = pyfmi.load_fmu(fileName, log_level=fmu_log_level)
+    except pyfmi.fmi.FMUException:
         raise
 
     opts = mod.simulate_options()  # Get the default options
     opts['ncp'] = int(stopTime/stepSize)  # Set to n output points
+
+    # Fix for "assimulo.exception.AssimuloException: No support for SuperLU
+    # was detected, please verify that SuperLU and  SUNDIALS has been
+    # installed correctly."
+    # https://github.com/modelon-community/PyFMI/issues/86
+    opts["CVode_options"]["linear_solver"] = "DENSE"  # TODO remove fix someday
 
     # Set simulation parameters
     for key, value in parameters.items():
@@ -432,15 +442,19 @@ def run_FMU(fileName, solutions, stepSize=1, stopTime=60,
     # With FMI, simulate() returns a result object
     res = mod.simulate(final_time=stopTime, options=opts)
 
-    # required evaluation values:
+    # Add 'time' column to the solutions
     solution_list = ['time']
-    for items in solutions.values():
-        solution_list += items
+    solution_list += solutions
 
     # Create DataFrame from results
     data = pd.DataFrame()
     for solution in solution_list:
-        data[solution] = res[solution]
+        try:
+            data[solution] = res[solution]
+        except Exception:
+            logger.error('Item "{}" is not among the solutions '
+                         'of file "{}".'.format(solution, fileName))
+            raise
 
     return data
 

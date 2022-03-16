@@ -17,9 +17,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
-        python: [3.7, 3.8]
+        python: [3.8]
         aixlib: [0.10.7]
-        modelica: [nightly, stable]
+        modelica: [stable]  # "nightly" testing fails
         experimental: [false]
         include:
           - os: ubuntu-latest
