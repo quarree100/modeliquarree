@@ -518,7 +518,8 @@ model FMU_PhyModel_sorted
     Placement(transformation(extent = {{-1252, 730}, {-1272, 750}})));
   Modelica.Blocks.Sources.Constant const18(k = 80 + 273.15) annotation (
     Placement(visible = true, transformation(origin = {-1230, 720}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Components.calc_mdot_consumer calc_mdot_consumer annotation (
+  Components.calc_mdot_consumer calc_mdot_consumer(const1(k=2))
+                                                   annotation (
     Placement(transformation(extent = {{-280, 200}, {-300, 220}})));
   Modelica.Blocks.Sources.Constant const22(k = 20) annotation (
     Placement(visible = true, transformation(origin = {-198, 224}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -1185,8 +1186,6 @@ equation
     Line(points = {{-1241, 720}, {-1262, 720}, {-1262, 728}}, color = {0, 0, 127}));
   connect(PID.u_s, temperature_2215_TRC.T) annotation (
     Line(points = {{-1250, 740}, {-1104, 740}, {-1104, 649}, {-1119, 649}}, color = {0, 0, 127}));
-  connect(gain3.u, y_2202_TRC_2) annotation (
-    Line(points = {{-1452, 482}, {-1452, 572}}, color = {0, 0, 127}));
   connect(calc_mdot_consumer.y_mdot, pump_8113_NP.dotm_setValue) annotation (
     Line(points = {{-301, 210}, {-320, 210}, {-320, 168}}, color = {0, 0, 127}));
   connect(calc_mdot_consumer.u_TemperatureInput, temperature_8205_TRC.T) annotation (
@@ -1388,8 +1387,6 @@ equation
     Line(points = {{-1838, 490}, {-1831, 490}}, color = {0, 0, 127}));
   connect(not6.u, hysteresis2.y) annotation (
     Line(points = {{-1868, 490}, {-1861, 490}}, color = {255, 0, 255}));
-  connect(y_2202_TRC_1, gain7.u) annotation (
-    Line(points = {{-1790, 532}, {-1800, 532}, {-1800, 490}, {-1808, 490}}, color = {0, 0, 127}));
   connect(switch_2102_ZA_1.y, heatPump1.nSet) annotation (
     Line(points={{-1897,510},{-1876,510},{-1876,578},{-1875.67,578},{-1875.67,
           616.08}},                                                                                color = {0, 0, 127}));
@@ -1622,6 +1619,10 @@ connect(gain13.y, y_Elektrolyseur_dotQ) annotation (
          {0,0,127}));
   connect(gain13.y, y_6204_FRC) annotation (Line(points={{-1740.5,1143},{
           -1740.5,1146},{-1854,1146}}, color={0,0,127}));
+  connect(y_2213_TRC, gain7.u) annotation (Line(points={{-1180,544},{-1228,544},
+          {-1228,500},{-1808,500},{-1808,490}}, color={0,0,127}));
+  connect(y_2213_TRC, gain3.u) annotation (Line(points={{-1180,544},{-1228,544},
+          {-1228,502},{-1452,502},{-1452,482}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics={  Line(origin = {688, 380}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),

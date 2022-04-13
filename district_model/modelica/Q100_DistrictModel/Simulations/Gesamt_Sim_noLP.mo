@@ -1,7 +1,8 @@
 within Q100_DistrictModel.Simulations;
 model Gesamt_Sim_noLP
   extends Modelica.Icons.Example;
-  Q100_DistrictModel.FMUs.FMU_PhyModel_sorted fMU_PhyModel annotation (
+  Q100_DistrictModel.FMUs.FMU_PhyModel_sorted fMU_PhyModel(calc_mdot_consumer(
+        const1(k=2)))                                      annotation (
     Placement(visible = true, transformation(extent={{-128,66},{132,266}},    rotation = 0)));
   Modelica.Blocks.Sources.Constant E_th_RH_Houses(k = 1374690.5) annotation (
     Placement(transformation(extent={{-680,580},{-660,600}})));
@@ -63,13 +64,13 @@ model Gesamt_Sim_noLP
     annotation (Placement(transformation(extent={{-720,194},{-700,214}})));
   Modelica.Blocks.Sources.Constant HeatStorage_unloading(k=1)
     annotation (Placement(transformation(extent={{-720,160},{-700,180}})));
-  Modelica.Blocks.Sources.Constant HeatPump_inputsignal(k=0.1)
+  Modelica.Blocks.Sources.Constant HeatPump_inputsignal(k=0.2)
     annotation (Placement(transformation(extent={{-520,230},{-500,250}})));
-  Modelica.Blocks.Sources.Constant HeatPump1_disturb(k=1)
+  Modelica.Blocks.Sources.Constant HeatPump1_disturb(k=0)
     annotation (Placement(transformation(extent={{-520,200},{-500,220}})));
   Modelica.Blocks.Sources.Constant HeatPump2_disturb(k=1)
     annotation (Placement(transformation(extent={{-520,260},{-500,280}})));
-  Modelica.Blocks.Sources.Constant CHP_inputsignal(k=0.5)
+  Modelica.Blocks.Sources.Constant CHP_inputsignal(k=0)
     annotation (Placement(transformation(extent={{-420,70},{-400,90}})));
   Modelica.Blocks.Sources.Constant CHP_disturb(k=1)
     annotation (Placement(transformation(extent={{-420,100},{-400,120}})));
