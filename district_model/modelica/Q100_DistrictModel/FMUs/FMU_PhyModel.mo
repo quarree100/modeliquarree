@@ -86,10 +86,8 @@ model FMU_PhyModel
     Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-1312, 562})));
   AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_2213_TRC annotation (
     Placement(visible = true, transformation(origin = {-1168, 530}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump2(redeclare
-      model PerDataHea =
-        AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                            dataTable = Q100_DistrictModel.Data.WP_550kW()), redeclare
-      model PerDataChi =
+  AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump2(redeclare model PerDataHea =
+        AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                            dataTable = Q100_DistrictModel.Data.WP_550kW()), redeclare model PerDataChi =
         AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                                                                                                                                        dataTable = Q100_DistrictModel.Data.WP_550kW()), CCon = 100, CEva = 100, GCon = 5, GEva = 5, Q_useNominal = 0, TAmbCon_nominal = 288.15, TCon_start(displayUnit = "K") = 55 + 273.15, TEva_start(displayUnit = "K"), VCon = 0.04, VEva = 0.04, allowFlowReversalEva = true, deltaM_con = 0.1, deltaM_eva = 0.1, mFlow_conNominal = 0.5, mFlow_evaNominal = 0.5, refIneFre_constant = 1, scalingFactor = ScaleFactor_heatPump2, transferHeat = true, use_ConCap = false, use_EvaCap = false, use_autoCalc = false, use_refIne = true, use_revHP = true) annotation (
     Placement(transformation(extent = {{-11.9997, 14}, {11.9999, -14}}, rotation = 90, origin = {-1540, 630})));
   AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_2204_TRC_2 annotation (
@@ -144,26 +142,37 @@ model FMU_PhyModel
     Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1190, -110})));
   Modelica.Blocks.Sources.Constant const3(k = 90 + 273.15) annotation (
     Placement(visible = true, transformation(origin = {-1240, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_7102_NS(min = 0, max = 1) "Wärmespeicher Beladung" annotation (
     Placement(transformation(extent = {{-2240, 370}, {-2200, 410}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_7202_NS(min = 0, max = 1) "Wärmespeicher Entladung" annotation (
     Placement(transformation(extent = {{-2240, 340}, {-2200, 380}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_CHP_0_1(min = 0, max = 1) "BHKW Ansteuerung" annotation (
     Placement(transformation(extent = {{-2240, 270}, {-2200, 310}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_boiler_0_1(min = 0, max = 1) "Gaskessel Ansteuerung" annotation (
     Placement(transformation(extent = {{-2240, -20}, {-2200, 20}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_electrolysis_0_1(min = 0, max = 1) "Elektrolyseur Ansteuerung" annotation (
     Placement(transformation(extent = {{-2240, 950}, {-2200, 990}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_heatpump_0_1(min = 0, max = 1) "Wärmepumpe Ansteuerung" annotation (
     Placement(transformation(extent = {{-2240, 446}, {-2200, 486}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_loadProfile_DemandEMob_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "E-Mobilität Lastprofil" annotation (
     Placement(transformation(extent = {{-2240, 1220}, {-2200, 1260}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_loadProfile_DemandPower_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Elektrischer Verbraucher Lastprofil" annotation (
     Placement(transformation(extent = {{-2240, 1260}, {-2200, 1300}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_loadProfile_ProductionPV_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Elektrischer Verbraucher Lastprofil" annotation (
     Placement(transformation(extent = {{-2240, 1300}, {-2200, 1340}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_loadProfile_kW(final quantity = "Power", final unit = "kW", displayUnit = "kW", min = 0) "Thermische Verbraucher Lastprofil" annotation (
     Placement(transformation(extent = {{-2240, 1340}, {-2200, 1380}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_temperature_heatingGrid_set(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0, max = 100) "Wärmenetz Solltemperatur" annotation (
     Placement(visible = true, transformation(extent = {{-2238, -170}, {-2198, -130}}, rotation = 0), iconTransformation(extent = {{-2240, -300}, {-2200, -260}}, rotation = 0)));
   Components.RealOutput_JW y_1302_TRC(final quantity = "ThermodynamicTemperature", final unit = "degC", displayUnit = "degC", min = 0) = temperature_1302_TRC.T - 273.15 "HT-Wärmepumpe Rücklauftemperatur" annotation (
@@ -314,7 +323,7 @@ model FMU_PhyModel
     Placement(visible = true, transformation(origin = {-1358, -110}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1362, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Q100_DistrictModel.Components.BooleanOutput_JW y_5204_ZA = boiler.onOff_boiler "Gaskessel Betriebsmeldung [Boolean]" annotation (
     Placement(visible = true, transformation(origin = {-1358, -124}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1352, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant const9(k = 20) annotation (
+  Modelica.Blocks.Sources.Constant const9(k=10)   annotation (
     Placement(visible = true, transformation(origin = {-1450, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const16(k = 0) annotation (
     Placement(visible = true, transformation(origin = {-630, 350}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -620,10 +629,8 @@ model FMU_PhyModel
     Placement(transformation(extent = {{10, 10}, {-10, -10}}, rotation = 180, origin = {-1640, 700})));
   AixLib.FastHVAC.Components.Valves.Manifold manifold_NS_3(n = 2) annotation (
     Placement(transformation(extent = {{10, -10}, {-10, 10}}, rotation = 0, origin = {-1650, 520})));
-  AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump1(redeclare
-      model PerDataHea =
-        AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                            dataTable = Q100_DistrictModel.Data.WP_550kW()), redeclare
-      model PerDataChi =
+  AixLib.FastHVAC.Components.HeatGenerators.HeatPump.HeatPump heatPump1(redeclare model PerDataHea =
+        AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                            dataTable = Q100_DistrictModel.Data.WP_550kW()), redeclare model PerDataChi =
         AixLib.DataBase.HeatPump.PerformanceData.LookUpTable2D (                                                                                                                                                                                                        dataTable = Q100_DistrictModel.Data.WP_550kW()), CCon = 100, CEva = 100, GCon = 5, GEva = 5, Q_useNominal = 0, TAmbCon_nominal = 288.15, TCon_start(displayUnit = "K") = 55 + 273.15, TEva_start(displayUnit = "K"), VCon = 0.04, VEva = 0.04, allowFlowReversalEva = true, deltaM_con = 0.1, deltaM_eva = 0.1, mFlow_conNominal = 0.5, mFlow_evaNominal = 0.5, refIneFre_constant = 1, scalingFactor = ScaleFactor_heatPump1, transferHeat = true, use_ConCap = false, use_EvaCap = false, use_autoCalc = false, use_refIne = true, use_revHP = true) annotation (
     Placement(transformation(extent = {{-11.9997, 14}, {11.9999, -14}}, rotation = 90, origin = {-1878, 630})));
   AixLib.FastHVAC.Components.Sensors.TemperatureSensor temperature_2204_TRC_1 annotation (
@@ -798,24 +805,29 @@ Modelica.Blocks.Sources.Constant ambientTemperature(k = 20) "Replace this with c
     Placement(visible = true, transformation(origin = {-1920, 1064}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 Modelica.Blocks.Interfaces.RealOutput y_6204_FRC( final quantity = "Volume flow", final unit = "m3/h", displayUnit = "m3/h", min = 0) "Normal volume flow hydrogen [Nm³/h]" annotation (
     Placement(visible = true, transformation(origin = {-1854, 1146}, extent = {{6, -6}, {-6, 6}}, rotation = 0), iconTransformation(origin = {-1854, 1150}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+replaceable
 Modelica.Blocks.Interfaces.RealInput u_disturb_electrolysis(min=0, max=1)
     "Elektrolyseur Ansteuerung"
     annotation (Placement(transformation(extent={{-2240,1020},{-2200,1060}})));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_disturb_heatpump1(min=0, max=1)
     "Wärmepumpe Ansteuerung"
     annotation (Placement(transformation(extent={{-2240,490},{-2200,530}})));
   Modelica.Blocks.Math.RealToBoolean realToBoolean3 annotation (
     Placement(visible = true, transformation(origin={-2168,510},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_disturb_heatpump2(min=0, max=1)
     "Wärmespeicher Beladung"
     annotation (Placement(transformation(extent={{-2240,400},{-2200,440}})));
   Modelica.Blocks.Math.RealToBoolean realToBoolean4 annotation (
     Placement(visible = true, transformation(origin={-2166,420},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_disturb_CHP(min=0, max=1)
     "Wärmespeicher Beladung"
     annotation (Placement(transformation(extent={{-2240,310},{-2200,350}})));
   Modelica.Blocks.Math.RealToBoolean realToBoolean5 annotation (
     Placement(visible = true, transformation(origin={-2170,330},     extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  replaceable
   Modelica.Blocks.Interfaces.RealInput u_disturb_boiler(min=0, max=1)
     "Gaskessel Ansteuerung"
     annotation (Placement(transformation(extent={{-2240,20},{-2200,60}})));
@@ -823,6 +835,27 @@ Modelica.Blocks.Interfaces.RealInput u_disturb_electrolysis(min=0, max=1)
     Placement(visible = true, transformation(origin={-2162,40},      extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Blocks.Math.RealToBoolean realToBoolean1 annotation (
     Placement(visible = true, transformation(origin={-2180,1040},    extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y_2101_OA_1_real = if not switch_2102_ZA_1.u2 then 0 else -1
+    "Wärmepumpe 1 Störmeldung [Real] - (-1=in Störung; 0=betriebsbereit)"
+    annotation (Placement(transformation(extent={{-1864,604},{-1854,614}}),
+        iconTransformation(extent={{-1864,604},{-1854,614}})));
+  Modelica.Blocks.Interfaces.RealOutput y_2101_OA_2_real = if not switch_2102_ZA_2.u2 then 0 else -1
+    "Wärmepumpe 2 Störmeldung [Real] - (-1=in Störung; 0=betriebsbereit)"
+    annotation (Placement(transformation(extent={{-1526,604},{-1516,614}}),
+        iconTransformation(extent={{-1526,604},{-1516,614}})));
+ Modelica.Blocks.Interfaces.RealOutput y_1101_OA_real = if not switch_1101_OA.u2 then 0 else -1
+    "Elektrolyzer Störmeldung [Real] - (-1=in Störung; 0=betriebsbereit)"
+    annotation (Placement(transformation(extent={{-1852,1070},{-1842,1080}}),
+        iconTransformation(extent={{-1852,1070},{-1842,1080}})));
+ Modelica.Blocks.Interfaces.RealOutput y_4201_OA_real = if not switch_4202_OA.u2 then 0 else -1
+    "BHKW Störmeldung [Real] - (-1=in Störung; 0=betriebsbereit)"
+    annotation (Placement(transformation(extent={{-1578,164},{-1568,174}}),
+        iconTransformation(extent={{-1578,164},{-1568,174}})));
+ Modelica.Blocks.Interfaces.RealOutput y_5203_OA_real = if not logicalSwitch_5204_ZA.u2 then 0 else -1
+    "Kessel Störmeldung [Real] - (-1=in Störung; 0=betriebsbereit)"
+    annotation (Placement(transformation(extent={{-1356,-140},{-1346,-130}}),
+        iconTransformation(extent={{-1356,-140},{-1346,-130}})));
+
 equation
   connect(dynamicPipe_HeatGrid_RF.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_RF.enthalpyPort_a1) annotation (
     Line(points = {{380.2, 100}, {179.8, 100}}, color = {0, 128, 255}, thickness = 1));
@@ -1186,8 +1219,6 @@ equation
     Line(points = {{-1241, 720}, {-1262, 720}, {-1262, 728}}, color = {0, 0, 127}));
   connect(PID.u_s, temperature_2215_TRC.T) annotation (
     Line(points = {{-1250, 740}, {-1104, 740}, {-1104, 649}, {-1119, 649}}, color = {0, 0, 127}));
-  connect(gain3.u, y_2202_TRC_2) annotation (
-    Line(points = {{-1452, 482}, {-1452, 572}}, color = {0, 0, 127}));
   connect(calc_mdot_consumer.y_mdot, pump_8113_NP.dotm_setValue) annotation (
     Line(points = {{-301, 210}, {-320, 210}, {-320, 168}}, color = {0, 0, 127}));
   connect(calc_mdot_consumer.u_TemperatureInput, temperature_8205_TRC.T) annotation (
@@ -1240,8 +1271,6 @@ equation
     Line(points = {{-1538, 432}, {-1538, 420}, {-2119, 420}}, color = {255, 0, 255}));
   connect(not3.y, logicalSwitch_5204_ZA.u2) annotation (
     Line(points = {{-1339, 40}, {-1322, 40}, {-1322, -18}}, color = {255, 0, 255}));
-  connect(gain1.u, y_4504_TRC) annotation (
-    Line(points = {{-1460, 258}, {-1460, 192}}, color = {0, 0, 127}));
   connect(hysteresis1.u, gain1.y) annotation (
     Line(points = {{-1468, 330}, {-1460, 330}, {-1460, 281}}, color = {0, 0, 127}));
   connect(not4.u, hysteresis1.y) annotation (
@@ -1341,8 +1370,7 @@ equation
   connect(dynamicPipe_HeatStorage_unload_FF82.enthalpyPort_b1, heatPump1.enthalpyPort_a1) annotation (
     Line(points={{-1894.2,860},{-1885,860},{-1885,642}},        color = {176, 0, 0}));
   connect(heatPump1.enthalpyPort_b1, dynamicPipe_HeatStorage_unload_FF81.enthalpyPort_a1) annotation (
-    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},{
-          -1912.2,800}},                                                                                  color = {176, 0, 0}));
+    Line(points={{-1885,618},{-1886,618},{-1886,600},{-1900,600},{-1900,800},{-1912.2,800}},              color = {176, 0, 0}));
   connect(calc_mdot_production3.u_dotQ, gain6.y) annotation (
     Line(points = {{-1740, 602}, {-1740, 609}}, color = {0, 0, 127}));
   connect(add2.y, calc_mdot_production3.u_TemperatureOutput) annotation (
@@ -1389,11 +1417,8 @@ equation
     Line(points = {{-1838, 490}, {-1831, 490}}, color = {0, 0, 127}));
   connect(not6.u, hysteresis2.y) annotation (
     Line(points = {{-1868, 490}, {-1861, 490}}, color = {255, 0, 255}));
-  connect(y_2202_TRC_1, gain7.u) annotation (
-    Line(points = {{-1790, 532}, {-1800, 532}, {-1800, 490}, {-1808, 490}}, color = {0, 0, 127}));
   connect(switch_2102_ZA_1.y, heatPump1.nSet) annotation (
-    Line(points={{-1897,510},{-1876,510},{-1876,578},{-1875.67,578},{-1875.67,
-          616.08}},                                                                                color = {0, 0, 127}));
+    Line(points={{-1897,510},{-1876,510},{-1876,578},{-1875.67,578},{-1875.67,616.08}},            color = {0, 0, 127}));
   connect(greaterThreshold_2101_OA_1.u, switch_2102_ZA_1.y) annotation (
     Line(points = {{-1898, 540}, {-1876, 540}, {-1876, 510}, {-1897, 510}}, color = {0, 0, 127}));
   connect(const26.y, switch_2102_ZA_1.u1) annotation (
@@ -1476,8 +1501,6 @@ equation
     Line(points = {{-968, 790}, {-939, 790}, {-939, 729}}, color = {0, 0, 127}));
   connect(calc_valve_ratio2.y_valve, threeWayValve3.opening) annotation (
     Line(points = {{-980, 779}, {-980, 740}, {-1000, 740}, {-1000, 729}}, color = {0, 0, 127}));
-  connect(gain9.u, y_1302_TRC) annotation (
-    Line(points = {{-1918, 1020}, {-1548, 1020}, {-1548, 1072}, {-1542, 1072}}, color = {0, 0, 127}));
   connect(threeWayValve_NS_4.enthalpyPort_ab, dynamicPipe_HeatStorage_unload_FF74.enthalpyPort_b1) annotation (
     Line(points = {{-1390.2, 1060}, {-1381.8, 1060}}, color = {0, 128, 255}, thickness = 1));
   connect(dynamicPipe_HeatStorage_unload_FF85.enthalpyPort_a1, threeWayValve_NS_4.enthalpyPort_b) annotation (
@@ -1543,8 +1566,7 @@ equation
   connect(y_Elektrolyseur_Pel, busbar_4consumer1.u_DemandElectrolyser) annotation (
     Line(points = {{-1854, 1130}, {-1900, 1130}, {-1900, 1200}, {300, 1200}, {300, 1132}, {372, 1132}}, color = {0, 0, 127}));
   connect(CHP.Capacity[1], gain10.u) annotation (
-    Line(points={{-1529.8,214.933},{-1512,214.933},{-1512,236},{-1420,236},{
-          -1420,278}},                                                                              color = {0, 0, 127}));
+    Line(points={{-1529.8,214.933},{-1512,214.933},{-1512,236},{-1420,236},{-1420,278}},            color = {0, 0, 127}));
   connect(gain10.y, busbar_4consumer1.u_ProductionCHP) annotation (
     Line(points = {{-1420, 301}, {-1420, 340}, {-760, 340}, {-760, 1180}, {396, 1180}, {396, 1148}}, color = {0, 0, 127}));
   connect(u_loadProfile_ProductionPV_kW, exeptionHandling_no_division_zero3.u) annotation (
@@ -1609,6 +1631,10 @@ connect(electrolysisSystem.out_H2, y_6204_FRC) annotation (
     annotation (Line(points={{-2162,1040},{-2169,1040}}, color={255,0,255}));
   connect(u_disturb_electrolysis, realToBoolean1.u)
     annotation (Line(points={{-2220,1040},{-2192,1040}}, color={0,0,127}));
+  connect(y_2213_TRC, gain3.u) annotation (Line(points={{-1180,544},{-1190,544},{-1190,482},{-1452,482}}, color={0,0,127}));
+  connect(gain7.u, y_2213_TRC) annotation (Line(points={{-1808,490},{-1190,490},{-1190,544},{-1180,544}}, color={0,0,127}));
+  connect(gain9.u, y_1313_TRC) annotation (Line(points={{-1918,1020},{-1350,1020},{-1350,1074},{-1344,1074}}, color={0,0,127}));
+  connect(gain1.u, y_4515_TRC) annotation (Line(points={{-1460,258},{-1270,258},{-1270,192},{-1262,192}}, color={0,0,127}));
   annotation (
     Diagram(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}}), graphics={  Line(origin = {688, 380}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent = {{-2200, -1000}, {1000, 1400}})),

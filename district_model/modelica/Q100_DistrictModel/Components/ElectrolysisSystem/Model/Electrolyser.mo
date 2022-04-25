@@ -1,9 +1,8 @@
 ﻿within Q100_DistrictModel.Components.ElectrolysisSystem.Model;
 model Electrolyser "temperature-controlled electrolysis system"
-  replaceable model CellModel = PartialModels.PartialCell constrainedby
-    PartialModels.PartialCell                                                                     "choose whether to use simple or detailed model for electrolysis" annotation (
-     choices(choice(redeclare model CellModel = DetailedModel.Cell "detailed model"), choice(redeclare
-          model CellModel =
+  replaceable model CellModel = PartialModels.PartialCell constrainedby PartialModels.PartialCell "choose whether to use simple or detailed model for electrolysis" annotation (
+     choices(choice(redeclare model CellModel = DetailedModel.Cell "detailed model"), choice(redeclare model
+                CellModel =
             SimpleModel.Cell                                                                                                              "simple model")));
   parameter SI.Temperature param_T_container(displayUnit = "K") = 30 + 273.15 "temperature inside electrolyser container" annotation (
     Dialog(group = "general parameter"));
@@ -69,10 +68,10 @@ model Electrolyser "temperature-controlled electrolysis system"
   SI.Energy var_P_cons(start = 0.0, fixed = true) "integrated power consumption";
   Real var_P_cons_kWh = SI.Conversions.to_kWh(var_P_cons) "integrated power consumption in kWh";
   // components of system
-  Stack comp_stack(redeclare CellModel comp_cell(redeclare package H2 = H2, redeclare
-        package O2 =                                                                               O2, param_p_op_cathode = param_stack_p_op_cathode, param_p_op_anode = param_stack_p_op_anode, param_kWh_per_m3 = param_stack_kWh_per_m3, param_HHV_h2 = param_stack_HHV_h2, param_membrane_area = param_stack_cell_area, param_membrane_d = param_stack_cell_d), comp_heater(param_T_op_min = param_stack_T_op - 5), redeclare
-      package O2 =                                                                                                                                                                                                         O2, redeclare
-      package H2 =                                                                                                                                                                                                         H2, param_stack_kWh_per_m3 = param_stack_kWh_per_m3, param_stack_HHV_h2 = param_stack_HHV_h2, param_stack_P_el_min = param_stack_P_el_min, param_stack_P_el_max = param_stack_P_el_max, param_stack_i_min = 0.2e4, param_stack_i_max = param_stack_i_max, param_stack_T_init = param_stack_T_init, param_stack_T_op = param_stack_T_op, param_stack_T_crit = param_stack_T_crit, param_stack_T_in = param_stack_T_in, param_stack_p_op_cathode = param_stack_p_op_cathode, param_stack_p_op_anode = param_stack_p_op_anode, param_stack_cell_n = param_stack_cell_n, param_stack_cell_area = param_stack_cell_area, param_stack_cell_d = param_stack_cell_d, param_stack_cell_length = param_stack_cell_length, param_stack_cell_depth = param_stack_cell_depth, param_stack_mass = param_stack_mass, param_stack_cp = param_stack_cp, param_stack_mass_h2o = param_stack_mass_h2o) annotation (
+  Stack comp_stack(redeclare CellModel comp_cell(redeclare package H2 = H2, redeclare package
+                O2 =                                                                               O2, param_p_op_cathode = param_stack_p_op_cathode, param_p_op_anode = param_stack_p_op_anode, param_kWh_per_m3 = param_stack_kWh_per_m3, param_HHV_h2 = param_stack_HHV_h2, param_membrane_area = param_stack_cell_area, param_membrane_d = param_stack_cell_d), comp_heater(param_T_op_min = param_stack_T_op - 5), redeclare package
+              O2 =                                                                                                                                                                                                         O2, redeclare package
+              H2 =                                                                                                                                                                                                         H2, param_stack_kWh_per_m3 = param_stack_kWh_per_m3, param_stack_HHV_h2 = param_stack_HHV_h2, param_stack_P_el_min = param_stack_P_el_min, param_stack_P_el_max = param_stack_P_el_max, param_stack_i_min = 0.2e4, param_stack_i_max = param_stack_i_max, param_stack_T_init = param_stack_T_init, param_stack_T_op = param_stack_T_op, param_stack_T_crit = param_stack_T_crit, param_stack_T_in = param_stack_T_in, param_stack_p_op_cathode = param_stack_p_op_cathode, param_stack_p_op_anode = param_stack_p_op_anode, param_stack_cell_n = param_stack_cell_n, param_stack_cell_area = param_stack_cell_area, param_stack_cell_d = param_stack_cell_d, param_stack_cell_length = param_stack_cell_length, param_stack_cell_depth = param_stack_cell_depth, param_stack_mass = param_stack_mass, param_stack_cp = param_stack_cp, param_stack_mass_h2o = param_stack_mass_h2o) annotation (
     Placement(transformation(extent = {{-40, -2}, {40, 78}})));
   Pump.Pump comp_pump(param_Q_max = param_pump_Qmax) annotation (
     Placement(transformation(extent = {{-10, -10}, {10, 10}}, rotation = 90, origin = {-6, -42})));

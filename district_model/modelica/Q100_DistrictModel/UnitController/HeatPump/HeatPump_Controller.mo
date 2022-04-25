@@ -5,14 +5,6 @@ model HeatPump_Controller
   HeatPump_StSp_priority_ext heatPump_StSp_priority_ext(
       stSp_priority_ext_OR_HP_prio_ext(greaterThreshold(threshold=0.001)))
     annotation (Placement(transformation(extent={{-60,-50},{-40,-30}})));
-  Modelica.Blocks.Logical.Or or1
-    annotation (Placement(transformation(extent={{130,-70},{150,-50}})));
-  Modelica.Blocks.Logical.Or or2
-    annotation (Placement(transformation(extent={{170,-30},{190,-10}})));
-  Modelica.Blocks.Logical.Or or3
-    annotation (Placement(transformation(extent={{130,10},{150,30}})));
-  Modelica.Blocks.Logical.Or or4
-    annotation (Placement(transformation(extent={{210,-20},{230,0}})));
   HeatPump_StSp_excess_power_PV heatPump_StSp_excess_power_PV
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
   HeatPump_StSp_excess_power_EES heatPump_StSp_excess_power_EES
@@ -73,12 +65,7 @@ model HeatPump_Controller
             {10,10}},                                                                                rotation = 0)));
   Modelica.Blocks.Logical.Switch switch2 annotation (Placement(visible=true,
           transformation(
-          origin={94,-10},
-          extent={{-10,-10},{10,10}},
-          rotation=0)));
-  Modelica.Blocks.Logical.Switch switch3 annotation (Placement(visible=true,
-          transformation(
-          origin={94,50},
+          origin={90,-10},
           extent={{-10,-10},{10,10}},
           rotation=0)));
     InputSignalCheck inputSignalCheck(d=100)
@@ -92,16 +79,6 @@ model HeatPump_Controller
     Modelica.Blocks.Interfaces.RealOutput Heatpump_Specification_Value
     "utilization factor between 0 and 1"
       annotation (Placement(transformation(extent={{300,-20},{320,0}})));
-  Modelica.Blocks.Logical.Switch switch4 annotation (Placement(visible=true,
-          transformation(
-          origin={94,-90},
-          extent={{-10,-10},{10,10}},
-          rotation=0)));
-  Modelica.Blocks.Logical.Switch switch5 annotation (Placement(visible=true,
-          transformation(
-          origin={94,-130},
-          extent={{-10,-10},{10,10}},
-          rotation=0)));
   Modelica.Blocks.Sources.Constant const1(k=1)   annotation (
     Placement(visible = true, transformation(origin={-10,150},      extent={{-10,-10},
             {10,10}},                                                                                rotation = 0)));
@@ -109,36 +86,25 @@ model HeatPump_Controller
       annotation (Placement(transformation(extent={{-20,100},{0,120}})));
     Modelica.Blocks.Math.Min min1
       annotation (Placement(transformation(extent={{30,120},{50,140}})));
-    MultiMax multiMax(nu=4)
+    MultiMax multiMax(nu=6)
       annotation (Placement(transformation(extent={{140,120},{160,140}})));
+  HeatPump_StSp_HP_hysteresis heatPump_StSp_HP_hysteresis annotation (Placement(transformation(extent={{-60,-150},{-40,-130}})));
+  Modelica.Blocks.Math.BooleanToReal
+                                 booleanToReal
+    annotation (Placement(transformation(extent={{80,-152},{100,-132}})));
+  Modelica.Blocks.MathBoolean.Or or5(nu=6) annotation (Placement(transformation(extent={{160,-20},{180,0}})));
+  Modelica.Blocks.Math.BooleanToReal
+                                 booleanToReal1
+    annotation (Placement(transformation(extent={{80,90},{100,110}})));
+  Modelica.Blocks.Logical.Switch switch3
+    annotation (Placement(transformation(extent={{80,-110},{100,-90}})));
+  Modelica.Blocks.Logical.Switch switch4
+    annotation (Placement(transformation(extent={{80,-70},{100,-50}})));
+  Modelica.Blocks.Math.BooleanToReal
+                                 booleanToReal4
+    annotation (Placement(transformation(extent={{80,40},{100,60}})));
+  Modelica.Blocks.Interfaces.RealInput T_DH_FF_actual "Temperature heating grid" annotation (Placement(transformation(extent={{-164,-152},{-140,-128}}), iconTransformation(extent={{-164,-152},{-140,-128}})));
 equation
-  connect(heatPump_StSp_priority_ext.Heatpump_Specification_StSp_priority_ext_SI,
-    or1.u1) annotation (Line(points={{-39,-40},{44,-40},{44,-60},{128,-60}},
-        color={255,0,255}));
-  connect(heatPump_StSp_priority_int.Heatpump_Specification_StSp_priority_int_SI,
-    or1.u2) annotation (Line(points={{-39,-80},{44,-80},{44,-68},{128,-68}},
-        color={255,0,255}));
-  connect(or3.y, or2.u1) annotation (Line(points={{151,20},{162,20},{162,-20},
-            {168,-20}},
-                     color={255,0,255}));
-  connect(or1.y, or2.u2) annotation (Line(points={{151,-60},{162,-60},{162,
-            -28},{168,-28}},
-                          color={255,0,255}));
-  connect(or2.y, or4.u2) annotation (Line(points={{191,-20},{202,-20},{202,
-            -18},{208,-18}},
-                        color={255,0,255}));
-  connect(heatPump_StSp_excess_power_PV.Heatpump_Specification_StSp_excess_power_PV_SI,
-    or3.u2) annotation (Line(points={{-39,0},{44,0},{44,12},{128,12}},
-        color={255,0,255}));
-  connect(heatPump_StSp_excess_power_EES.Heatpump_Specification_StSp_excess_power_EES_SI,
-    or3.u1) annotation (Line(points={{-39,40},{44,40},{44,20},{128,20}},
-        color={255,0,255}));
-  connect(or4.y, Heatpump_Specification_SI)
-    annotation (Line(points={{231,-10},{250,-10},{250,-120},{310,-120}},
-                                              color={255,0,255}));
-  connect(heatPump_StSp_CO2_intensity.Heatpump_Specification_StSp_CO2_intensity_SI,
-    or4.u1) annotation (Line(points={{-39,80},{202,80},{202,-10},{208,-10}},
-        color={255,0,255}));
   connect(heatPump_StSp_priority_int.signal_HP_prio_int,
     signal_HP_prio_int) annotation (Line(points={{-62,-80},{-78,-80},{-78,
             -100},{-152,-100}},
@@ -192,18 +158,13 @@ equation
           -10},{-70,-120},{-152,-120}}, color={0,0,127}));
     connect(Heatpump_Specification_SI, Heatpump_Specification_SI)
       annotation (Line(points={{310,-120},{310,-120}}, color={255,0,255}));
-    connect(or4.y, switch1.u2)
-      annotation (Line(points={{231,-10},{258,-10}}, color={255,0,255}));
     connect(const5.y, switch1.u3) annotation (Line(points={{1,-170},{236,-170},
             {236,-18},{258,-18}},       color={0,0,127}));
     connect(heatPump_StSp_excess_power_PV.Heatpump_Specification_StSp_excess_power_PV_SI,
-      switch2.u2) annotation (Line(points={{-39,0},{44,0},{44,-10},{82,-10}},
+      switch2.u2) annotation (Line(points={{-39,0},{44,0},{44,-10},{78,-10}},
           color={255,0,255}));
-    connect(const5.y, switch2.u3) annotation (Line(points={{1,-170},{68,-170},
-            {68,-18},{82,-18}},       color={0,0,127}));
-    connect(heatPump_StSp_excess_power_EES.Heatpump_Specification_StSp_excess_power_EES_SI,
-      switch3.u2) annotation (Line(points={{-39,40},{44,40},{44,50},{82,50}},
-          color={255,0,255}));
+    connect(const5.y, switch2.u3) annotation (Line(points={{1,-170},{68,-170},{68,-18},{78,-18}},
+                                      color={0,0,127}));
     connect(inputSignalCheck.u, Heatpump_Constants_carbon_intensity_threshold)
       annotation (Line(points={{-128,80},{-152,80}}, color={0,0,127}));
     connect(inputSignalCheck.y, heatPump_StSp_CO2_intensity.Heatpump_Constants_carbon_intensity_threshold)
@@ -224,26 +185,8 @@ equation
             {-112,-40}}, color={0,0,127}));
     connect(inputSignalCheck3.u, Heatpump_Constants_P_el_HP_min)
       annotation (Line(points={{-128,-40},{-152,-40}}, color={0,0,127}));
-    connect(const5.y, switch3.u3) annotation (Line(points={{1,-170},{68,-170},
-            {68,42},{82,42}}, color={0,0,127}));
     connect(switch1.y, Heatpump_Specification_Value)
       annotation (Line(points={{281,-10},{310,-10}}, color={0,0,127}));
-    connect(heatPump_StSp_priority_int.Heatpump_Specification_StSp_priority_int_SI,
-      switch4.u2) annotation (Line(points={{-39,-80},{44,-80},{44,-90},{82,
-            -90}}, color={255,0,255}));
-    connect(const5.y, switch4.u3) annotation (Line(points={{1,-170},{68,-170},
-            {68,-98},{82,-98}}, color={0,0,127}));
-    connect(switch4.u1, signal_HP_prio_int) annotation (Line(points={{82,-82},
-            {-30,-82},{-30,-100},{-152,-100}}, color={0,0,127}));
-    connect(const5.y, switch5.u3) annotation (Line(points={{1,-170},{68,-170},
-            {68,-138},{82,-138}}, color={0,0,127}));
-    connect(heatPump_StSp_priority_ext.Heatpump_Specification_StSp_priority_ext_SI,
-      switch5.u2) annotation (Line(points={{-39,-40},{44,-40},{44,-130},{82,
-            -130}}, color={255,0,255}));
-    connect(switch5.u1, signal_HP_prio_ext) annotation (Line(points={{82,-122},
-            {-30,-122},{-30,-120},{-152,-120}}, color={0,0,127}));
-    connect(const1.y, switch3.u1) annotation (Line(points={{1,150},{68,150},{
-            68,58},{82,58}}, color={0,0,127}));
     connect(division.u1, P_el_renergy) annotation (Line(points={{-22,116},{
             -30,116},{-30,18},{-92,18},{-92,-20},{-152,-20}}, color={0,0,127}));
     connect(inputSignalCheck3.y, division.u2) annotation (Line(points={{-112,
@@ -253,21 +196,39 @@ equation
             136},{28,136}}, color={0,0,127}));
     connect(division.y, min1.u2) annotation (Line(points={{1,110},{10,110},{
             10,124},{28,124}}, color={0,0,127}));
-    connect(min1.y, switch2.u1) annotation (Line(points={{51,130},{62,130},{
-            62,-2},{82,-2}}, color={0,0,127}));
-    connect(switch3.y, multiMax.u[1]) annotation (Line(points={{105,50},{112,
-            50},{112,136},{134,136},{134,135.25},{140,135.25}}, color={0,0,
+    connect(min1.y, switch2.u1) annotation (Line(points={{51,130},{62,130},{62,-2},{78,-2}},
+                             color={0,0,127}));
+    connect(switch2.y, multiMax.u[1]) annotation (Line(points={{101,-10},{112,-10},{112,132},{126,132},{126,135.833},{140,135.833}},
+                                                                 color={0,0,
             127}));
-    connect(switch2.y, multiMax.u[2]) annotation (Line(points={{105,-10},{112,
-            -10},{112,132},{126,132},{126,131.75},{140,131.75}}, color={0,0,
-            127}));
-    connect(switch4.y, multiMax.u[3]) annotation (Line(points={{105,-90},{112,
-            -90},{112,128},{126,128},{126,128.25},{140,128.25}}, color={0,0,
-            127}));
-    connect(switch5.y, multiMax.u[4]) annotation (Line(points={{105,-130},{
-            112,-130},{112,124.75},{140,124.75}}, color={0,0,127}));
     connect(multiMax.y, switch1.u1) annotation (Line(points={{161.7,130},{248,
             130},{248,-2},{258,-2}}, color={0,0,127}));
+  connect(heatPump_StSp_HP_hysteresis.Heatpump_Specification_StSp_HP_hysteresis_SI, booleanToReal.u) annotation (Line(points={{-39,-140},{74,-140},{74,-142},{78,-142}}, color={255,0,255}));
+  connect(booleanToReal.y, multiMax.u[2]) annotation (Line(points={{101,-142},{112,-142},{112,128},{126,128},{126,133.5},{140,133.5}}, color={0,0,127}));
+  connect(heatPump_StSp_HP_hysteresis.Heatpump_Specification_StSp_HP_hysteresis_SI, or5.u[1]) annotation (Line(points={{-39,-140},{74,-140},{74,-160},{156,-160},{156,-4.16667},{160,-4.16667}}, color={255,0,255}));
+  connect(heatPump_StSp_priority_int.Heatpump_Specification_StSp_priority_int_SI, or5.u[2]) annotation (Line(points={{-39,-80},{56,-80},{56,-36},{152,-36},{152,-6.5},{160,-6.5}}, color={255,0,255}));
+  connect(heatPump_StSp_priority_ext.Heatpump_Specification_StSp_priority_ext_SI, or5.u[3]) annotation (Line(points={{-39,-40},{46,-40},{46,-28},{146,-28},{146,-8.83333},{160,-8.83333}}, color={255,0,255}));
+  connect(heatPump_StSp_excess_power_PV.Heatpump_Specification_StSp_excess_power_PV_SI, or5.u[4]) annotation (Line(points={{-39,0},{44,0},{44,20},{132,20},{132,-4},{146,-4},{146,-11.1667},{160,-11.1667}}, color={255,0,255}));
+  connect(heatPump_StSp_excess_power_EES.Heatpump_Specification_StSp_excess_power_EES_SI, or5.u[5]) annotation (Line(points={{-39,40},{44,40},{44,28},{140,28},{140,0},{152,0},{152,-13.5},{160,-13.5}}, color={255,0,255}));
+  connect(heatPump_StSp_CO2_intensity.Heatpump_Specification_StSp_CO2_intensity_SI, or5.u[6]) annotation (Line(points={{-39,80},{140,80},{140,40},{150,40},{150,4},{156,4},{156,-15.8333},{160,-15.8333}}, color={255,0,255}));
+  connect(heatPump_StSp_CO2_intensity.Heatpump_Specification_StSp_CO2_intensity_SI, booleanToReal1.u) annotation (Line(points={{-39,80},{72,80},{72,100},{78,100}}, color={255,0,255}));
+  connect(booleanToReal1.y, multiMax.u[3]) annotation (Line(points={{101,100},{112,100},{112,128},{126,128},{126,131.167},{140,131.167}}, color={0,0,127}));
+  connect(switch3.y, multiMax.u[4]) annotation (Line(points={{101,-100},{112,-100},{112,128},{126,128},{126,128.833},{140,128.833}}, color={0,0,127}));
+  connect(switch4.y, multiMax.u[5]) annotation (Line(points={{101,-60},{112,-60},{112,128},{126,128},{126,126.5},{140,126.5}}, color={0,0,127}));
+  connect(heatPump_StSp_excess_power_EES.Heatpump_Specification_StSp_excess_power_EES_SI, booleanToReal4.u) annotation (Line(points={{-39,40},{44,40},{44,50},{78,50}}, color={255,0,255}));
+  connect(booleanToReal4.y, multiMax.u[6]) annotation (Line(points={{101,50},{112,50},{112,128},{126,128},{126,124.167},{140,124.167}}, color={0,0,127}));
+  connect(or5.y, switch1.u2) annotation (Line(points={{181.5,-10},{258,-10}}, color={255,0,255}));
+  connect(or5.y, Heatpump_Specification_SI) annotation (Line(points={{181.5,-10},{212,-10},{212,-120},{310,-120}}, color={255,0,255}));
+  connect(heatPump_StSp_HP_hysteresis.signal_HP_prio_int, signal_HP_prio_int) annotation (Line(points={{-62,-146},{-78,-146},{-78,-100},{-152,-100}}, color={0,0,127}));
+  connect(signal_HP_prio_ext, heatPump_StSp_HP_hysteresis.signal_HP_prio_ext) annotation (Line(points={{-152,-120},{-96,-120},{-96,-149},{-62,-149}}, color={0,0,127}));
+  connect(T_DH_FF_set, heatPump_StSp_HP_hysteresis.T_DH_FF_set) annotation (Line(points={{-152,0},{-74,0},{-74,-140},{-62,-140}}, color={0,0,127}));
+  connect(heatPump_StSp_HP_hysteresis.T_DH_FF_actual, T_DH_FF_actual) annotation (Line(points={{-62,-132},{-134,-132},{-134,-140},{-152,-140}}, color={0,0,127}));
+  connect(heatPump_StSp_priority_int.Heatpump_Specification_StSp_priority_int_SI, switch3.u2) annotation (Line(points={{-39,-80},{56,-80},{56,-100},{78,-100}}, color={255,0,255}));
+  connect(const5.y, switch3.u3) annotation (Line(points={{1,-170},{68,-170},{68,-108},{78,-108}}, color={0,0,127}));
+  connect(switch3.u1, signal_HP_prio_int) annotation (Line(points={{78,-92},{-78,-92},{-78,-100},{-152,-100}}, color={0,0,127}));
+  connect(switch4.u3, const5.y) annotation (Line(points={{78,-68},{68,-68},{68,-170},{1,-170}}, color={0,0,127}));
+  connect(heatPump_StSp_priority_ext.Heatpump_Specification_StSp_priority_ext_SI, switch4.u2) annotation (Line(points={{-39,-40},{46,-40},{46,-60},{78,-60}}, color={255,0,255}));
+  connect(switch4.u1, signal_HP_prio_ext) annotation (Line(points={{78,-52},{-34,-52},{-34,-64},{-70,-64},{-70,-120},{-152,-120}}, color={0,0,127}));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-140,
               -180},{300,160}})),                                Diagram(
         coordinateSystem(preserveAspectRatio=false, extent={{-140,-180},{300,

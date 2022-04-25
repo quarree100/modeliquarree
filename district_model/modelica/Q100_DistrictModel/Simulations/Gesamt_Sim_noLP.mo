@@ -1,8 +1,7 @@
 within Q100_DistrictModel.Simulations;
 model Gesamt_Sim_noLP
   extends Modelica.Icons.Example;
-  Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (Placement(
-        visible=true, transformation(extent={{-128,66},{132,266}}, rotation=0)));
+  Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (Placement(visible=true, transformation(extent={{-128,66},{132,266}}, rotation=0)));
   Modelica.Blocks.Sources.Constant E_th_RH_Houses(k = 1374690.5) annotation (
     Placement(transformation(extent={{-680,580},{-660,600}})));
   Modelica.Blocks.Sources.Constant E_th_TWW_Houses(k = 162898.75) annotation (

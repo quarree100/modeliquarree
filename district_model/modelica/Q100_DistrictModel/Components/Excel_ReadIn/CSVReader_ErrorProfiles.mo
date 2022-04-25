@@ -1,6 +1,5 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
 model CSVReader_ErrorProfiles "CSV file read in"
-  extends Modelica.Icons.Record;
   parameter Integer firstCell[2]={2,1} "First upper left cell of data set (without header)";
   parameter Integer endRow = 8760 "Number of rows in data set (without header)";
   parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
@@ -13,7 +12,8 @@ model CSVReader_ErrorProfiles "CSV file read in"
   parameter Integer m = 6 + offset "Column number of storage load profil in error data set (without time columne)";
   parameter Integer n = 7 + offset "Column number of storage unload profil in error data set (without time columne)";
 
-  parameter ExternData.CSVFile  dataSource(fileName=
+  replaceable parameter
+            ExternData.CSVFile  dataSource(fileName=
         Modelica.Utilities.Files.loadResource("modelica://Q100_DistrictModel/input/ErrorProfiles_input.CSV"),
       delimiter=";")
     "XLSX file" annotation (Placement(transformation(
@@ -63,5 +63,31 @@ equation
       __Dymola_Algorithm="Dassl"),
     Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"),
     Diagram(coordinateSystem(extent={{-100,-120},{100,140}})),
-    Icon(coordinateSystem(extent={{-100,-120},{100,140}})));
+    Icon(coordinateSystem(extent={{-100,-120},{100,140}}), graphics={
+                                Rectangle(
+        extent={{-100,-120},{100,140}},
+        lineColor={0,0,127},
+        fillColor={255,255,255},
+        fillPattern=FillPattern.Solid), Text(
+        extent={{-200,200},{200,140}},
+        textString="%name",
+        lineColor={0,0,255}),
+    Polygon(lineColor={192,192,192},
+      fillColor={192,192,192},
+      fillPattern=FillPattern.Solid,
+      points={{-80,70},{-88,48},{-72,48},{-80,70}}),
+    Line(points={{-80,48},{-80,-100}},
+      color={192,192,192}),
+    Line(points={{-90,-90},{82,-90}},
+      color={192,192,192}),
+    Polygon(lineColor={192,192,192},
+      fillColor={192,192,192},
+      fillPattern=FillPattern.Solid,
+      points={{90,-90},{68,-82},{68,-98},{90,-90}}),
+    Rectangle(lineColor={255,255,255},
+      fillColor={255,215,136},
+      fillPattern=FillPattern.Solid,
+      extent={{-48,-70},{2,50}}),
+    Line(points={{-48,-70},{-48,50},{52,50},{52,-70},{-48,-70},{-48,-40},{52,
+              -40},{52,-10},{-48,-10},{-48,20},{52,20},{52,50},{2,50},{2,-71}})}));
 end CSVReader_ErrorProfiles;

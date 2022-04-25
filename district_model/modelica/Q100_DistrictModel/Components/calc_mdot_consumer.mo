@@ -21,7 +21,7 @@ model calc_mdot_consumer "Callculation of massflow according to power and temper
     Placement(transformation(extent = {{-60, -60}, {-40, -40}})));
   Modelica.Blocks.Math.Max max1 annotation (
     Placement(transformation(extent = {{-20, -10}, {0, 10}})));
-  Modelica.Blocks.Sources.Constant const1(k = 0) annotation (
+  Modelica.Blocks.Sources.Constant const1(k=2)   annotation (
     Placement(transformation(extent = {{26, -60}, {46, -40}})));
 equation
   connect(division.u1, u_dotQ) annotation (

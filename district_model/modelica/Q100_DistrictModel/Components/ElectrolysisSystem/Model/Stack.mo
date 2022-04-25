@@ -1,8 +1,8 @@
 ﻿within Q100_DistrictModel.Components.ElectrolysisSystem.Model;
 model Stack "stack model for electrolyser"
 
-  replaceable model CellModel = PartialModels.PartialCell constrainedby
-    PartialModels.PartialCell "choose whether to use simple or detailed model for electrolysis"
+  replaceable model CellModel = PartialModels.PartialCell constrainedby PartialModels.PartialCell
+                              "choose whether to use simple or detailed model for electrolysis"
       annotation(choices(
         choice(redeclare model CellModel =
             DetailedModel.Cell                                        "detailed model"),
@@ -84,8 +84,7 @@ model Stack "stack model for electrolyser"
     param_kWh_per_m3=param_stack_kWh_per_m3,
     param_HHV_h2=param_stack_HHV_h2,
     param_membrane_area=param_stack_cell_area,
-    param_membrane_d=param_stack_cell_d) constrainedby
-    PartialModels.PartialCell
+    param_membrane_d=param_stack_cell_d) constrainedby PartialModels.PartialCell
     "model of one cell, can be scaled due to assumed uniform temperature throughout stack"
     annotation (Placement(visible=true, transformation(extent={{78,-14},{98,6}}, rotation=0)));
   AixLib.FastHVAC.BaseClasses.EnergyBalance comp_energyBalance    annotation (Placement(transformation(extent={{-12,-102},{12,-80}})));

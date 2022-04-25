@@ -2,11 +2,11 @@ within Q100_DistrictModel.UnitController.HeatPump.OR_Heatpump_StSp_Co2_intensity
 model StSp_CO2_intensity_OR_HP_hysteresis
   Modelica.Blocks.Interfaces.BooleanOutput OS_HP_hysteresis
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-  Modelica.Blocks.Interfaces.RealInput tp_TES_unload
-    "Temperature heat storage " annotation (Placement(transformation(
+  Modelica.Blocks.Interfaces.RealInput tp_TES_unload "Temperature heat storage "
+                                annotation (Placement(transformation(
           extent={{-140,30},{-100,70}})));
-  Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
-    "Temperature heating grid" annotation (Placement(transformation(
+  Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set "Temperature heating grid"
+                               annotation (Placement(transformation(
           extent={{-140,-70},{-100,-30}})));
   Hysteresis_var hysteresis_var
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));

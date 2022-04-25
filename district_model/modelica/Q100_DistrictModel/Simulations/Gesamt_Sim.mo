@@ -5,8 +5,7 @@ model Gesamt_Sim
     annotation (Placement(transformation(extent={{-280,70},{-260,90}})));
   Modelica.Blocks.Sources.Constant HeatPump_inputsignal(k=0.1)
     annotation (Placement(transformation(extent={{-500,230},{-480,250}})));
-  Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (Placement(
-        visible=true, transformation(extent={{-106,64},{154,264}}, rotation=0)));
+  Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel annotation (Placement(visible=true, transformation(extent={{-106,64},{154,264}}, rotation=0)));
   Modelica.Blocks.Sources.Constant HeatStorage_loading(k=1)
     annotation (Placement(transformation(extent={{-700,194},{-680,214}})));
   Modelica.Blocks.Sources.Constant HeatStorage_unloading(k=1)
@@ -108,24 +107,24 @@ connect(add4.y, fMU_PhyModel.u_loadProfile_kW) annotation (
   connect(gain8.y, add3.u1) annotation (Line(points={{-280,499},{-280,460},{-324,
           460},{-324,432}}, color={0,0,127}));
   connect(Electrolysis_inputsignal.y, fMU_PhyModel.u_electrolysis_0_1)
-    annotation (Line(points={{-279,206},{-268,206},{-268,228.167},{-107.625,
-          228.167}}, color={0,0,127}));
+    annotation (Line(points={{-279,206},{-268,206},{-268,228.167},{-107.625,228.167}},
+                     color={0,0,127}));
 connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (
     Line(points={{-139,28},{-120,28},{-120,124},{-107.625,124}},      color = {0, 0, 127}));
   connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandPower_kW)
     annotation (Line(points={{-397,310},{-390,310},{-390,254},{-107.625,254}},
                                                          color={0,0,127}));
   connect(Lastprofile.y, fMU_PhyModel.u_loadProfile_DemandEMob_kW)
-    annotation (Line(points={{-397,310},{-390,310},{-390,250},{-107.625,250},{
-          -107.625,250.667}},  color={0,0,127}));
+    annotation (Line(points={{-397,310},{-390,310},{-390,250},{-107.625,250},{-107.625,250.667}},
+                               color={0,0,127}));
   connect(Lastprofile.y,fMU_PhyModel.u_loadProfile_ProductionPV_kW)
-    annotation (Line(points={{-397,310},{-390,310},{-390,257.333},{-107.625,
-          257.333}}, color={0,0,127}));
+    annotation (Line(points={{-397,310},{-390,310},{-390,257.333},{-107.625,257.333}},
+                     color={0,0,127}));
   connect(Boiler_disturb.y, fMU_PhyModel.u_disturb_boiler) annotation (Line(
         points={{-259,110},{-146,110},{-146,150.667},{-107.625,150.667}}, color=
          {0,0,127}));
-  connect(CHP_disturb.y, fMU_PhyModel.u_disturb_CHP) annotation (Line(points={{-379,
-          110},{-366,110},{-366,174.833},{-107.625,174.833}},      color={0,0,
+  connect(CHP_disturb.y, fMU_PhyModel.u_disturb_CHP) annotation (Line(points={{-379,110},{-366,110},{-366,174.833},{-107.625,174.833}},
+                                                                   color={0,0,
           127}));
   connect(HeatPump1_disturb.y, fMU_PhyModel.u_disturb_heatpump2) annotation (
       Line(points={{-479,210},{-440,210},{-440,182.333},{-107.625,182.333}},
