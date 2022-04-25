@@ -5,3 +5,4 @@ HP_testbench/dist
 HP_testbench/build
 HP_testbench/hptestbench.egg-info
 
+*.bak-mo

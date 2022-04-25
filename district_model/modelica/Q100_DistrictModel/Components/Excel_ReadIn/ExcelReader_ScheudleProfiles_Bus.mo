@@ -1,7 +1,7 @@
 within Q100_DistrictModel.Components.Excel_ReadIn;
 model ExcelReader_ScheudleProfiles_Bus "Excel XLSX file read in"
   extends Modelica.Icons.Record;
-  parameter String sheetName="input_test_final" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
+  parameter String sheetName="ScheduleProfiles" "Excel sheet name" annotation(choices(choice="set1" "First Excel sheet", choice="set2" "Second Excel sheet"));
   parameter String firstCell="A2" "First upper left cell of data set (without header)";
   parameter Integer endRow = 8760 "Number of rows in data set (without header)";
   parameter Integer endColumne = 8 "Number of columns in data set (with time columne)";
@@ -13,7 +13,8 @@ model ExcelReader_ScheudleProfiles_Bus "Excel XLSX file read in"
   parameter Integer n = 7 "Column number of storage unload profil in error data set (without time columne)";
 
   parameter ExternData.XLSXFile dataSource(fileName=
-        Modelica.Utilities.Files.loadResource("C:/Users/Tino Mitzinger/ownCloud/FhG-owncloud-Quarree-AB3/AB-1.3/Versorgungssystem Sim oemof/Kataster_v45_Variante-3A/export_modelica/2018-PE-no-ely_Ekonzept02-min-no-excess_techdata5.xlsx"))
+        ModelicaServices.ExternalReferences.loadResource(
+        "modelica://Q100_DistrictModel/input/ExcelReader_input.xlsx"))
     "XLSX file" annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=0,

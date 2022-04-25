@@ -12,7 +12,7 @@ Modelica.Blocks.Sources.Constant const1(k = 70) annotation (
   Components.Excel_ReadIn.ExcelReader_ScheudleProfiles
     excelReader_ScheudleProfiles
     annotation (Placement(transformation(extent={{-440,278},{-416,304}})));
-  Components.Excel_ReadIn.ExcelReader_ErrorScheudle excelReader_ErrorScheudle
+  Components.Excel_ReadIn.ExcelReader_ErrorProfiles excelReader_ErrorScheudle
     annotation (Placement(transformation(extent={{-440,238},{-416,268}})));
 equation
 connect(const1.y, fMU_PhyModel.u_temperature_heatingGrid_set) annotation (

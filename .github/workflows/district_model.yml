@@ -14,6 +14,7 @@ jobs:
         os: [ubuntu-latest]
         python: [3.7, 3.8, 3.9]
         aixlib: [0.10.7]
+        externdata: [2.5.0]
         modelica: [release, stable, nightly]
 
     steps:
@@ -62,14 +63,19 @@ jobs:
         sudo mv /usr/lib/omlibrary/AixLib-${{ matrix.aixlib }}/AixLib/ '/usr/lib/omlibrary/AixLib ${{ matrix.aixlib }}'
         sudo rm -r /usr/lib/omlibrary/AixLib-${{ matrix.aixlib }}
 
-    - name: Install latest BuildingSystems
+    - name: Install BuildingSystems
       if: runner.os == 'Linux'  # Only required on Linux
       run: |
-        cd /usr/lib/omlibrary/  # cd to OpenModelica library
-        wget -q https://github.com/UdK-VPT/BuildingSystems/archive/master.tar.gz -O - | sudo tar xzf -
-        sudo mv BuildingSystems-master/BuildingSystems/ 'BuildingSystems'
-        sudo rm -r BuildingSystems-master
-        cd /home/runner/work/modeliquarree/modeliquarree  # cd back to repo folder
+        wget -q https://github.com/UdK-VPT/BuildingSystems/archive/master.tar.gz -O - | sudo tar xzf - -C /usr/lib/omlibrary/
+        sudo mv /usr/lib/omlibrary/BuildingSystems-master/BuildingSystems/ '/usr/lib/omlibrary/BuildingSystems'
+        sudo rm -r /usr/lib/omlibrary/BuildingSystems-master
+
+    - name: Install ExternData
+      if: runner.os == 'Linux'  # Only required on Linux
+      run: |
+        wget -q https://github.com/modelica-3rdparty/ExternData/archive/v${{ matrix.externdata }}.tar.gz -O - | sudo tar xzf - -C /usr/lib/omlibrary/
+        sudo mv /usr/lib/omlibrary/ExternData-${{ matrix.externdata }}/ExternData/ '/usr/lib/omlibrary/ExternData ${{ matrix.externdata }}'
+        sudo rm -r /usr/lib/omlibrary/ExternData-${{ matrix.externdata }}
 
     - name: Install OMPython
       run: |
