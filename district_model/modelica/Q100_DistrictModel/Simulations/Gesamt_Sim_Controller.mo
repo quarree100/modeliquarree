@@ -2,6 +2,8 @@ within Q100_DistrictModel.Simulations;
 model Gesamt_Sim_Controller
   extends Modelica.Icons.Example;
   Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel(
+    ScaleFactor_heatPump1=0,
+    ScaleFactor_heatPump2=0,
     u_7102_NS=0,
     u_7202_NS=0,
     u_CHP_0_1=controller.u_CHP_controll,
@@ -11,7 +13,7 @@ model Gesamt_Sim_Controller
     u_loadProfile_DemandEMob_kW=0,
     u_loadProfile_DemandPower_kW=cSVReader_LoadProfiles.E_el_load,
     u_loadProfile_ProductionPV_kW=0,
-    u_loadProfile_kW=cSVReader_LoadProfiles.E_th_load,
+    u_loadProfile_kW=dynamic_Heatload_Scale.Qdot_heatload_scaled,
     u_temperature_heatingGrid_set=controller.u_T_HeatGrid_FF_set,
     u_disturb_electrolysis=cSVReader_ErrorProfiles.u_Electrolyzer_ErrorScheudle,
     u_disturb_heatpump1=cSVReader_ErrorProfiles.u_HeatPump1_ErrorScheudle,
@@ -19,8 +21,8 @@ model Gesamt_Sim_Controller
     u_disturb_CHP=cSVReader_ErrorProfiles.u_CHP_ErrorScheudle,
     u_disturb_boiler=cSVReader_ErrorProfiles.u_Boiler_ErrorScheudle) annotation (Placement(visible=true, transformation(extent={{202,-108},{462,92}}, rotation=0)));
 
-  UnitController.Controller controller(
-    u_TempAmp_extern=cSVReader_WeatherData.T_amp,
+  FMUs.FMU_Controller controller(
+    u_TempAmp_extern=cSVReader_WeatherData.T_amb,
     u_co2_extern=0,
     u_el_costs_extern=0,
     u_T_HeatGrid_FF_actual=fMU_PhyModel.temperature_HeatGrid_FF.T - 273,
@@ -42,8 +44,18 @@ model Gesamt_Sim_Controller
     u_T_TES_load=fMU_PhyModel.temperature_HeatGrid_FF.T - 273,
     u_T_TES_unload=fMU_PhyModel.temperature_HeatGrid_FF.T - 273,
     P_el_demand_district=0,
-    P_el_demand_emobility=0)
-    annotation (Placement(transformation(extent={{-94,-108},{80,88}})));
+    P_el_demand_emobility=0,
+    u_TES_load_scheudle=-1,
+    u_TES_unload_scheudle=-1,
+    P_inst_th_TES_unload=300,
+    P_inst_th_TES_load=300,
+    P_th_demand_district=fMU_PhyModel.y_GridLoad,
+    u_T_HeatGrid_RF_actual=fMU_PhyModel.temperature_8206_TRC.T,
+    u_Qdot_Heatpump1=fMU_PhyModel.y_heatpump1_dotQ,
+    u_Qdot_Heatpump2=fMU_PhyModel.y_heatpump2_dotQ,
+    u_Qdot_Electrolyzer=fMU_PhyModel.y_Elektrolyseur_dotQ,
+    u_Qdot_CHP=fMU_PhyModel.y_CHP_dotQ,
+    u_Qdot_Boiler=fMU_PhyModel.y_boiler_dotQ) annotation (Placement(transformation(extent={{-94,-108},{80,88}})));
 
   Components.Excel_ReadIn.CSVReader_LoadProfiles cSVReader_LoadProfiles
     annotation (Placement(transformation(extent={{-192,-2},{-160,40}})));
@@ -53,13 +65,10 @@ model Gesamt_Sim_Controller
     annotation (Placement(transformation(extent={{-192,-120},{-160,-78}})));
   Components.Excel_ReadIn.CSVReader_WeatherData cSVReader_WeatherData
     annotation (Placement(transformation(extent={{-200,60},{-160,100}})));
-  Components.calc_Qdot_production calc_Qdot_production1(
-    u_Qdot_Heatpump2=fMU_PhyModel.y_heatpump2_dotQ,
-    u_Qdot_Heatpump1=fMU_PhyModel.y_heatpump1_dotQ,
-    u_Qdot_CHP=fMU_PhyModel.y_CHP_dotQ,
-    u_Qdot_Electrolyzer=fMU_PhyModel.y_Elektrolyseur_dotQ,
-    u_Qdot_Boiler=fMU_PhyModel.y_boiler_dotQ,
-    u_Qdot_StorageUnload=0) annotation (Placement(transformation(extent={{102,-180},{122,-160}})));
+  Components.Dynamic_Heatload_Scale dynamic_Heatload_Scale(
+    Qdot_heatload=cSVReader_LoadProfiles.E_th_load,
+    T_amb=cSVReader_WeatherData.T_amb,
+    T_heatgrid_FF=fMU_PhyModel.temperature_HeatGrid_FF.T - 273) annotation (Placement(transformation(extent={{140,100},{160,120}})));
   annotation (
     Diagram(coordinateSystem(extent={{-520,-340},{520,340}}),          graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent={{-520,-340},{520,340}})),

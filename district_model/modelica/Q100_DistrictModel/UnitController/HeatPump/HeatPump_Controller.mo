@@ -68,14 +68,10 @@ model HeatPump_Controller
           origin={90,-10},
           extent={{-10,-10},{10,10}},
           rotation=0)));
-    InputSignalCheck inputSignalCheck(d=100)
-      annotation (Placement(transformation(extent={{-126,74},{-114,86}})));
-    InputSignalCheck inputSignalCheck1(d=20)
-      annotation (Placement(transformation(extent={{-126,34},{-114,46}})));
-    InputSignalCheck inputSignalCheck2(d=95)
-      annotation (Placement(transformation(extent={{-126,-86},{-114,-74}})));
-    InputSignalCheck inputSignalCheck3(d=300)
-      annotation (Placement(transformation(extent={{-126,-46},{-114,-34}})));
+  Components.InputSignalCheck inputSignalCheck(d=100) annotation (Placement(transformation(extent={{-126,74},{-114,86}})));
+  Components.InputSignalCheck inputSignalCheck1(d=20) annotation (Placement(transformation(extent={{-126,34},{-114,46}})));
+  Components.InputSignalCheck inputSignalCheck2(d=95) annotation (Placement(transformation(extent={{-126,-86},{-114,-74}})));
+  Components.InputSignalCheck inputSignalCheck3(d=300) annotation (Placement(transformation(extent={{-126,-46},{-114,-34}})));
     Modelica.Blocks.Interfaces.RealOutput Heatpump_Specification_Value
     "utilization factor between 0 and 1"
       annotation (Placement(transformation(extent={{300,-20},{320,0}})));
@@ -86,8 +82,7 @@ model HeatPump_Controller
       annotation (Placement(transformation(extent={{-20,100},{0,120}})));
     Modelica.Blocks.Math.Min min1
       annotation (Placement(transformation(extent={{30,120},{50,140}})));
-    MultiMax multiMax(nu=6)
-      annotation (Placement(transformation(extent={{140,120},{160,140}})));
+  Components.MultiMax multiMax(nu=6) annotation (Placement(transformation(extent={{140,120},{160,140}})));
   HeatPump_StSp_HP_hysteresis heatPump_StSp_HP_hysteresis annotation (Placement(transformation(extent={{-60,-150},{-40,-130}})));
   Modelica.Blocks.Math.BooleanToReal
                                  booleanToReal

@@ -62,8 +62,7 @@ package Boiler
       annotation (Placement(transformation(extent={{-50,10},{-30,30}})));
     Modelica.Blocks.Logical.And and5
       annotation (Placement(transformation(extent={{-10,-12},{10,8}})));
-    MultiMax multiMax(nu=3)
-      annotation (Placement(transformation(extent={{74,34},{86,46}})));
+    Components.MultiMax multiMax(nu=3) annotation (Placement(transformation(extent={{74,34},{86,46}})));
     Modelica.Blocks.Logical.Switch switch1
       annotation (Placement(transformation(extent={{70,50},{90,70}})));
     Modelica.Blocks.Sources.Constant const1(k=0)   annotation (

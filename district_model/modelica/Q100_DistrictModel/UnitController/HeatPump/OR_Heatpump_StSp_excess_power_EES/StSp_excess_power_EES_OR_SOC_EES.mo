@@ -7,8 +7,7 @@ model StSp_excess_power_EES_OR_SOC_EES
         transformation(extent={{-140,30},{-100,70}})));
   Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_storage_el_SOC_threshold
     annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-    Hysteresis_var hysteresis_var
-      annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+  Components.Hysteresis_var hysteresis_var annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
     Modelica.Blocks.Math.Gain gain(k=1.01)
       annotation (Placement(transformation(extent={{-60,10},{-40,30}})));
 equation

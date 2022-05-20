@@ -2,8 +2,7 @@ within Q100_DistrictModel.UnitController.HeatPump;
 model HeatPump_StSp_HP_hysteresis
   Modelica.Blocks.Interfaces.RealInput T_DH_FF_actual "Temperature heat storage " annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
   Modelica.Blocks.Interfaces.RealInput T_DH_FF_set "Temperature heating grid" annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-  Hysteresis_var hysteresis_var
-    annotation (Placement(transformation(extent={{-20,40},{0,60}})));
+  Components.Hysteresis_var hysteresis_var annotation (Placement(transformation(extent={{-20,40},{0,60}})));
   Modelica.Blocks.Math.Add add1
     annotation (Placement(transformation(extent={{-60,10},{-40,30}})));
   Modelica.Blocks.Sources.Constant const1(k=-5)

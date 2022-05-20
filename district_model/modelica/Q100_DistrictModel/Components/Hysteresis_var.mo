@@ -1,6 +1,5 @@
-within Q100_DistrictModel.UnitController;
-block Hysteresis_var
-  "Transform Real to Boolean signal with Hysteresis"
+within Q100_DistrictModel.Components;
+block Hysteresis_var "Transform Real to Boolean signal with Hysteresis"
 
   extends Modelica.Blocks.Icons.PartialBooleanBlock;
   //parameter Real uLow(start=0) "if y=true and u<=uLow, switch to y=false";

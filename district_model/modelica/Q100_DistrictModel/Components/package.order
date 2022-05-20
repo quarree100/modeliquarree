@@ -19,3 +19,11 @@ ElectrolysisSystem
 Excel_ReadIn
 SignalConverter_Tri2Bi
 calc_Qdot_production
+TES_Switch
+Dynamic_Heatload_Scale
+Calc_Dynamic_Heatload_Scalefactor
+Calc_Dynamic_Heatload_Scalefactor_TEST
+MultiMax
+InputSignalCheck
+Hysteresis_var
+MultiMin

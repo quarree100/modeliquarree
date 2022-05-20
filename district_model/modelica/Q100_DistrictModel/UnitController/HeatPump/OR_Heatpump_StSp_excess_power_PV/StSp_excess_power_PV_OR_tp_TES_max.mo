@@ -6,8 +6,7 @@ model StSp_excess_power_PV_OR_tp_TES_max
       Placement(transformation(extent={{-140,30},{-100,70}})));
   Modelica.Blocks.Interfaces.RealInput Heatpump_Constants_tp_TES_max_set
     annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-  Hysteresis_var hysteresis_var
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+  Components.Hysteresis_var hysteresis_var annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Sources.Constant const(k=3)
     annotation (Placement(transformation(extent={{-100,-80},{-80,-60}})));
   Modelica.Blocks.Math.Feedback feedback

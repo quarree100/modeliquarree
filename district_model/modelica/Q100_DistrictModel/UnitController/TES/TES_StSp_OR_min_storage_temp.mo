@@ -24,8 +24,7 @@ model TES_StSp_OR_min_storage_temp
     annotation (Placement(transformation(extent={{-34,22},{-22,34}})));
   Modelica.Blocks.Sources.Constant const(k=5)
     annotation (Placement(transformation(extent={{-60,42},{-48,54}})));
-  Hysteresis_var hysteresis_var
-    annotation (Placement(transformation(extent={{42,40},{62,60}})));
+  Components.Hysteresis_var hysteresis_var annotation (Placement(transformation(extent={{42,40},{62,60}})));
 equation
   connect(T_TES_load, less.u1) annotation (Line(points={{-114,-30},{-28,-30},{
           -28,-50},{-22,-50}}, color={0,0,127}));

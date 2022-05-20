@@ -81,14 +81,10 @@ model Electrolysis_Controller
           origin={94,50},
           extent={{-10,-10},{10,10}},
           rotation=0)));
-    InputSignalCheck inputSignalCheck(d=100)
-      annotation (Placement(transformation(extent={{-126,74},{-114,86}})));
-    InputSignalCheck inputSignalCheck1(d=20)
-      annotation (Placement(transformation(extent={{-126,34},{-114,46}})));
-    InputSignalCheck inputSignalCheck2(d=95)
-      annotation (Placement(transformation(extent={{-126,-86},{-114,-74}})));
-    InputSignalCheck inputSignalCheck3(d=300)
-      annotation (Placement(transformation(extent={{-126,-46},{-114,-34}})));
+  Components.InputSignalCheck inputSignalCheck(d=100) annotation (Placement(transformation(extent={{-126,74},{-114,86}})));
+  Components.InputSignalCheck inputSignalCheck1(d=20) annotation (Placement(transformation(extent={{-126,34},{-114,46}})));
+  Components.InputSignalCheck inputSignalCheck2(d=95) annotation (Placement(transformation(extent={{-126,-86},{-114,-74}})));
+  Components.InputSignalCheck inputSignalCheck3(d=300) annotation (Placement(transformation(extent={{-126,-46},{-114,-34}})));
     Modelica.Blocks.Interfaces.RealOutput Electrolysis_Specification_Value
     "utilization factor between 0 and 1"
     annotation (Placement(transformation(extent={{300,-20},{320,0}})));
@@ -109,8 +105,7 @@ model Electrolysis_Controller
       annotation (Placement(transformation(extent={{-20,100},{0,120}})));
     Modelica.Blocks.Math.Min min1
       annotation (Placement(transformation(extent={{30,120},{50,140}})));
-    MultiMax multiMax(nu=4)
-      annotation (Placement(transformation(extent={{140,120},{160,140}})));
+  Components.MultiMax multiMax(nu=4) annotation (Placement(transformation(extent={{140,120},{160,140}})));
 equation
   connect(electrolysis_StSp_priority_ext.Electrolysis_Specification_StSp_priority_ext_SI,
     or1.u1) annotation (Line(points={{-39,-40},{44,-40},{44,-60},{128,-60}},

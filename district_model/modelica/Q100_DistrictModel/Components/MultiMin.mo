@@ -1,10 +1,10 @@
-within Q100_DistrictModel.UnitController;
-block MultiMax "Max of Reals: y = max(u[])"
+within Q100_DistrictModel.Components;
+block MultiMin "Min of Reals: y = min(u[])"
   extends Modelica.Blocks.Interfaces.PartialRealMISO;
   parameter Real k[nu]=fill(1, nu) "Input gains";
 equation
   if size(u, 1) > 0 then
-    y = max(u);
+    y = min(u);
   else
     y = 0;
   end if;
@@ -17,4 +17,4 @@ equation
           lineColor={0,0,0})}),
                              Documentation(info="<html>
 </html>"));
-end MultiMax;
+end MultiMin;

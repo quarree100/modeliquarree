@@ -23,10 +23,10 @@ model CSVReader_WeatherData "CSV file read in"
         firstCell))   annotation (Placement(transformation(extent={{-8,-8},{8,8}},
         rotation=0,
         origin={-70,0})));
-  Modelica.Blocks.Interfaces.RealOutput T_amp
+  Modelica.Blocks.Interfaces.RealOutput T_amb
     annotation (Placement(transformation(extent={{200,-10},{220,10}})));
 equation
-  connect(combiTimeTable.y[k], T_amp)
+  connect(combiTimeTable.y[k],T_amb)
     annotation (Line(points={{-61.2,0},{210,0}}, color={0,0,127}));
   annotation(experiment(StopTime=1),
     Documentation(info="<html><p>This example model reads the gain parameters from different cells and sheets of the Excel XLSX file <a href=\"modelica://ExternData/Resources/Examples/test.xlsx\">test.xlsx</a>. For gain1 the gain parameter is read as Real value using the function <a href=\"modelica://ExternData.XLSXFile.getReal\">ExternData.XLSXFile.getReal</a>. For gain2 the String value is retrieved by function <a href=\"modelica://ExternData.XLSXFile.getString\">ExternData.XLSXFile.getString</a> and converted to a Real value (using the utility function <a href=\"modelica://Modelica.Utilities.Strings.scanReal\">Modelica.Utilities.Strings.scanReal</a>). For timeTable the table parameter is read as Real array of dimension 3x2 by function <a href=\"modelica://ExternData.XLSXFile.getRealArray2D\">ExternData.XLSXFile.getRealArray2D</a>. The read parameters are assigned by parameter bindings to the appropriate model parameters.</p></html>"),

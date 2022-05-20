@@ -8,8 +8,7 @@ model StSp_excess_power_EES_OR_Electrolysis_hysteresis
   Modelica.Blocks.Interfaces.RealInput tp_DH_FF_set
     "Temperature heating grid" annotation (Placement(transformation(
           extent={{-140,-70},{-100,-30}})));
-  Hysteresis_var hysteresis_var
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+  Components.Hysteresis_var hysteresis_var annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Modelica.Blocks.Math.Add add1
     annotation (Placement(transformation(extent={{-60,-40},{-40,-20}})));
   Modelica.Blocks.Sources.Constant const1(k=2)

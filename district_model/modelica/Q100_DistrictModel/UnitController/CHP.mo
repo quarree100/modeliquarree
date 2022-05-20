@@ -34,8 +34,7 @@ package CHP
       annotation (Placement(transformation(extent={{-20,40},{0,60}})));
     Modelica.Blocks.Math.BooleanToReal booleanToReal2
       annotation (Placement(transformation(extent={{-20,-60},{0,-40}})));
-    MultiMax multiMax(nu=3)
-      annotation (Placement(transformation(extent={{44,-6},{56,6}})));
+    Components.MultiMax multiMax(nu=3) annotation (Placement(transformation(extent={{44,-6},{56,6}})));
     Modelica.Blocks.Math.RealToBoolean realToBoolean(threshold=0.001)
       annotation (Placement(transformation(extent={{60,-50},{80,-30}})));
     Modelica.Blocks.Logical.Switch switch1

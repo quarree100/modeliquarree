@@ -1,6 +1,5 @@
-within Q100_DistrictModel.UnitController;
-model InputSignalCheck
-  "Checks if a input signal is greater than 0 and otherwise puts out an default value"
+within Q100_DistrictModel.Components;
+model InputSignalCheck "Checks if a input signal is greater than 0 and otherwise puts out an default value"
   Modelica.Blocks.Interfaces.RealInput u
     annotation (Placement(transformation(extent={{-100,-20},{-60,20}}),
         iconTransformation(extent={{-100,-20},{-60,20}})));
