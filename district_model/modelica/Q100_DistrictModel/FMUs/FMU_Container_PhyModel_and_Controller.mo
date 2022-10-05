@@ -8,6 +8,9 @@ model FMU_Container_PhyModel_and_Controller
                                                                                       annotation (Dialog(tab = "System units dimensions",group = "CHP properties",enable=not selectable));
   parameter Modelica.SIunits.Efficiency eta_th_chp = 0.65 "CHP's thermal efficiency" annotation (Dialog(tab = "System units dimensions",group = "CHP properties",enable=not selectable));
   parameter Modelica.SIunits.Power capP_el_electrolyser = 250 "installed electrical capacity for electrolyser" annotation (Dialog(tab = "System units dimensions",group = "Electrolyser properties",enable=not selectable));
+  parameter Modelica.SIunits.Efficiency eta_el_electrolyser= 1 "CHP's electrical efficiency"
+                                                                                            annotation (Dialog(tab = "System units dimensions",group = "Electrolyser properties",enable=not selectable));
+  parameter Modelica.SIunits.Efficiency eta_th_electrolyser = 0.16 "CHP's thermal efficiency" annotation (Dialog(tab = "System units dimensions",group = "Electrolyser properties",enable=not selectable));
   parameter Modelica.SIunits.Power capP_el_pv = 2000000 "installed electrical capacity for pv" annotation (Dialog(tab = "System units dimensions",group = "PV properties",enable=not selectable));
   parameter Modelica.SIunits.Power capQ_th_boiler = 2000000 "installed thermal capacity for boiler" annotation (Dialog(tab = "System units dimensions",group = "Boiler properties",enable=not selectable));
   parameter Modelica.SIunits.Height h_tes = 3.2 "Height of thermal energy storage" annotation (Dialog(tab = "System units dimensions",group = "TES properties",enable=not selectable));
@@ -67,12 +70,14 @@ model FMU_Container_PhyModel_and_Controller
   Q100_DistrictModel.FMUs.FMU_PhyModel fMU_PhyModel(
     ScaleFactor_heatPump1=ScaleFactor_HP1,
     ScaleFactor_heatPump2=ScaleFactor_HP2,
-    capP_el_chp=capP_el_chp,
+    capP_el_chp=capP_el_chp*1000,
     eta_el_chp=eta_el_chp,
     eta_th_chp=eta_th_chp,
-    capP_el_electrolyser=capP_el_electrolyser,
-    capP_el_pv=capP_el_pv,
-    capQ_th_boiler=capQ_th_boiler,
+    eta_el_electrolyser=eta_el_electrolyser,
+    eta_th_electrolyser=eta_th_electrolyser,
+    capP_el_electrolyser=capP_el_electrolyser*1000,
+    capP_el_pv=capP_el_pv*1000,
+    capQ_th_boiler=capQ_th_boiler*1000,
     h_tes=h_tes,
     d_tes=d_tes,
     u_7102_NS=0,
@@ -90,7 +95,8 @@ model FMU_Container_PhyModel_and_Controller
     u_disturb_heatpump1=u_HeatPump1_error,
     u_disturb_heatpump2=u_HeatPump2_error,
     u_disturb_CHP=u_CHP_error,
-    u_disturb_boiler=u_Boiler_error)                                 annotation (Placement(visible=true, transformation(extent={{-128,-108},{132,92}},rotation=0)));
+    u_disturb_boiler=u_Boiler_error,
+    u_temperature_amb=T_amb + 273)                                   annotation (Placement(visible=true, transformation(extent={{-128,-108},{132,92}},rotation=0)));
 
 
 

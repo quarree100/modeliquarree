@@ -13,6 +13,10 @@ model Gesamt_Sim_Container
   FMUs.FMU_Container_PhyModel_and_Controller fMU_Container_PhyModel_and_Controller(
     ScaleFactor_HP1=0.8,
     ScaleFactor_HP2=0.2,
+    capP_el_chp(displayUnit="W") = 400,
+    capP_el_electrolyser(displayUnit="W") = 250,
+    capP_el_pv(displayUnit="W") = 2000,
+    capQ_th_boiler(displayUnit="W") = 2000,
     el_costs_extern=0,
     co2_extern=0,
     T_amb=cSVReader_WeatherData.T_amb,
@@ -33,7 +37,7 @@ model Gesamt_Sim_Container
       capP_el_chp(displayUnit="kW"),
       capP_el_electrolyser(displayUnit="kW"),
       capP_el_pv(displayUnit="kW"),
-      capQ_th_boiler(displayUnit="kW")))                                                                       annotation (Placement(transformation(extent={{-116,-114},{118,120}})));
+      capQ_th_boiler(displayUnit="kW")))                                                                       annotation (Placement(transformation(extent={{-116,-112},{118,122}})));
   annotation (
     Diagram(coordinateSystem(extent={{-520,-340},{520,340}}),          graphics={  Line(origin = {688, 520}, points = {{0, 0}})}),
     Icon(coordinateSystem(extent={{-520,-340},{520,340}})),
